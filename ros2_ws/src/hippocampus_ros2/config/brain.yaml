@@ -1,0 +1,49 @@
+# Default parameters for hippocampus_ros2 BrainNode.
+# These values mirror the manual defaults in the node so that running
+# without a config behaves the same as our tuned local runs.
+
+hippocampus_ros2:
+  ros__parameters:
+    # Controller backend to instantiate. Options include "place_cells"
+    # (deterministic, lightweight) and "snntorch" (requires trained model).
+    controller_backend: "place_cells"
+
+    # Path to a trained model checkpoint when using neural backends.
+    # Leave empty for place-cell controller.
+    model_path: ""
+
+    # Topic to subscribe for robot pose/odometry updates.
+    pose_topic: "/odom"
+
+    # Topic to publish velocity commands (geometry_msgs/msg/Twist).
+    cmd_vel_topic: "/cmd_vel"
+
+    # Control loop frequency in Hz (timer period 1/control_rate).
+    control_rate: 10.0
+
+    # Clamp for Twist.linear.x (m/s). Keep conservative for safety.
+    max_linear: 0.3
+
+    # Clamp for Twist.angular.z (rad/s).
+    max_angular: 1.0
+
+    # Emit debug logs every N cycles to avoid flooding the console.
+    log_every_n_cycles: 10
+
+    # Bounds of the simulated arena (width/height) used by place-cell baseline.
+    arena_width: 1.0
+    arena_height: 1.0
+
+    # Visualization toggle. When true, BrainNode publishes MarkerArray visualizations
+    # for RViz (place-field centers, radii, and graph edges).
+    enable_viz: false
+
+    # Marker publication rate in Hz (lower for lighter RViz load).
+    viz_rate_hz: 2.0
+
+    # TF frame used for published markers (set this to your global frame, e.g. map/odom).
+    viz_frame_id: "map"
+
+    # Number of recent agent poses to retain in the trajectory line strip.
+    viz_trail_length: 200
+

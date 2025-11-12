@@ -1,14 +1,16 @@
 """ROS 2 brain node that feeds pose observations into an SNNController."""
 from __future__ import annotations
 
-from typing import Optional, Tuple
+from collections import deque
+from typing import Deque, Optional, Tuple
 
 import numpy as np
 import rclpy
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Point, Twist
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
 from std_msgs.msg import Float32MultiArray
+from visualization_msgs.msg import Marker, MarkerArray
 
 from hippocampus_core.controllers.place_cell_controller import (
     PlaceCellController,
@@ -33,6 +35,11 @@ class BrainNode(Node):
         self.declare_parameter("arena_width", 1.0)
         self.declare_parameter("arena_height", 1.0)
         self.declare_parameter("rng_seed", 1234)
+        self.declare_parameter("enable_viz", False)
+        self.declare_parameter("viz_rate_hz", 2.0)
+        self.declare_parameter("viz_frame_id", "map")
+        self.declare_parameter("viz_trail_length", 200)
+        self.declare_parameter("use_bag_replay", False)
 
         self._controller_backend = (
             self.get_parameter("controller_backend").get_parameter_value().string_value
@@ -54,6 +61,23 @@ class BrainNode(Node):
         arena_width = self.get_parameter("arena_width").get_parameter_value().double_value
         arena_height = self.get_parameter("arena_height").get_parameter_value().double_value
         rng_seed = self.get_parameter("rng_seed").get_parameter_value().integer_value
+        self._viz_enabled = (
+            self.get_parameter("enable_viz").get_parameter_value().bool_value
+        )
+        viz_rate_hz = (
+            self.get_parameter("viz_rate_hz").get_parameter_value().double_value or 2.0
+        )
+        self._viz_rate_hz = max(float(viz_rate_hz), 0.1)
+        self._viz_frame_id = (
+            self.get_parameter("viz_frame_id").get_parameter_value().string_value or "map"
+        )
+        trail_length = (
+            self.get_parameter("viz_trail_length").get_parameter_value().integer_value or 200
+        )
+        self._viz_trail_length = max(int(trail_length), 1)
+        self._use_bag_replay = (
+            self.get_parameter("use_bag_replay").get_parameter_value().bool_value
+        )
 
         if self._controller_backend != "place_cells":
             self.get_logger().warning(
@@ -86,6 +110,15 @@ class BrainNode(Node):
         self._last_time: Optional[float] = None
         self._step_count = 0
         self._warned_short_action = False
+        self._pose_history: Deque[Tuple[float, float]] = deque(maxlen=self._viz_trail_length)
+        self._marker_publisher = (
+            self.create_publisher(MarkerArray, "brain_markers", 10) if self._viz_enabled else None
+        )
+        self._viz_timer = (
+            self.create_timer(1.0 / self._viz_rate_hz, self._publish_markers)
+            if self._viz_enabled
+            else None
+        )
 
         self.get_logger().info(
             "Brain node ready. Subscribing to '%s', publishing actions on 'snn_action' "
@@ -93,6 +126,11 @@ class BrainNode(Node):
             self._pose_topic,
             self._cmd_vel_topic,
         )
+        if self._use_bag_replay:
+            self.get_logger().info(
+                "Bag replay mode enabled. Expecting external ros2 bag play to publish '%s'.",
+                self._pose_topic,
+            )
 
     def _pose_callback(self, msg: Odometry) -> None:
         position = msg.pose.pose.position
@@ -146,6 +184,109 @@ class BrainNode(Node):
                 linear_x,
                 angular_z,
             )
+        if self._viz_enabled:
+            self._pose_history.append(self._last_pose)
+
+    def _publish_markers(self) -> None:
+        if not self._viz_enabled or self._marker_publisher is None:
+            return
+
+        now = self.get_clock().now().to_msg()
+        marker_array = MarkerArray()
+
+        positions = self._controller.place_cell_positions
+        sigma = getattr(self._controller.config, "sigma", 0.1)
+        graph = self._controller.get_graph()
+        frame_id = self._viz_frame_id
+
+        for idx, pos in enumerate(positions):
+            center_marker = Marker()
+            center_marker.header.frame_id = frame_id
+            center_marker.header.stamp = now
+            center_marker.ns = "pc_centers"
+            center_marker.id = idx
+            center_marker.type = Marker.SPHERE
+            center_marker.action = Marker.ADD
+            center_marker.pose.position.x = float(pos[0])
+            center_marker.pose.position.y = float(pos[1])
+            center_marker.pose.position.z = 0.0
+            center_marker.pose.orientation.w = 1.0
+            center_marker.scale.x = 0.05
+            center_marker.scale.y = 0.05
+            center_marker.scale.z = 0.05
+            center_marker.color.r = 0.1
+            center_marker.color.g = 0.4
+            center_marker.color.b = 0.9
+            center_marker.color.a = 1.0
+            marker_array.markers.append(center_marker)
+
+            field_marker = Marker()
+            field_marker.header.frame_id = frame_id
+            field_marker.header.stamp = now
+            field_marker.ns = "pc_fields"
+            field_marker.id = idx
+            field_marker.type = Marker.CYLINDER
+            field_marker.action = Marker.ADD
+            field_marker.pose.position.x = float(pos[0])
+            field_marker.pose.position.y = float(pos[1])
+            field_marker.pose.position.z = -0.01
+            field_marker.pose.orientation.w = 1.0
+            diameter = 2.0 * float(sigma)
+            field_marker.scale.x = diameter
+            field_marker.scale.y = diameter
+            field_marker.scale.z = 0.02
+            field_marker.color.r = 0.1
+            field_marker.color.g = 0.8
+            field_marker.color.b = 0.3
+            field_marker.color.a = 0.25
+            marker_array.markers.append(field_marker)
+
+        edge_marker = Marker()
+        edge_marker.header.frame_id = frame_id
+        edge_marker.header.stamp = now
+        edge_marker.ns = "graph_edges"
+        edge_marker.id = 0
+        edge_marker.type = Marker.LINE_LIST
+        edge_marker.action = Marker.ADD
+        edge_marker.scale.x = 0.01
+        edge_marker.color.r = 1.0
+        edge_marker.color.g = 0.6
+        edge_marker.color.b = 0.0
+        edge_marker.color.a = 0.8
+
+        for i, j in graph.graph.edges():
+            start = positions[i]
+            end = positions[j]
+            edge_marker.points.append(self._make_point(start))
+            edge_marker.points.append(self._make_point(end))
+        marker_array.markers.append(edge_marker)
+
+        if self._pose_history and len(self._pose_history) > 1:
+            trail_marker = Marker()
+            trail_marker.header.frame_id = frame_id
+            trail_marker.header.stamp = now
+            trail_marker.ns = "agent_trail"
+            trail_marker.id = 0
+            trail_marker.type = Marker.LINE_STRIP
+            trail_marker.action = Marker.ADD
+            trail_marker.scale.x = 0.01
+            trail_marker.color.r = 0.9
+            trail_marker.color.g = 0.1
+            trail_marker.color.b = 0.2
+            trail_marker.color.a = 0.8
+            for pose in self._pose_history:
+                trail_marker.points.append(self._make_point(pose))
+            marker_array.markers.append(trail_marker)
+
+        self._marker_publisher.publish(marker_array)
+
+    @staticmethod
+    def _make_point(position: Tuple[float, float]):
+        point = Point()
+        point.x = float(position[0])
+        point.y = float(position[1])
+        point.z = 0.0
+        return point
 
 
 def main() -> None:

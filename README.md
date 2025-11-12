@@ -1,5 +1,7 @@
 # ros-drone
 
+[![ROS CI](https://github.com/jacobhornsvennevik/ros-drone/actions/workflows/ros-ci.yml/badge.svg)](https://github.com/jacobhornsvennevik/ros-drone/actions/workflows/ros-ci.yml)
+
 Hippocampal-inspired navigation experiments written in Python with optional ROS 2 integration. The core package (`hippocampus_core`) simulates a 2D arena, Gaussian place cells, coactivity tracking, and a topological graph builder. ROS 2 nodes in `hippocampus_ros2` wrap these controllers for robot experiments.
 
 ## Getting Started
@@ -30,6 +32,16 @@ python main.py
 - *Topological graph:* nodes are place-cell centres; edges appear when coactivity exceeds the configured threshold and the cells lie within the allowed spatial distance.
 
 ## Testing
+## Continuous Integration
+
+- The `ROS Package CI` workflow builds `ros2_ws` with ROS 2 Humble on Ubuntu 22.04 runners, invoking `colcon build` and `colcon test` against `hippocampus_ros2`.
+- Reproduce locally by sourcing a Humble installation, then:
+
+```bash
+cd ros2_ws
+colcon build --packages-select hippocampus_ros2 --symlink-install
+colcon test --packages-select hippocampus_ros2
+```
 
 Fast unit tests cover firing rates, coactivity, topology construction, and the place-cell controller. After the editable install, run:
 
