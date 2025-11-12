@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 from collections import deque
+from pathlib import Path
 from typing import Deque, Optional, Tuple
+import math
 
 import numpy as np
 import rclpy
@@ -16,6 +18,10 @@ from hippocampus_core.controllers.place_cell_controller import (
     PlaceCellController,
     PlaceCellControllerConfig,
 )
+try:
+    from hippocampus_core.controllers.snntorch_controller import SnnTorchController
+except ImportError:
+    SnnTorchController = None
 from hippocampus_core.env import Environment
 
 
@@ -40,6 +46,10 @@ class BrainNode(Node):
         self.declare_parameter("viz_frame_id", "map")
         self.declare_parameter("viz_trail_length", 200)
         self.declare_parameter("use_bag_replay", False)
+        self.declare_parameter("model_path", "")
+        self.declare_parameter("use_cpu", True)
+        self.declare_parameter("model_kind", "state_dict")
+        self.declare_parameter("torchscript_path", "")
 
         self._controller_backend = (
             self.get_parameter("controller_backend").get_parameter_value().string_value
@@ -78,21 +88,49 @@ class BrainNode(Node):
         self._use_bag_replay = (
             self.get_parameter("use_bag_replay").get_parameter_value().bool_value
         )
-
-        if self._controller_backend != "place_cells":
-            self.get_logger().warning(
-                "Controller backend '%s' not supported yet. Falling back to place_cells.",
-                self._controller_backend,
-            )
-
-        self._environment = Environment(width=arena_width, height=arena_height)
-        controller_config = PlaceCellControllerConfig()
-        controller_rng = np.random.default_rng(int(rng_seed))
-        self._controller = PlaceCellController(
-            environment=self._environment,
-            config=controller_config,
-            rng=controller_rng,
+        model_path_param = (
+            self.get_parameter("model_path").get_parameter_value().string_value or ""
         )
+        use_cpu_param = (
+            self.get_parameter("use_cpu").get_parameter_value().bool_value
+        )
+        model_kind_param = (
+            self.get_parameter("model_kind").get_parameter_value().string_value or "state_dict"
+        )
+        torchscript_path_param = (
+            self.get_parameter("torchscript_path").get_parameter_value().string_value or ""
+        )
+
+        self._requested_backend = self._controller_backend
+        self._backend_in_use = self._controller_backend
+        self._environment: Optional[Environment] = None
+        self._controller = None
+
+        if self._requested_backend == "snntorch":
+            self._controller = self._try_create_snntorch_controller(
+                model_path=model_path_param,
+                use_cpu=bool(use_cpu_param),
+                model_kind=model_kind_param,
+                torchscript_path=torchscript_path_param,
+            )
+            if self._controller is None:
+                self.get_logger().warning(
+                    "Falling back to place_cells backend after snnTorch initialisation failed."
+                )
+                self._backend_in_use = "place_cells"
+            else:
+                self._backend_in_use = "snntorch"
+
+        if self._controller is None:
+            controller_rng = np.random.default_rng(int(rng_seed))
+            self._environment = Environment(width=arena_width, height=arena_height)
+            controller_config = PlaceCellControllerConfig()
+            self._controller = PlaceCellController(
+                environment=self._environment,
+                config=controller_config,
+                rng=controller_rng,
+            )
+            self._backend_in_use = "place_cells"
 
         self._pose_subscription = self.create_subscription(
             Odometry,
@@ -107,6 +145,7 @@ class BrainNode(Node):
         self._timer = self.create_timer(timer_period, self._control_timer_callback)
 
         self._last_pose: Optional[Tuple[float, float]] = None
+        self._last_heading: Optional[float] = None
         self._last_time: Optional[float] = None
         self._step_count = 0
         self._warned_short_action = False
@@ -121,8 +160,9 @@ class BrainNode(Node):
         )
 
         self.get_logger().info(
-            "Brain node ready. Subscribing to '%s', publishing actions on 'snn_action' "
+            "Brain node ready (backend=%s). Subscribing to '%s', publishing actions on 'snn_action' "
             "and Twist on '%s'.",
+            self._backend_in_use,
             self._pose_topic,
             self._cmd_vel_topic,
         )
@@ -132,12 +172,117 @@ class BrainNode(Node):
                 self._pose_topic,
             )
 
+    def _try_create_snntorch_controller(
+        self,
+        *,
+        model_path: str,
+        use_cpu: bool,
+        model_kind: str,
+        torchscript_path: str,
+    ):
+        if SnnTorchController is None:
+            self.get_logger().error("snnTorch backend requested but snnTorch is not installed.")
+            return None
+
+        if not model_path:
+            self.get_logger().error("Parameter 'model_path' must point to a trained snnTorch checkpoint.")
+            return None
+
+        checkpoint_path = Path(model_path).expanduser()
+        if not checkpoint_path.exists():
+            self.get_logger().error("snnTorch checkpoint not found at '%s'.", checkpoint_path)
+            return None
+
+        model_kind_normalised = (model_kind or "state_dict").lower()
+        if model_kind_normalised not in {"state_dict", "torchscript"}:
+            self.get_logger().error(
+                "Unknown model_kind '%s'. Expected 'state_dict' or 'torchscript'.",
+                model_kind,
+            )
+            return None
+
+        script_path: Optional[Path] = None
+        if model_kind_normalised == "torchscript":
+            if torchscript_path:
+                script_path = Path(torchscript_path).expanduser()
+            else:
+                script_path = checkpoint_path.with_suffix(".ts")
+            if not script_path.exists():
+                self.get_logger().error(
+                    "TorchScript model requested but module not found at '%s'.",
+                    script_path,
+                )
+                return None
+
+        device = "cpu"
+        if not use_cpu:
+            try:
+                import torch
+
+                if torch.cuda.is_available():
+                    device = "cuda"
+                elif getattr(torch.backends, "mps", None) and torch.backends.mps.is_available():
+                    device = "mps"
+                else:
+                    self.get_logger().warning(
+                        "Accelerated inference requested but no GPU/MPS backend is available; using CPU."
+                    )
+            except ImportError:
+                self.get_logger().warning(
+                    "PyTorch not available to detect accelerators; defaulting to CPU for snnTorch inference."
+                )
+
+        try:
+            controller = SnnTorchController.from_checkpoint(
+                checkpoint_path,
+                device=device,
+                model_kind=model_kind_normalised,  # type: ignore[arg-type]
+                torchscript_path=script_path,
+            )
+        except Exception as exc:  # pragma: no cover - defensive against runtime loader issues
+            self.get_logger().error(
+                "Failed to initialise snnTorch controller from '%s': %s",
+                checkpoint_path,
+                exc,
+            )
+            return None
+
+        metadata = getattr(controller, "metadata", {})
+        summary_parts = [
+            f"device={device}",
+            f"time_steps={controller.config.time_steps}",
+            f"kind={model_kind_normalised}",
+        ]
+        val_loss = metadata.get("val_loss")
+        if isinstance(val_loss, (int, float)):
+            summary_parts.append(f"val_loss={val_loss:.6f}")
+        val_mse = metadata.get("val_mse_actual")
+        if isinstance(val_mse, (int, float)):
+            summary_parts.append(f"val_mse={val_mse:.6f}")
+
+        if script_path is not None:
+            summary_parts.append(f"torchscript={script_path}")
+
+        self.get_logger().info(
+            "Loaded snnTorch controller from '%s' (%s).",
+            checkpoint_path,
+            ", ".join(summary_parts),
+        )
+        return controller
+
     def _pose_callback(self, msg: Odometry) -> None:
         position = msg.pose.pose.position
         self._last_pose = (float(position.x), float(position.y))
+        orientation = msg.pose.pose.orientation
+        self._last_heading = self._quat_to_yaw(
+            orientation.x,
+            orientation.y,
+            orientation.z,
+            orientation.w,
+        )
 
     def _control_timer_callback(self) -> None:
-        if self._last_pose is None:
+        if self._last_pose is None or self._last_heading is None:
             return
 
         now = self.get_clock().now().nanoseconds / 1e9
@@ -147,7 +292,15 @@ class BrainNode(Node):
             dt = max(now - self._last_time, 1e-6)
         self._last_time = now
 
-        obs = np.asarray(self._last_pose, dtype=np.float32)
+        obs = np.asarray(
+            [
+                self._last_pose[0],
+                self._last_pose[1],
+                math.cos(self._last_heading),
+                math.sin(self._last_heading),
+            ],
+            dtype=np.float32,
+        )
         action = self._controller.step(obs, dt)
         if action.size < 2:
             if not self._warned_short_action:
@@ -188,7 +341,11 @@ class BrainNode(Node):
             self._pose_history.append(self._last_pose)
 
     def _publish_markers(self) -> None:
-        if not self._viz_enabled or self._marker_publisher is None:
+        if (
+            not self._viz_enabled
+            or self._marker_publisher is None
+            or self._backend_in_use != "place_cells"
+        ):
             return
 
         now = self.get_clock().now().to_msg()
@@ -287,6 +444,12 @@ class BrainNode(Node):
         point.y = float(position[1])
         point.z = 0.0
         return point
+
+    @staticmethod
+    def _quat_to_yaw(x: float, y: float, z: float, w: float) -> float:
+        siny_cosp = 2.0 * (w * z + x * y)
+        cosy_cosp = 1.0 - 2.0 * (y * y + z * z)
+        return math.atan2(siny_cosp, cosy_cosp)
 
 
 def main() -> None:

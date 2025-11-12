@@ -42,6 +42,38 @@ MAX_EDGE_DISTANCE: float = 2.0 * PLACE_CELL_SIGMA
 TOP_COACTIVE_PAIRS: int = 5
 SHOW_PLOTS: bool = True
 CONTROLLER_BACKEND: str = "place_cells"  # or "snntorch"
+SNN_MODEL_PATH = PROJECT_ROOT / "models" / "snn_controller.pt"
+
+
+def _init_snntorch_controller() -> SnnTorchController:
+    if SnnTorchController is None or SnnTorchControllerConfig is None:
+        raise RuntimeError(
+            "snnTorch backend selected but snnTorch is not installed. "
+            "Run 'python3 -m pip install torch snntorch' first."
+        )
+
+    if SNN_MODEL_PATH.exists():
+        controller = SnnTorchController.from_checkpoint(SNN_MODEL_PATH, device="cpu")
+        print(
+            f"Loaded snnTorch checkpoint from '{SNN_MODEL_PATH}'. "
+            f"time_steps={controller.config.time_steps}",
+        )
+        return controller
+
+    print(
+        "Warning: snnTorch checkpoint not found. "
+        "Initialising controller with random weights for demonstration."
+    )
+    return SnnTorchController(
+        config=SnnTorchControllerConfig(
+            obs_dim=4,
+            action_dim=2,
+            hidden_dim=64,
+            beta=0.9,
+            time_steps=1,
+            device="cpu",
+        )
+    )
 
 
 def run_simulation(
@@ -68,15 +100,7 @@ def run_simulation(
                 "snnTorch backend selected but snnTorch is not installed. "
                 "Run 'python3 -m pip install torch snntorch' first."
             )
-        controller = SnnTorchController(
-            config=SnnTorchControllerConfig(
-                obs_dim=2,
-                action_dim=2,
-                hidden_dim=32,
-                beta=0.9,
-                device="cpu",
-            )
-        )
+        controller = _init_snntorch_controller()
         actions = np.zeros((num_steps, controller.config.action_dim), dtype=float)
     else:
         controller_config = PlaceCellControllerConfig(
@@ -99,7 +123,12 @@ def run_simulation(
     for step_idx in range(num_steps):
         position = agent.step(dt)
         trajectory[step_idx] = position
-        observation = trajectory[step_idx]
+        velocity = agent.velocity
+        heading = float(np.arctan2(velocity[1], velocity[0]))
+        observation = np.array(
+            [position[0], position[1], np.cos(heading), np.sin(heading)],
+            dtype=np.float32,
+        )
         action = controller.step(observation, dt)
         if actions is not None:
             actions[step_idx] = action

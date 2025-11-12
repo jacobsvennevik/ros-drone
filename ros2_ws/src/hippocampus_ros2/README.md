@@ -61,13 +61,32 @@ ros2 launch hippocampus_ros2 brain.launch.py use_bag_replay:=true
 | `max_angular` | `double` | `1.0` | Clamp for `Twist.angular.z` (rad/s). |
 | `log_every_n_cycles` | `int` | `10` | Diagnostics logging interval. |
 | `controller_backend` | `string` | `place_cells` | Controller implementation (`place_cells`, `snntorch`, etc.). |
-| `model_path` | `string` | `""` | Optional path to a trained model for neural backends. |
+| `model_path` | `string` | `""` | Path to the state_dict checkpoint exported by `experiments/train_snntorch_policy.py`. Leave empty for the place-cell baseline. |
+| `model_kind` | `string` | `state_dict` | Select between raw weights (`state_dict`) and TorchScript (`torchscript`) inference. |
+| `torchscript_path` | `string` | `""` | Optional TorchScript module path when `model_kind == "torchscript"`; defaults to `<model_path>.ts` if left blank. |
+| `use_cpu` | `bool` | `true` | Force CPU inference even if accelerators are present; set `false` to auto-detect CUDA/MPS. |
 | `enable_viz` | `bool` | `false` | Toggle publication of RViz `MarkerArray` overlays. |
 | `viz_rate_hz` | `double` | `2.0` | Marker publication frequency. |
 | `viz_frame_id` | `string` | `map` | Frame used for RViz markers (set to your global frame). |
 | `viz_trail_length` | `int` | `200` | Number of recent poses to retain in the trajectory line strip. |
 
 The node publishes `geometry_msgs/msg/Twist` messages whose meaningful fields are `linear.x` (forward velocity) and `angular.z` (yaw rate). Other components remain zeroed.
+
+## Offline snnTorch Training
+
+- Synthetic expert generation and training live in `experiments/train_snntorch_policy.py`. Run `python -m experiments.train_snntorch_policy --output-dir models` to export `snn_controller.pt` (state_dict) and `snn_controller.ts` (TorchScript) plus normalisation stats.
+- Launch hyperparameter searches with `python -m experiments.hpo_snntorch --trials 30`; the best-trial summary (`models/best_trial.json`) records parameters, validation loss, and artifact paths for downstream runs.
+- In ROS, set `controller_backend:=snntorch`, update `model_path` to the `.pt` bundle, and toggle `model_kind`/`torchscript_path` when you want scripted inference. Leave `torchscript_path` blank to auto-resolve `<model_path>.ts`.
+
+## Validation Checklist
+
+- `colcon test --packages-select hippocampus_ros2` to exercise the launch testing harness under `system_tests/`.
+- `ros2 bag play <recorded_bag>` with `use_bag_replay:=true` to confirm deterministic inference against prior logs.
+- `ros2 launch hippocampus_ros2 brain.launch.py` inside Gazebo or your simulator, then monitor `ros2 topic hz /cmd_vel` to ensure the control loop tracks the configured `control_rate`.
+
+## Profiling with ros2_tracing
+
+- Linux users with `ros-${ROS_DISTRO}-ros2-tracing` installed can run `ros2 launch hippocampus_ros2 tracing.launch.py trace_duration:=15.0` to capture executor and callback timing. Traces are written to `ros2_ws/traces/` by default.
 
 ## Topic Inspection Cheat-Sheet
 
@@ -104,6 +123,7 @@ ros2 topic echo /cmd_vel
            msg = Odometry()
            msg.pose.pose.position.x = 0.5 * math.cos(self.t)
            msg.pose.pose.position.y = 0.5 * math.sin(self.t)
+           msg.pose.pose.orientation.w = 1.0
            self.pub.publish(msg)
            self.t += 0.1
 

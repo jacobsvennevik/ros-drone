@@ -8,9 +8,18 @@ hippocampus_ros2:
     # (deterministic, lightweight) and "snntorch" (requires trained model).
     controller_backend: "place_cells"
 
-    # Path to a trained model checkpoint when using neural backends.
+    # Path to a trained model checkpoint exported by experiments/train_snntorch_controller.py.
     # Leave empty for place-cell controller.
     model_path: ""
+
+    # Choose between loading raw PyTorch weights ("state_dict") or a TorchScript module ("torchscript").
+    model_kind: "state_dict"
+
+    # Optional TorchScript module path when model_kind == "torchscript".
+    torchscript_path: ""
+
+    # Force CPU inference even if CUDA/MPS is available. Set false to auto-detect accelerators.
+    use_cpu: true
 
     # Topic to subscribe for robot pose/odometry updates.
     pose_topic: "/odom"

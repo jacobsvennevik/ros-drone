@@ -3,15 +3,17 @@ alwaysApply: false
 ---
 # snnTorch & PyTorch Integration Guidelines
 
-## 1. Libraries
 
-- Use **PyTorch** (`torch`) and **snnTorch** (`snntorch`) for spiking network backends.
-- Keep these modules free of ROS imports; ROS integration happens elsewhere.
-- Installation (for humans):
-  - `pip install torch` (or follow the official PyTorch install instructions for your platform).
-  - `pip install snntorch`
+## 1) Libraries & scope
 
-Official references (for humans and Cursor):
+- Use **PyTorch** (`torch`) and **snnTorch** (`snntorch`) for spiking backends.
+- These modules stay **ROS-free**; ROS integration lives in the ROS package.
+- Install: `pip install torch snntorch` (or follow official PyTorch platform-specific instructions).
+
+References:
+- snnTorch tutorials (feedforward, training, surrogate gradients). 
+- snnTorch surrogate-gradient API (default ATan, passing `spike_grad`). 
+- PyTorch save/load best practice (`state_dict`). 
 
 - snnTorch docs: https://snntorch.readthedocs.io/
 - snnTorch tutorial repo: https://github.com/snntorch/Spiking-Neural-Networks-Tutorials

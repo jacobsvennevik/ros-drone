@@ -6,6 +6,26 @@ on:
   pull_request:
 
 jobs:
+  core-pytest:
+    name: Core Pytest
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install project with dev extras
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install ".[dev]"
+
+      - name: Run pytest
+        run: python -m pytest
+
   colcon-build-test:
     name: Build and Test (colcon)
     runs-on: ubuntu-22.04
@@ -23,7 +43,7 @@ jobs:
       - name: Build and test hippocampus_ros2
         uses: ros-tooling/action-ros-ci@v0.3
         with:
-          target-workspace: ros2_ws
+          target-ros2-distro: humble
           package-name: hippocampus_ros2
           colcon-defaults: |
             {
