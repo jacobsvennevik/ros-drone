@@ -1,3 +1,18 @@
+Metadata-Version: 2.4
+Name: hippocampus-core
+Version: 0.1.0
+Summary: Hippocampal-inspired place-cell simulation, coactivity tracking, and topology utilities.
+Author: ros-drone Developers
+License: Proprietary
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.24
+Requires-Dist: matplotlib>=3.7
+Requires-Dist: networkx>=2.8
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: nox>=2024.4.15; extra == "dev"
+
 # ros-drone
 
 Hippocampal-inspired navigation experiments written in Python with optional ROS 2 integration. The core package (`hippocampus_core`) simulates a 2D arena, Gaussian place cells, coactivity tracking, and a topological graph builder. ROS 2 nodes in `hippocampus_ros2` wrap these controllers for robot experiments.
@@ -42,8 +57,6 @@ or, for a clean-room run:
 ```bash
 nox -s tests
 ```
-
-> **Note:** Some shells export both `NO_COLOR` and `FORCE_COLOR`, which confuses `nox`. If that happens, run `env -u NO_COLOR -u FORCE_COLOR nox -s tests`.
 
 ## Experiments and Models
 

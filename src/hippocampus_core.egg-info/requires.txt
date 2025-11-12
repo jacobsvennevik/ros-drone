@@ -1,0 +1,7 @@
+numpy>=1.24
+matplotlib>=3.7
+networkx>=2.8
+
+[dev]
+pytest>=7.0
+nox>=2024.4.15

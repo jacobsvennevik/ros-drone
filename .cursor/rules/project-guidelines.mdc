@@ -1,0 +1,129 @@
+---
+description: Project-wide guidelines for the hippocampal/topological mapping simulator
+alwaysApply: false
+---
+# Project Guidelines
+
+These rules apply to the whole project and should be consulted before adding new code or rules.
+
+## 1. Scope & Tech Stack
+
+- This project is a **Python 3** implementation of:
+  - A 2D environment and moving agent.
+  - A population of place cells with Gaussian place fields.
+  - Pairwise coactivity detection.
+  - A graph/topological representation built from coactivity.
+- Early stages are **standalone Python** with no ROS or AirSim.
+- Later stages may integrate **ROS 2** (Python `rclpy` nodes) and simulators such as Webots, Gazebo, or AirSim via ROS, but that is explicitly a “Phase 2+” concern.
+
+**Primary stack now:**
+
+- Python 3
+- `numpy` for numerical work
+- `matplotlib` for plotting
+- Optionally `networkx` for graph representation and analysis
+
+Do **not** introduce heavy dependencies (ROS, AirSim, Unreal, deep-learning frameworks) in this phase.
+
+## 2. Directory & module structure
+
+Default Python structure (may evolve, but follow this style):
+
+```
+PROJECT_ROOT/
+├── .cursor/
+│   └── rules/
+│       ├── project-guidelines.mdc
+│       └── rules-location.mdc
+├── env.py
+├── place_cells.py
+├── coactivity.py
+├── topology.py
+├── visualization.py
+└── main.py
+```
+
+Guidelines:
+
+- Keep modules **single-responsibility**:
+  - `env.py` – environment and agent motion.
+  - `place_cells.py` – place-cell population, tuning curves, spike generation.
+  - `coactivity.py` – coactivity windows, coactivity matrix.
+  - `topology.py` – graph/topological representation.
+  - `visualization.py` – plotting utilities.
+  - `main.py` – entry point tying everything together.
+- When files grow too large or accumulate multiple responsibilities, prefer splitting into submodules or a `src/` package.
+
+## 3. Coding style
+
+- Follow **PEP 8** style conventions where practical.
+- Use **type hints** on public functions and class methods when not too verbose.
+- Favor:
+  - Clear names: `agent_position`, `coactivity_window`, etc.
+  - Small, composable functions over giant monoliths.
+- Every public class should have a **docstring** describing:
+  - Its role in the architecture.
+  - How it is expected to be used.
+
+Error handling:
+
+- In this research/simulation code, fail **loudly** (raise exceptions) rather than silently masking errors.
+- Document any assumptions clearly in comments or docstrings.
+
+## 4. Simulation patterns & "hooks"
+
+We treat these as the main “hooks” for future extensions:
+
+- `Environment` and `Agent` classes in `env.py`:
+  - Hook point for later replacing the toy env with ROS 2-based pose streams.
+- `PlaceCellPopulation` in `place_cells.py`:
+  - Hook point for swapping rate-based vs spiking neuron models.
+- `CoactivityTracker` in `coactivity.py`:
+  - Hook point for experimenting with different time windows and coactivity rules.
+- `TopologicalGraph` (or equivalent) in `topology.py`:
+  - Hook point for graph algorithms, cycle detection, or eventual simplicial-complex analysis.
+- Visualization functions in `visualization.py`:
+  - Hook point for debugging, comparing runs, and later ROS-based visualisation.
+
+When adding new features, prefer extending these hooks or adding new, clearly named modules over merging multiple responsibilities into one file.
+
+## 5. ROS 2 – Future integration guidelines
+
+ROS 2 is **not** used in the initial implementation, but this project is expected to integrate with ROS 2 later. When that happens:
+
+- Prefer **ROS 2 (rclpy)** over ROS 1.
+- Recommended resources (official documentation):
+  - Main ROS developer docs: https://docs.ros.org/
+  - ROS 2 LTS docs (e.g. Humble, Jazzy): see the distributions on docs.ros.org. :contentReference[oaicite:0]{index=0}
+  - ROS 2 tutorials (nodes, topics, services, parameters, launch): follow the Tutorials section in the ROS 2 docs. :contentReference[oaicite:1]{index=1}
+  - ROS 2 design articles (DDS, executors, etc.): https://design.ros2.org/ (linked from the main docs). :contentReference[oaicite:2]{index=2}
+
+Integration pattern (when we reach that phase):
+
+- Wrap the **hippocampal/topological logic** (place cells, coactivity, graph) in one or more **ROS 2 nodes** that:
+  - Subscribe to a pose topic (e.g. `geometry_msgs/msg/PoseStamped` or `nav_msgs/msg/Odometry`).
+  - Optionally subscribe to sensor topics if needed.
+  - Publish diagnostic or map information (custom messages or standard graph/marker representations).
+- Keep ROS 2-specific code **separated** from core simulation logic:
+  - Core logic should remain usable without ROS.
+  - ROS nodes should call into the core Python modules instead of re-implementing logic.
+
+## 6. Testing & experiments
+
+This is a research toy project; we do not require heavy unit-test infrastructure, but:
+
+- Prefer small, deterministic checks for:
+  - Environment boundaries.
+  - Place-cell rate shapes (e.g., center has max rate).
+  - Coactivity counting in simple synthetic scenarios.
+- When adding new experiments:
+  - Use separate scripts or notebooks instead of bloating `main.py`.
+  - Keep parameter sets (N, dt, w, C_min, sigma, etc.) clearly visible and easy to tweak.
+
+## 7. When adding new Cursor rules
+
+- New rules must live in `.cursor/rules/` and follow `rules-location.mdc`.
+- Each rule should:
+  - Have a clear, focused purpose.
+  - Avoid duplicating content that already exists in `project-guidelines.mdc`.
+  - Reference this rule when clarifying project-level conventions.

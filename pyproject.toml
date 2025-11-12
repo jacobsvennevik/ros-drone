@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hippocampus-core"
+version = "0.1.0"
+description = "Hippocampal-inspired place-cell simulation, coactivity tracking, and topology utilities."
+readme = "README.md"
+license = { text = "Proprietary" }
+requires-python = ">=3.10"
+authors = [
+  { name = "ros-drone Developers" }
+]
+dependencies = [
+  "numpy>=1.24",
+  "matplotlib>=3.7",
+  "networkx>=2.8",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.0",
+  "nox>=2024.4.15",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+

@@ -1,0 +1,83 @@
+---
+alwaysApply: false
+---
+# snnTorch & PyTorch Integration Guidelines
+
+## 1. Libraries
+
+- Use **PyTorch** (`torch`) and **snnTorch** (`snntorch`) for spiking network backends.
+- Keep these modules free of ROS imports; ROS integration happens elsewhere.
+- Installation (for humans):
+  - `pip install torch` (or follow the official PyTorch install instructions for your platform).
+  - `pip install snntorch`
+
+Official references (for humans and Cursor):
+
+- snnTorch docs: https://snntorch.readthedocs.io/
+- snnTorch tutorial repo: https://github.com/snntorch/Spiking-Neural-Networks-Tutorials
+
+## 2. Project structure (Phase 2)
+
+We will evolve the layout into a reusable core package plus optional controllers:
+
+```
+PROJECT_ROOT/
+├── hippocampus_core/
+│   ├── __init__.py
+│   ├── env.py
+│   ├── place_cells.py
+│   ├── coactivity.py
+│   ├── topology.py
+│   ├── visualization.py
+│   └── controllers/
+│       ├── __init__.py
+│       ├── base.py              # SNNController interface
+│       ├── place_cell_controller.py
+│       └── snntorch_controller.py
+├── main.py
+└── .cursor/
+    └── rules/
+        ├── project-guidelines.mdc
+        ├── rules-location.mdc
+        └── snntorch-integration.mdc
+```
+
+Guidelines:
+
+- Core “hippocampus” functionality lives in `hippocampus_core/`.
+- Controller implementations live in `hippocampus_core/controllers/`.
+- Do **not** mix ROS 2 code into `hippocampus_core/`; ROS nodes will be provided by a separate package later.
+
+## 3. Controller abstraction
+
+Define an abstract controller interface in `controllers/base.py`:
+
+- Class `SNNController` (name can vary slightly, keep it descriptive).
+- Required methods:
+  - `reset()` – reset internal state before a new episode/run.
+  - `step(obs: np.ndarray, dt: float) -> np.ndarray` – advance one step given observations and return the next action.
+
+Backend implementations:
+
+- `PlaceCellController` – wraps the existing place-cell + coactivity pipeline.
+- `SnnTorchController` – wraps a PyTorch/snnTorch `nn.Module`.
+
+Rules:
+
+- Controllers must not depend on ROS.
+- Controllers should operate on numpy arrays and/or torch tensors only.
+
+## 4. Training vs deployment
+
+- Train snnTorch models in standalone scripts or notebooks (e.g. `experiments/train_snntorch_controller.py`).
+- Deployment code loads trained weights, e.g. `model.load_state_dict(torch.load("path/to/snn_model.pt"))`.
+- Avoid embedding heavy training loops inside ROS nodes or other real-time components.
+
+## 5. ROS 2 (future phase)
+
+- ROS 2 nodes (`rclpy`) will live in a separate package (e.g. `ros2_snn_brain/`).
+- These nodes will:
+  - Import `hippocampus_core` and use `SNNController` implementations.
+  - Subscribe to pose/sensor topics.
+  - Publish control commands (e.g. `/cmd_vel`).
+- Keep ROS-specific guidance out of this rule; a dedicated rule file will cover ROS 2 integration.

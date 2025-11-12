@@ -1,0 +1,66 @@
+---
+description: Where to put Cursor rules in this project
+alwaysApply: false
+---
+# Cursor Rules Location
+
+How to add new Cursor rules to this project:
+
+1. Always place rule files in **PROJECT_ROOT/.cursor/rules/**:
+
+    ```
+    .cursor/rules/
+    ├── project-guidelines.mdc
+    ├── rules-location.mdc
+    ├── some-feature-rule.mdc
+    └── ...
+    ```
+
+2. Naming convention:
+
+    - Use **kebab-case** for filenames.
+    - Always use the **.mdc** extension.
+    - Make names descriptive of the rule's purpose.
+
+3. Directory structure:
+
+    ```
+    PROJECT_ROOT/
+    ├── .cursor/
+    │   └── rules/
+    │       ├── project-guidelines.mdc
+    │       ├── rules-location.mdc
+    │       └── ...
+    └── src/...
+    ```
+
+4. Never place rule files:
+
+    - In the project root.
+    - In subdirectories outside `.cursor/rules`.
+    - In any other location.
+
+5. Rule file structure:
+
+    ````
+    ---
+    description: Short description of the rule's purpose
+    globs: src/**/*.py
+    alwaysApply: false
+    ---
+
+    # Rule Title
+
+    Main content explaining the rule with markdown formatting.
+
+    1. Step-by-step instructions
+    2. Code examples
+    3. Guidelines
+    ````
+
+6. Keep rule files compact and scannable:
+
+    - Target size: 100–200 lines.
+    - Maximum: ~300 lines for complex rules.
+    - Focus on essentials; avoid redundancy.
+    - Prefer concise bullet lists and examples.

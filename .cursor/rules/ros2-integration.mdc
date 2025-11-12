@@ -1,0 +1,90 @@
+---
+alwaysApply: false
+---
+# ROS 2 Integration Guidelines (Python, rclpy)
+
+## 1. ROS 2 & build system
+
+- ROS 2 integration for this project uses:
+  - **Python nodes with rclpy** (no C++ for now).
+  - **ament_python** as the build type for ROS 2 packages.
+- Creating a ROS 2 Python package:
+  - Use `ros2 pkg create --build-type ament_python <package_name>` in a ROS 2 workspace `src/` directory.
+  - Follow the official “Creating your first ROS 2 package” and related docs for ament_python usage.
+- Recommended references (for humans & Cursor):
+  - Official tutorial: “Creating your first ROS 2 package” (Humble or later).
+  - ROS 2 Python node & publisher/subscriber tutorials.
+  - Trusted ROS 2 workspace/package tutorials (e.g. The Construct, RoboticsBackend).
+
+## 2. Project layout for ROS 2 integration
+
+We will keep ROS-specific code separate from core logic:
+
+- Core library (already exists):
+  - `hippocampus_core/` (no ROS imports).
+- ROS 2 package (Phase 3) lives in a ROS 2 workspace, e.g.:
+
+  ```
+  ros2_ws/
+    src/
+      hippocampus_ros2/
+        package.xml
+        setup.py
+        hippocampus_ros2/
+          __init__.py
+          nodes/
+            brain_node.py
+  ```
+
+Rules:
+
+- `hippocampus_core` **must not** import `rclpy` or any ROS packages.
+- ROS 2 nodes **may** import `hippocampus_core` and `hippocampus_core.controllers`.
+- All ROS–specific concerns (parameters, QoS, topics, services, launch files) live in the ROS 2 package.
+
+## 3. Node conventions (Python, rclpy)
+
+- Nodes are written with `rclpy`:
+  - Use the standard `Node` subclass pattern for long-lived nodes.
+  - Follow ROS 2 naming best practices (`snn_brain_node`, etc.).
+- Typical node structure:
+  - Initialize rclpy.
+  - Create node instance.
+  - Spin until shutdown.
+  - Destroy node and shutdown.
+- Recommended references:
+  - “Writing a simple publisher and subscriber (Python)” tutorial.
+  - “Understanding ROS 2 nodes/topics” tutorials.
+  - Simple Python node examples showing `Node` subclasses.
+
+## 4. Interaction with SNNController
+
+- ROS 2 nodes wrap an `SNNController` implementation:
+  - Example backends: `PlaceCellController`, `SnnTorchController`.
+- Pattern:
+  - Subscribe to input topics (pose, sensors).
+  - In callbacks or timers:
+    - Build a numpy observation vector from incoming messages.
+    - Estimate `dt` from timestamps (or use a fixed control period).
+    - Call `controller.step(obs, dt)`.
+    - Convert action vectors into ROS messages (e.g. `geometry_msgs/msg/Twist`).
+- ROS nodes should own the controller instance and delegate hippocampal logic to `hippocampus_core`.
+
+## 5. Training vs runtime
+
+- Training of snnTorch or other SNN models is **not** performed inside ROS nodes.
+- Training scripts or notebooks reside outside the ROS 2 package (e.g. `experiments/`).
+- ROS nodes are responsible only for inference/runtime operation using preconfigured controllers.
+
+## 6. Test & debug strategy
+
+- Maintain a minimal “hello world” ROS 2 node in the ROS package to verify workspace and imports.
+- Use tools such as `ros2 topic list`, `ros2 topic echo`, and RViz to inspect topics produced by controllers.
+- Incrementally integrate:
+  - First, nodes that log observations/actions.
+  - Later, nodes that command simulated or real robots.
+
+## 7. Scope of this rule
+
+- This rule defines how ROS 2 packages and nodes connect to `hippocampus_core`.
+- It does **not** prescribe specific robot platforms; those can be handled in dedicated rules or future steps.
