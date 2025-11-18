@@ -37,3 +37,4 @@ python3 $(ros2 pkg prefix hippocampus_ros2)/share/hippocampus_ros2/system_tests/
 
 All publishers and subscriptions currently use the ROS 2 default QoS (`reliability=reliable`, `durability=volatile`, depth = 10, keep-last). This keeps the smoke test deterministic and aligned with the node’s defaults. If you start testing high-rate or lossy transports, consider relaxing to best-effort (see the [ROS 2 QoS overview](https://docs.ros.org/en/humble/Concepts/About-Quality-of-Service-Settings.html)) but keep the same depth so the assertions remain predictable.
 
+

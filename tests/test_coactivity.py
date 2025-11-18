@@ -51,3 +51,36 @@ def test_coactivity_matrix_populates_partial_pairs(generated_coactivity_matrix):
     active_pairs = np.count_nonzero(np.triu(matrix, k=1))
     assert 0 < active_pairs < total_pairs
 
+
+def test_integration_window_tracking():
+    """Test that CoactivityTracker tracks when pairs first exceed threshold."""
+    tracker = CoactivityTracker(num_cells=3, window=0.1)
+    
+    # Register some spikes to build up coactivity
+    spikes_0 = np.array([True, False, False])
+    spikes_1 = np.array([False, True, True])
+    
+    time = 0.0
+    # Make cells 0 and 1 coactive
+    tracker.register_spikes(time, spikes_0)
+    tracker.register_spikes(time + 0.05, spikes_1)  # Within window
+    
+    # Check threshold exceeded (low threshold to ensure it triggers)
+    threshold = 1.0
+    times = tracker.check_threshold_exceeded(threshold, time + 0.1)
+    
+    # Pair (0, 1) should have exceeded threshold
+    assert (0, 1) in times
+    assert times[(0, 1)] == time + 0.1  # Time when check was called
+    
+    # Continue to exceed threshold, time should not change
+    time += 0.2
+    tracker.register_spikes(time, spikes_0)
+    times2 = tracker.check_threshold_exceeded(threshold, time)
+    assert times2[(0, 1)] == times[(0, 1)]  # Should still be original time
+    
+    # Reset should clear integration times
+    tracker.reset()
+    times3 = tracker.check_threshold_exceeded(threshold, time + 1.0)
+    assert (0, 1) not in times3
+

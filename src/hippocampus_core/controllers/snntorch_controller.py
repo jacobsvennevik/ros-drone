@@ -24,25 +24,40 @@ from .base import SNNController
 
 CHECKPOINT_VERSION = "1.0"
 
-SURROGATE_FNS = {
-    "atan": surrogate.atan,
-    "fast_sigmoid": surrogate.fast_sigmoid,
-    "sigmoid": surrogate.sigmoid,
-    "erf": surrogate.erf,
-    "logistic": surrogate.logistic,
-    "linear": surrogate.linear,
+# Surrogate function names that may be available (lazy lookup to handle version differences)
+_SURROGATE_NAMES = {
+    "atan": "atan",
+    "fast_sigmoid": "fast_sigmoid",
+    "sigmoid": "sigmoid",
+    "erf": "erf",  # May not be available in all snntorch versions
+    "logistic": "logistic",
+    "linear": "linear",
 }
 
 
 def resolve_surrogate(name: str) -> Any:
-    """Resolve a surrogate gradient constructor by canonical name."""
+    """Resolve a surrogate gradient constructor by canonical name.
+    
+    This function lazily looks up surrogate functions to handle differences
+    between snntorch versions where some functions may not be available.
+    """
 
     key = name.lower()
-    try:
-        return SURROGATE_FNS[key]()
-    except KeyError as exc:
-        valid = ", ".join(sorted(SURROGATE_FNS))
-        raise ValueError(f"Unsupported surrogate gradient '{name}'. Available: {valid}.") from exc
+    if key not in _SURROGATE_NAMES:
+        valid = ", ".join(sorted(_SURROGATE_NAMES.keys()))
+        raise ValueError(f"Unsupported surrogate gradient '{name}'. Available: {valid}.")
+    
+    # Lazy lookup - get the function from surrogate module
+    func_name = _SURROGATE_NAMES[key]
+    if not hasattr(surrogate, func_name):
+        available = [attr for attr in dir(surrogate) if not attr.startswith("_")]
+        raise ValueError(
+            f"Surrogate function '{func_name}' not available in this version of snntorch. "
+            f"Available functions: {', '.join(available)}"
+        )
+    
+    func = getattr(surrogate, func_name)
+    return func()
 
 
 @dataclass

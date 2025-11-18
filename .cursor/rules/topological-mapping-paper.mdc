@@ -1,0 +1,198 @@
+---
+alwaysApply: false
+---
+# Analysis: Hoffman et al. (2016) Topological Mapping Paper vs. Current Implementation
+
+**Paper**: arXiv:1601.04253v1 [q-bio.NC] - "Topological mapping of space in bat hippocampus" by Kentaro Hoffman, Andrey Babichev, and Yuri Dabaghian
+
+## The paper's core idea (in one picture)
+
+There are two ways to detect structure from place-cell spikes:
+
+1. **"Together-now"** (coincidence detector): only reacts if many cells spike almost at the same time (≈ hundreds of ms).
+2. **"Adding-up-over-time"** (integrator): keeps a running tally of **pairwise** coactivities and only decides after **minutes** of evidence.
+
+The paper says: real higher-order structure should come from **integrating pairwise events over minutes**, not from rare all-at-once coincidences. It also warns to **gate by spatial proximity** so fast motion doesn't create fake links. Bats are a key example: they lack strong theta rhythms, so relying on tight timing is a bad bet; accumulation works better. ([PLOS][1])
+
+## What your repo already does (good alignment)
+
+### 1. Builds from pairs
+You form connections from **pairwise** coactivity (not from demanding big all-at-once coincidences).
+
+**Implementation**: `CoactivityTracker` in ```19:28:src/hippocampus_core/coactivity.py``` detects pairwise coactivity events within a sliding window (`window` parameter, default 0.2s). The tracker increments counts for pairs that spike within this short coincidence window `w`:
+
+```60:71:src/hippocampus_core/coactivity.py
+        counted_pairs = set()
+        for i in active_indices:
+            for j, history in enumerate(self._histories):
+                if not history:
+                    continue
+                pair = (i, j) if i <= j else (j, i)
+                if pair in counted_pairs:
+                    continue
+                counted_pairs.add(pair)
+                self._coactivity[pair[0], pair[1]] += 1.0
+                if pair[0] != pair[1]:
+                    self._coactivity[pair[1], pair[0]] += 1.0
+```
+
+This matches the paper's spirit: "start with trustworthy pairs, and be strict about locality." ([PLOS][1])
+
+### 2. Keeps it local
+You **filter by distance** (only nearby fields can connect), which is exactly the paper's fix for spurious links at high speed.
+
+**Implementation**: `TopologicalGraph.build_from_coactivity()` in ```36:69:src/hippocampus_core/topology.py``` applies the spatial proximity constraint:
+
+```63:69:src/hippocampus_core/topology.py
+        for i in range(self.num_cells):
+            for j in range(i + 1, self.num_cells):
+                if coactivity[i, j] < c_min:
+                    continue
+                distance = np.linalg.norm(self.positions[i] - self.positions[j])
+                if distance <= max_distance:
+                    self.graph.add_edge(i, j, weight=float(coactivity[i, j]), distance=float(distance))
+```
+
+The `max_edge_distance` parameter (default 2.0 * sigma) is set in ```27:29:src/hippocampus_core/controllers/place_cell_controller.py```, matching the paper's requirement that place fields must spatially overlap for connections to be admissible.
+
+## What's missing versus the paper (the big gaps)
+
+### 1. ✅ Minutes-long integrator - **IMPLEMENTED**
+
+**Status**: The integration window (ϖ) functionality is now fully implemented and gates edge admission based on sustained pairwise coactivity evidence.
+
+**Implementation**: 
+- ✅ `PlaceCellControllerConfig` includes `integration_window` parameter (```26:26:src/hippocampus_core/controllers/place_cell_controller.py```)
+- ✅ `CoactivityTracker` tracks when pairs first exceed threshold (```32:34:src/hippocampus_core/coactivity.py```) via `_threshold_exceeded_time` dictionary
+- ✅ `TopologicalGraph.build_from_coactivity()` gates edge admission using integration window (```110:120:src/hippocampus_core/topology.py```)
+- ✅ Edges are only admitted if `elapsed_time >= integration_window` since threshold was first exceeded
+
+**What the Paper Does**: Edges are only admitted after pairwise coactivity evidence has been accumulating for at least ϖ ≈ 8 minutes. This long integration window filters out transient spurious connections and allows the clique complex to form more reliably.
+
+**Technical Note**: The implementation correctly distinguishes between:
+- **Coincidence window `w`** (~200-250 ms): detects if two cells spike together (```23:23:src/hippocampus_core/controllers/place_cell_controller.py```)
+- **Integration window `ϖ`** (~8 minutes): time over which pairwise evidence must persist before declaring a connection (```26:26:src/hippocampus_core/controllers/place_cell_controller.py```)
+
+**Usage**:
+```python
+config = PlaceCellControllerConfig(
+    coactivity_window=0.2,      # w: coincidence window (200ms)
+    integration_window=480.0,   # ϖ: integration window (8 minutes)
+    coactivity_threshold=5.0,
+)
+```
+
+This implementation matches the paper's finding that longer integration times reduce fragmented maps and spurious loops. See `examples/integration_window_demo.py` and `test_integration_window.py` for demonstrations. ([PMC][2])
+
+### 2. No higher-order/PH check
+
+**The Gap**: The paper often verifies structure by building a **clique complex** (from the graph) and checking **Betti numbers/barcodes** to see if the learned map has the right holes/loops. Your project stops at a graph usable for control (great for robotics), but it doesn't show that topological diagnostic.
+
+**Current Behavior**:
+- `TopologicalGraph` builds edges from pairwise coactivity (```36:102:src/hippocampus_core/topology.py```)
+- **Clique extraction**: `get_maximal_cliques()` method (```124:141:src/hippocampus_core/topology.py```) explicitly extracts maximal cliques from the graph
+- **Betti number computation**: `compute_betti_numbers()` method (```143:199:src/hippocampus_core/topology.py```) computes Betti numbers via persistent homology from the clique complex
+- Optional persistent homology module (```src/hippocampus_core/persistent_homology.py```) supports ripser and gudhi backends
+
+**What the Paper Does**: 
+- Explicitly builds a **clique complex** T_cq where simplices correspond to cliques in the coactivity graph
+- Computes **Betti numbers** (b_0, b_1, b_2, ...) via persistent homology to verify the learned topology matches the physical environment
+- Tracks how Betti numbers evolve over time (e.g., Figure 1A shows barcode timelines)
+
+**Implementation Status**: ✅ **IMPLEMENTED** - The codebase now supports clique complex construction and Betti number computation. Use `graph.get_maximal_cliques()` to extract cliques and `graph.compute_betti_numbers()` to compute topological invariants. Requires optional dependency `ripser` or `gudhi` (install with `pip install ripser`). ([arXiv][3])
+
+### 3. 2D + no theta toggle
+
+**The Gap**: The flagship results are in **3D bats** with **weak/absent theta**; your simulator is **2D** and doesn't include a theta on/off experiment.
+
+**Current Behavior**:
+- `PlaceCellPopulation` in ```11:106:src/hippocampus_core/place_cells.py``` is defined for 2D only (positions have shape `(num_cells, 2)`)
+- No theta-phase precession modulation in firing rates (```58:65:src/hippocampus_core/place_cells.py``` uses pure Gaussian tuning curves)
+
+**What the Paper Does**:
+- Simulates 3D navigation (290 × 280 × 270 cm cave)
+- Modulates firing rates by theta-phase (```λ_c(r) × Λ_θ,c(φ)```) and experiments with theta on/off
+- Finds that **suppressing theta improves learning in fast-moving bats** (Figure 4C shows ~30% faster convergence without theta)
+
+This is fine for engineering applications, just less of a one-to-one match with the biology. ([Weizmann Institute of Science][4])
+
+## Why this matters (one line each)
+
+* **Minutes-long integration** = fewer false "structures," more stable maps. Without ϖ, edges can be admitted too quickly from transient coactivity, leading to spurious connections that fragment the map. ([PMC][2])
+
+* **Local gating** = prevents fast motion from stitching distant places together. You already have this via `max_edge_distance`, which matches the paper's spatial overlap constraint. ([PLOS][1])
+
+* **PH/Betti check** = a quick, objective "did we learn the right topology?" test. Without it, you can't verify that the graph's topology matches the physical environment (e.g., does it correctly identify holes/obstacles?). ([arXiv][3])
+
+## Easiest tweaks to get closer to the paper (still simple)
+
+### 1. Add a leaky counter per admissible pair (i,j)
+
+**Implementation**: Modify `CoactivityTracker` or create a new `IntegratingCoactivityTracker` that maintains separate counters with exponential decay (or sliding windows) per pair.
+
+**Approach**:
+- Update it every time (i,j) cofire within the coincidence window `w`
+- Decay it slowly so it reflects the last **6–10 minutes** (ϖ)
+- Only admit an edge in `TopologicalGraph.build_from_coactivity()` if this integrated counter stays above threshold for the integration window
+
+**Code Location**: 
+- Extend ```10:83:src/hippocampus_core/coactivity.py``` with a decay parameter
+- Or add integration window logic in ```129:138:src/hippocampus_core/controllers/place_cell_controller.py``` before calling `build_from_coactivity()`
+
+This is the paper's "integrator" that filters out transient coactivity. ([PMC][2])
+
+### 2. ✅ Two windows explicit - **IMPLEMENTED**
+
+Keep a short **coincidence window w** (≈ hundreds of ms) to detect pairwise events; use a long **integration window ϖ** (minutes) to accept edges. Both are exposed in config.
+
+**Implementation**:
+- ✅ `coactivity_window` in ```23:23:src/hippocampus_core/controllers/place_cell_controller.py``` (this is `w`)
+- ✅ `integration_window` (ϖ) parameter in ```26:26:src/hippocampus_core/controllers/place_cell_controller.py```
+- ✅ Tracks when each pair first exceeded threshold (```85:91:src/hippocampus_core/coactivity.py```)
+- ✅ Edges only admitted if `elapsed_time >= integration_window` (```117:120:src/hippocampus_core/topology.py```)
+
+**Code Location**: 
+- ✅ Config parameter: ```16:32:src/hippocampus_core/controllers/place_cell_controller.py```
+- ✅ Edge gating logic: ```178:197:src/hippocampus_core/controllers/place_cell_controller.py```
+
+This makes the distinction between detecting coactivity and integrating evidence explicit. ([PLOS][1])
+
+### 3. ✅ Optional check: Build a tiny clique complex and compute Betti numbers - **IMPLEMENTED**
+
+Build a **clique complex** from your graph's local neighborhoods and compute basic **Betti numbers** (e.g., with Ripser/GUDHI) as a sanity test—planning can still run on the plain graph.
+
+**Implementation**:
+- ✅ Extract all maximal cliques from the NetworkX graph using `get_maximal_cliques()` (```124:141:src/hippocampus_core/topology.py```)
+- ✅ Build a simplicial complex where k-simplices correspond to (k+1)-cliques in `persistent_homology.py`
+- ✅ Use ripser or gudhi to compute persistent homology and Betti numbers (```src/hippocampus_core/persistent_homology.py```)
+- ✅ Compare with expected topology via `graph.compute_betti_numbers()` (```143:199:src/hippocampus_core/topology.py```)
+
+**Code Location**: 
+- ✅ Method `compute_betti_numbers()` added to ```143:199:src/hippocampus_core/topology.py```
+- ✅ Separate module `src/hippocampus_core/persistent_homology.py` keeps dependencies optional
+
+**Usage**:
+```python
+graph = controller.get_graph()
+betti = graph.compute_betti_numbers()
+print(f"b_0 (components): {betti[0]}")
+print(f"b_1 (holes): {betti[1]}")
+```
+
+**Note**: Requires optional dependency `ripser` (install with `pip install ripser` or `pip install -e .[ph]`). This is computationally more expensive but provides a research-grade verification that the learned graph topology matches the physical environment. ([arXiv][3])
+
+## Summary
+
+**Bottom line:** The implementation now closely matches the paper's approach: **pairwise-first + locality + minutes-scale integration**. The integration window (ϖ) gates edge admission, and Betti number computation provides topological verification. The main remaining gap is 3D support and theta-precession experiments, which are less critical for engineering applications.
+
+The current implementation is well-suited for both robotics/control applications and research validation, with stable maps that reduce spurious connections through the integration window mechanism (especially important for high-speed scenarios as the paper demonstrates for bats).
+
+## References
+
+[1] PLOS: Original paper publication  
+[2] PMC: Supplementary methods on integration times  
+[3] arXiv: Persistent homology and Betti numbers  
+[4] Weizmann Institute of Science: Experimental validation data
+
+**Paper Citation**:  
+Hoffman, K., Babichev, A., & Dabaghian, Y. (2016). Topological mapping of space in bat hippocampus. arXiv preprint arXiv:1601.04253.

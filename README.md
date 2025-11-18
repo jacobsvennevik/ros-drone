@@ -17,6 +17,17 @@ Hippocampal-inspired navigation experiments written in Python with optional ROS 
    ```
    This installs `hippocampus_core` from the `src/` layout along with core dependencies (`numpy`, `matplotlib`, `networkx`) and dev tooling (`pytest`, `nox`). Optional extras such as `torch`/`snntorch` can be added as needed.
 
+   For Betti number computation (persistent homology), install the optional dependency:
+   ```bash
+   pip install ripser
+   # or
+   pip install gudhi
+   ```
+   Or install with the `ph` extra:
+   ```bash
+   pip install -e .[dev,ph]
+   ```
+
 ## Running the Core Simulation
 
 Execute the standalone simulator:
@@ -30,6 +41,95 @@ python main.py
 - *Trajectory:* agent path through the rectangular arena.
 - *Place-cell centres:* sampled Gaussian receptive fields laid over the arena.
 - *Topological graph:* nodes are place-cell centres; edges appear when coactivity exceeds the configured threshold and the cells lie within the allowed spatial distance.
+
+## Topological Mapping Features
+
+### Integration Window (ϖ)
+
+The integration window gates edge admission in the topological graph, preventing transient coactivity from creating spurious connections. This implements the "integrator" mechanism from Hoffman et al. (2016) for stable map learning.
+
+**Two windows:**
+- **Coincidence window (w)**: Short window (≈ hundreds of ms) to detect pairwise coactivity events. Configured via `coactivity_window` in `PlaceCellControllerConfig`.
+- **Integration window (ϖ)**: Long window (minutes) that gates edge admission. A pair must exceed the coactivity threshold for at least this duration before an edge is added. Configured via `integration_window` in `PlaceCellControllerConfig`.
+
+**Usage:**
+```python
+from hippocampus_core.controllers.place_cell_controller import (
+    PlaceCellController,
+    PlaceCellControllerConfig,
+)
+
+config = PlaceCellControllerConfig(
+    num_place_cells=120,
+    coactivity_window=0.2,      # w: coincidence window (200ms)
+    coactivity_threshold=5.0,
+    integration_window=60.0,     # ϖ: integration window (60 seconds)
+)
+
+controller = PlaceCellController(environment=env, config=config)
+```
+
+**Benefits:**
+- Reduces false edges from transient coactivity
+- More stable topological maps
+- Matches biological hippocampal dynamics
+
+Set `integration_window=None` (default) to disable this feature and maintain backward compatibility.
+
+### Betti Number Computation
+
+Betti numbers quantify the topological structure of the learned graph, enabling verification that the topology matches the physical environment (e.g., identifying holes, obstacles, or connected components).
+
+**What are Betti numbers?**
+- **b₀**: Number of connected components
+- **b₁**: Number of 1D holes (loops)
+- **b₂**: Number of 2D holes (voids)
+- etc.
+
+**Installation:**
+```bash
+pip install ripser
+# or
+pip install gudhi
+```
+
+**Usage:**
+```python
+graph = controller.get_graph()
+
+# Compute Betti numbers (requires ripser or gudhi)
+betti = graph.compute_betti_numbers(max_dim=2)
+
+print(f"Connected components (b_0): {betti[0]}")
+print(f"Loops/holes (b_1): {betti[1]}")
+print(f"Voids (b_2): {betti[2]}")
+
+# Verify topology matches environment
+assert betti[0] == graph.num_components()  # b_0 should equal component count
+```
+
+**Backend selection:**
+```python
+# Auto-select (prefers ripser, falls back to gudhi)
+betti = graph.compute_betti_numbers(backend="auto")
+
+# Explicit backend
+betti = graph.compute_betti_numbers(backend="ripser")
+betti = graph.compute_betti_numbers(backend="gudhi")
+```
+
+**Example validation:**
+- For a connected arena: expect `b_0 = 1`, `b_1 = 0`
+- For an arena with one hole: expect `b_0 = 1`, `b_1 = 1`
+- For disconnected regions: `b_0` equals the number of components
+
+See `examples/integration_window_demo.py` and `examples/betti_numbers_demo.py` for basic examples.
+
+**For comprehensive documentation:**
+- Usage guide: `docs/topological_mapping_usage.md`
+- Paper analysis: `docs/hoffman_2016_analysis.md`
+- Visualization: `examples/topology_learning_visualization.py` (Betti number tracking over time)
+- Validation: `experiments/validate_hoffman_2016.py` (comprehensive validation experiment)
 
 ## Testing
 ## Continuous Integration

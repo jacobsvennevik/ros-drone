@@ -3,7 +3,14 @@
 from .base import SNNController
 from .place_cell_controller import PlaceCellController, PlaceCellControllerConfig
 from .rstdp_controller import RSTDPController, RSTDPControllerConfig
-from .snntorch_controller import SnnTorchController, SnnTorchControllerConfig
+
+# SnnTorchController is optional - may not be available if snntorch isn't installed
+# or if there are version compatibility issues
+try:
+    from .snntorch_controller import SnnTorchController, SnnTorchControllerConfig
+except (ImportError, AttributeError):
+    SnnTorchController = None
+    SnnTorchControllerConfig = None
 
 __all__ = [
     "SNNController",

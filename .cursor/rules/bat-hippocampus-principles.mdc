@@ -1,0 +1,99 @@
+---
+description: Implementation principles from Hoffman et al. (2016) bat hippocampus topological mapping paper
+alwaysApply: false
+---
+
+# Bat Hippocampus Topological Mapping Principles (Hoffman et al. 2016)
+
+This rule captures key implementation principles from the topological mapping approach in bat hippocampus (arXiv:1601.04253). See `docs/hoffman_2016_analysis.md` for detailed analysis.
+
+## Core Principle: Integration Over Coincidence
+
+**Key Insight**: Readout neurons should **integrate pairwise coactivity evidence over minutes** (ϖ ≈ 8 min) rather than requiring simultaneous high-order events (coincidence detection).
+
+### Two Temporal Windows
+
+1. **Coincidence window `w`** (~200-250 ms):
+   - Detects if two place cells spike together
+   - Used for pairwise coactivity detection
+   - Short-term temporal correlation
+
+2. **Integration window `ϖ`** (~8 minutes):
+   - Time over which pairwise evidence must persist before declaring a connection
+   - Gates edge admission in the topological graph
+   - Corresponds to working memory timescale
+
+**Implementation Note**: When adding edges to the graph, only admit connections if pairwise coactivity has been above threshold for at least `ϖ` minutes. This prevents transient spurious connections.
+
+## Spatial Gating via Cell Assemblies
+
+**Problem**: Fast motion can create false connections between distant place fields.
+
+**Solution**: Constrain coactivities using spatial overlap:
+- Only admit coactivities from place cells with **overlapping place fields**
+- Connectivity matrix: `A_ij = C_ij × P_ij` where:
+  - `C_ij` = temporal coactivity (do cells fire together?)
+  - `P_ij` = spatial overlap (do place fields overlap?)
+
+**Current Implementation**: ✅ Already implemented via `max_edge_distance` parameter in `PlaceCellControllerConfig`
+
+## Clique-Based Complex Construction
+
+**Principle**: Build higher-order structure (simplices) from pairwise cliques, not from requiring simultaneous high-order events.
+
+**Why**:
+- Pairwise overlaps are **larger domains** → more reliably detected
+- Pairwise coactivities can be detected **sequentially** over time
+- High-order simultaneous events are **rare** and hard to detect
+
+**Implementation**: 
+- ✅ Extract maximal cliques from coactivity graph
+- ✅ Build clique complex where k-simplices correspond to (k+1)-cliques
+- ✅ Compute Betti numbers from clique complex for topological verification
+
+## Theta-Precession Context Dependency
+
+**Finding**: Theta-precession improves learning in slow-moving rats but **hinders** learning in fast-moving bats.
+
+**Explanation**:
+- Fast motion → few spikes per place field passage
+- Theta-precession further constrains spike timing → reduces coactivity probability
+- Slow motion → sufficient spikes even with theta-constraint → synchronization benefits dominate
+
+**Implication**: For fast-moving agents (like bats or fast robots), consider suppressing or reducing theta-precession effects.
+
+**Current Status**: ❌ Not implemented (2D only, no theta modulation)
+
+## Topological Verification
+
+**Principle**: Use Betti numbers (b₀, b₁, b₂, ...) to verify learned topology matches physical environment.
+
+**Expected Values** (simple connected space with one hole):
+- b₀ = 1 (one connected component)
+- b₁ = 1 (one 1D hole/loop)
+- bₙ₊₁ = 0 (no higher-order holes)
+
+**Implementation**: ✅ `TopologicalGraph.compute_betti_numbers()` available (requires ripser or gudhi)
+
+## Implementation Checklist
+
+When implementing or modifying topological mapping:
+
+- [ ] Use two temporal windows: `w` (detection) and `ϖ` (integration)
+- [ ] Gate edge admission by integration window: only add edges after `ϖ` minutes of sustained coactivity
+- [ ] Apply spatial overlap constraint: only admit coactivities from overlapping place fields
+- [ ] Build clique complex from pairwise coactivities (don't require simultaneous high-order events)
+- [ ] Optionally verify topology via Betti numbers
+- [ ] For fast-moving agents: consider suppressing theta-precession effects
+
+## Related Files
+
+- Detailed analysis: `docs/hoffman_2016_analysis.md`
+- Implementation comparison: `.cursor/rules/topological-mapping-paper.mdc`
+- Core topology: `src/hippocampus_core/topology.py`
+- Coactivity tracking: `src/hippocampus_core/coactivity.py`
+- Persistent homology: `src/hippocampus_core/persistent_homology.py`
+
+## References
+
+- Hoffman, K., Babichev, A., & Dabaghian, Y. (2016). Topological mapping of space in bat hippocampus. *arXiv preprint* arXiv:1601.04253.

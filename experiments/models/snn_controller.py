@@ -68,3 +68,4 @@ class TrainableSnnController(nn.Module):
 
         return self.model.forward_sequence(inputs, state)
 
+

@@ -74,7 +74,7 @@ def plot_graph(
     for i, j in graph.graph.edges():
         x_values = (positions[i, 0], positions[j, 0])
         y_values = (positions[i, 1], positions[j, 1])
-        ax.plot(x_values, y_values, color="tab:green", linewidth=0.5, alpha=0.6)
+        ax.plot(x_values, y_values, color="tab:green", linewidth=1.0, alpha=0.8)
 
     ax.set_xlim(bounds.min_x, bounds.max_x)
     ax.set_ylim(bounds.min_y, bounds.max_y)
@@ -85,19 +85,143 @@ def plot_graph(
     return ax
 
 
+def plot_edge_length_histogram(
+    graph: TopologicalGraph,
+    max_distance: float,
+    ax: Optional[plt.Axes] = None,
+    bins: int = 30,
+) -> plt.Axes:
+    """Plot histogram of edge lengths with max_distance threshold marked.
+
+    Parameters
+    ----------
+    graph:
+        TopologicalGraph to extract edge lengths from.
+    max_distance:
+        Maximum allowed edge distance (shown as vertical line).
+    ax:
+        Optional axes to plot on.
+    bins:
+        Number of histogram bins.
+
+    Returns
+    -------
+    plt.Axes
+        The axes with the histogram plotted.
+    """
+
+    ax = _ensure_axes(ax)
+    lengths = graph.get_edge_lengths()
+
+    if len(lengths) > 0:
+        ax.hist(lengths, bins=bins, alpha=0.7, color="tab:green", edgecolor="black")
+        ax.axvline(max_distance, color="red", linestyle="--", linewidth=2, label=f"Max distance ({max_distance:.3f})")
+        ax.set_xlabel("Edge length")
+        ax.set_ylabel("Frequency")
+        ax.set_title("Edge length distribution")
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+    else:
+        ax.text(0.5, 0.5, "No edges to plot", ha="center", va="center", transform=ax.transAxes)
+        ax.set_xlabel("Edge length")
+        ax.set_ylabel("Frequency")
+        ax.set_title("Edge length distribution")
+
+    return ax
+
+
+def plot_degree_distribution(
+    graph: TopologicalGraph,
+    ax: Optional[plt.Axes] = None,
+    bins: int | None = None,
+) -> plt.Axes:
+    """Plot histogram of node degrees.
+
+    Parameters
+    ----------
+    graph:
+        TopologicalGraph to extract degrees from.
+    ax:
+        Optional axes to plot on.
+    bins:
+        Number of histogram bins. If None, uses automatic binning.
+
+    Returns
+    -------
+    plt.Axes
+        The axes with the histogram plotted.
+    """
+
+    ax = _ensure_axes(ax)
+    degrees = graph.get_node_degrees()
+    stats = graph.get_degree_statistics()
+
+    if bins is None:
+        # Auto-determine bins based on degree range
+        max_degree = int(stats["max"])
+        bins = min(30, max(5, max_degree + 1))
+
+    ax.hist(degrees, bins=bins, alpha=0.7, color="tab:blue", edgecolor="black")
+    ax.axvline(stats["mean"], color="red", linestyle="--", linewidth=2, label=f"Mean ({stats['mean']:.1f})")
+    ax.axvline(stats["median"], color="orange", linestyle="--", linewidth=2, label=f"Median ({stats['median']:.1f})")
+    ax.set_xlabel("Node degree")
+    ax.set_ylabel("Frequency")
+    ax.set_title(f"Degree distribution (mean={stats['mean']:.1f}, median={stats['median']:.1f})")
+    ax.legend()
+    ax.grid(True, alpha=0.3)
+
+    return ax
+
+
 def plot_summary(
     env: Environment,
     trajectory: np.ndarray,
     positions: np.ndarray,
     sigma: float,
     graph: TopologicalGraph,
+    max_edge_distance: float | None = None,
+    show_diagnostics: bool = False,
 ) -> Tuple[plt.Figure, Iterable[plt.Axes]]:
-    """Create a multi-panel summary figure for the current simulation state."""
+    """Create a multi-panel summary figure for the current simulation state.
 
-    fig, axes = plt.subplots(1, 3, figsize=(12, 4))
-    plot_trajectory(env, trajectory, ax=axes[0])
-    plot_place_cells(env, positions, sigma, ax=axes[1])
-    plot_graph(env, positions, graph, ax=axes[2])
+    Parameters
+    ----------
+    env:
+        Environment bounds.
+    trajectory:
+        Agent trajectory array.
+    positions:
+        Place-cell center positions.
+    sigma:
+        Place-field size parameter.
+    graph:
+        Topological graph to visualize.
+    max_edge_distance:
+        Optional maximum edge distance for diagnostic plots.
+    show_diagnostics:
+        If True, includes diagnostic plots (edge length histogram, degree distribution).
+
+    Returns
+    -------
+    Tuple[plt.Figure, Iterable[plt.Axes]]
+        Figure and axes objects.
+    """
+
+    if show_diagnostics and max_edge_distance is not None:
+        fig, axes = plt.subplots(2, 3, figsize=(15, 8))
+        plot_trajectory(env, trajectory, ax=axes[0, 0])
+        plot_place_cells(env, positions, sigma, ax=axes[0, 1])
+        plot_graph(env, positions, graph, ax=axes[0, 2])
+        plot_edge_length_histogram(graph, max_edge_distance, ax=axes[1, 0])
+        plot_degree_distribution(graph, ax=axes[1, 1])
+        # Leave last subplot empty or add trajectory heatmap later
+        axes[1, 2].axis("off")
+    else:
+        fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+        plot_trajectory(env, trajectory, ax=axes[0])
+        plot_place_cells(env, positions, sigma, ax=axes[1])
+        plot_graph(env, positions, graph, ax=axes[2])
+
     fig.suptitle("Simulation summary")
     fig.tight_layout()
     return fig, axes

@@ -14,7 +14,9 @@ These rules apply to the whole project and should be consulted before adding new
   - Pairwise coactivity detection.
   - A graph/topological representation built from coactivity.
 - Early stages are **standalone Python** with no ROS or AirSim.
-- Later stages may integrate **ROS 2** (Python `rclpy` nodes) and simulators such as Webots, Gazebo, or AirSim via ROS, but that is explicitly a “Phase 2+” concern.
+- Later stages may integrate **ROS 2** (Python `rclpy` nodes) and simulators such as Webots, Gazebo, or AirSim via ROS, but that is explicitly a "Phase 2+" concern.
+
+**Theoretical foundation**: This implementation is inspired by the topological mapping approach described in Hoffman et al. (2016) on bat hippocampus. See `topological-mapping-paper.mdc` for a detailed analysis of how the current implementation aligns with (and differs from) the original paper.
 
 **Primary stack now:**
 

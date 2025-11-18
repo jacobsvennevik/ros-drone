@@ -18,3 +18,4 @@ echo "Bag output prefix: ${OUTPUT_PREFIX}"
 
 exec ros2 bag record -o "${OUTPUT_PREFIX}" "${TOPICS[@]}"
 
+

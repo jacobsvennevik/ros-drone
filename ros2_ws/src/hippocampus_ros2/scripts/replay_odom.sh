@@ -19,3 +19,4 @@ fi
 echo "Replaying bag: ${BAG_PATH}"
 exec ros2 bag play "${BAG_PATH}" "$@"
 
+

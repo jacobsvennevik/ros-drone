@@ -41,6 +41,7 @@ PROJECT_ROOT/
     └── rules/
         ├── project-guidelines.mdc
         ├── rules-location.mdc
+        ├── topological-mapping-paper.mdc
         └── snntorch-integration.mdc
 ```
 

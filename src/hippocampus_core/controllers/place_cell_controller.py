@@ -23,10 +23,13 @@ class PlaceCellControllerConfig:
     coactivity_window: float = 0.2
     coactivity_threshold: float = 5.0
     max_edge_distance: Optional[float] = None
+    integration_window: Optional[float] = None
 
     def __post_init__(self) -> None:
         if self.max_edge_distance is None:
             self.max_edge_distance = 2.0 * self.sigma
+        if self.integration_window is not None and self.integration_window < 0:
+            raise ValueError("integration_window must be non-negative if provided")
 
 
 class PlaceCellController(SNNController):
@@ -36,6 +39,41 @@ class PlaceCellController(SNNController):
     accumulates coactivity statistics, and builds a topological graph whenever
     requested. It currently returns a zero action vector; future controllers can
     override this behaviour to drive the agent.
+
+    Examples
+    --------
+    >>> from hippocampus_core.controllers.place_cell_controller import (
+    ...     PlaceCellController,
+    ...     PlaceCellControllerConfig,
+    ... )
+    >>> from hippocampus_core.env import Environment
+    >>> import numpy as np
+    >>> 
+    >>> # Create controller with integration window
+    >>> env = Environment(width=1.0, height=1.0)
+    >>> config = PlaceCellControllerConfig(
+    ...     num_place_cells=50,
+    ...     coactivity_window=0.2,      # w: coincidence window
+    ...     coactivity_threshold=5.0,
+    ...     integration_window=60.0,    # ϖ: integration window (60 seconds)
+    ... )
+    >>> controller = PlaceCellController(environment=env, config=config)
+    >>> 
+    >>> # Run simulation
+    >>> for step in range(100):
+    ...     position = np.array([0.5, 0.5])  # Example position
+    ...     action = controller.step(position, dt=0.05)
+    >>> 
+    >>> # Get learned graph
+    >>> graph = controller.get_graph()
+    >>> print(f"Nodes: {graph.num_nodes()}, Edges: {graph.num_edges()}")
+    >>> 
+    >>> # Compute Betti numbers (if ripser/gudhi available)
+    >>> try:
+    ...     betti = graph.compute_betti_numbers()
+    ...     print(f"Betti numbers: b_0={betti[0]}, b_1={betti[1]}")
+    ... except ImportError:
+    ...     print("Install ripser or gudhi for Betti number computation")
     """
 
     def __init__(
@@ -93,7 +131,13 @@ class PlaceCellController(SNNController):
         self._spike_counts += spikes.astype(float)
 
         self._time += dt
-        self.coactivity.register_spikes(self._time, spikes)
+        # Pass threshold to track when pairs first exceed it in real-time
+        threshold = (
+            self.config.coactivity_threshold
+            if self.config.integration_window is not None
+            else None
+        )
+        self.coactivity.register_spikes(self._time, spikes, threshold=threshold)
         self._graph_dirty = True
         self._steps += 1
 
@@ -123,16 +167,33 @@ class PlaceCellController(SNNController):
             return 0.0
         return self._mean_rate_sum / self._steps
 
+    @property
+    def current_time(self) -> float:
+        """Return the current simulation time in seconds."""
+        return self._time
+
     def get_coactivity_matrix(self) -> np.ndarray:
         return self.coactivity.get_coactivity_matrix()
 
     def get_graph(self) -> TopologicalGraph:
         if self._graph is None or self._graph_dirty:
             self._graph = TopologicalGraph(self.place_cell_positions)
+            
+            # Get integration times if integration window is enabled
+            integration_times = None
+            if self.config.integration_window is not None:
+                integration_times = self.coactivity.check_threshold_exceeded(
+                    threshold=self.config.coactivity_threshold,
+                    current_time=self._time,
+                )
+            
             self._graph.build_from_coactivity(
                 self.get_coactivity_matrix(),
                 c_min=self.config.coactivity_threshold,
                 max_distance=self.config.max_edge_distance,
+                integration_window=self.config.integration_window,
+                current_time=self._time if self.config.integration_window is not None else None,
+                integration_times=integration_times,
             )
             self._graph_dirty = False
         return self._graph

@@ -110,6 +110,9 @@ def run_simulation(
             coactivity_window=COACTIVITY_WINDOW,
             coactivity_threshold=COACTIVITY_THRESHOLD,
             max_edge_distance=MAX_EDGE_DISTANCE,
+            # TODO: Try enabling integration window to see edge gating effect
+            integration_window=2.0,  # 2 second integration window (paper's ϖ parameter)
+            #integration_window=None,  # Set to None to disable, or a float (seconds) to enable
         )
         controller = PlaceCellController(
             environment=environment,
@@ -223,15 +226,65 @@ def main() -> None:
         print("\nTopological graph summary")
         print(f"Coactivity threshold C_min: {controller.config.coactivity_threshold}")
         print(f"Max edge distance: {controller.config.max_edge_distance}")
+        if controller.config.integration_window is not None:
+            print(f"Integration window: {controller.config.integration_window} s")
         print(f"Nodes (place cells): {graph.num_nodes()}")
         print(f"Edges (eligible pairs): {graph.num_edges()}")
+        
+        # Integration window statistics
+        if controller.config.integration_window is not None:
+            coactivity_matrix = controller.get_coactivity_matrix()
+            threshold = controller.config.coactivity_threshold
+            pairs_exceeding = np.sum(np.triu(coactivity_matrix, k=1) >= threshold)
+            integration_times = controller.coactivity.check_threshold_exceeded(
+                threshold=threshold,
+                current_time=controller.current_time,
+            )
+            pairs_passing_window = len(integration_times)
+            if pairs_passing_window > 0:
+                elapsed_times = [
+                    controller.current_time - t
+                    for t in integration_times.values()
+                    if controller.current_time - t >= controller.config.integration_window
+                ]
+                avg_time_to_admission = np.mean(elapsed_times) if elapsed_times else 0.0
+                print(f"  - Pairs exceeding threshold: {pairs_exceeding}")
+                print(f"  - Pairs passing integration window: {pairs_passing_window}")
+                if elapsed_times:
+                    print(f"  - Average time to admission: {avg_time_to_admission:.1f} s")
+        
+        # Degree statistics
+        degree_stats = graph.get_degree_statistics()
+        print(f"Average node degree: {degree_stats['mean']:.1f} (min: {degree_stats['min']}, max: {degree_stats['max']})")
+        
+        # Edge length statistics
+        if graph.num_edges() > 0:
+            length_stats = graph.get_edge_length_statistics()
+            max_dist = controller.config.max_edge_distance
+            all_below = length_stats['max'] <= max_dist
+            checkmark = "✓" if all_below else "⚠"
+            print(
+                f"Edge lengths: min={length_stats['min']:.3f}, "
+                f"mean={length_stats['mean']:.3f}, "
+                f"max={length_stats['max']:.3f} "
+                f"(all below {max_dist:.3f} {checkmark})"
+            )
+        
         print(f"Connected components: {graph.num_components()}")
         cycles = list(graph.cycle_basis())
         print(_summarize_cycles(cycles))
 
         if SHOW_PLOTS:
+            # Show diagnostic plots if integration window is enabled
+            show_diagnostics = controller.config.integration_window is not None
             fig, _ = plot_summary(
-                environment, trajectory, positions, controller.config.sigma, graph
+                environment,
+                trajectory,
+                positions,
+                controller.config.sigma,
+                graph,
+                max_edge_distance=controller.config.max_edge_distance,
+                show_diagnostics=show_diagnostics,
             )
             fig.tight_layout()
             try:
@@ -265,6 +318,7 @@ def sanity_check_place_cell_controller() -> None:
     agent_rng = np.random.default_rng(0)
     agent = Agent(environment=environment, random_state=agent_rng)
 
+    # Test without integration window (backward compatibility)
     controller = PlaceCellController(
         environment=environment,
         config=PlaceCellControllerConfig(
@@ -274,6 +328,7 @@ def sanity_check_place_cell_controller() -> None:
             coactivity_window=COACTIVITY_WINDOW,
             coactivity_threshold=COACTIVITY_THRESHOLD,
             max_edge_distance=MAX_EDGE_DISTANCE,
+            integration_window=None,  # No integration window
         ),
         rng=np.random.default_rng(1),
     )
@@ -296,8 +351,63 @@ def sanity_check_place_cell_controller() -> None:
     graph = controller.get_graph()
     assert graph.num_nodes() == num_cells, "Graph node count mismatch."
     assert graph.num_edges() >= 0, "Graph edge count should be non-negative."
+    edges_without_window = graph.num_edges()
 
-    print("Place-cell sanity check passed.")
+    print("Place-cell sanity check (without integration window) passed.")
+
+    # Test with integration window
+    controller_with_window = PlaceCellController(
+        environment=environment,
+        config=PlaceCellControllerConfig(
+            num_place_cells=50,
+            sigma=PLACE_CELL_SIGMA,
+            max_rate=PLACE_CELL_MAX_RATE,
+            coactivity_window=COACTIVITY_WINDOW,
+            coactivity_threshold=COACTIVITY_THRESHOLD,
+            max_edge_distance=MAX_EDGE_DISTANCE,
+            integration_window=2.0,  # 2 second integration window
+        ),
+        rng=np.random.default_rng(1),
+    )
+
+    # Reset agent for fair comparison
+    agent_rng2 = np.random.default_rng(0)
+    agent2 = Agent(environment=environment, random_state=agent_rng2)
+
+    for _ in range(num_steps):
+        position = agent2.step(dt)
+        controller_with_window.step(np.asarray(position), dt)
+
+    graph_with_window = controller_with_window.get_graph()
+    assert graph_with_window.num_nodes() == num_cells, "Graph node count mismatch (with window)."
+    assert graph_with_window.num_edges() >= 0, "Graph edge count should be non-negative (with window)."
+    
+    # With integration window, should have fewer or equal edges (gating effect)
+    edges_with_window = graph_with_window.num_edges()
+    assert edges_with_window <= edges_without_window, (
+        f"Integration window should gate edges: {edges_with_window} <= {edges_without_window}"
+    )
+
+    print(f"Place-cell sanity check (with integration window) passed.")
+    print(f"  Edges without window: {edges_without_window}")
+    print(f"  Edges with window: {edges_with_window}")
+    
+    # Test Betti number computation if available
+    try:
+        from hippocampus_core.persistent_homology import is_persistent_homology_available
+        
+        if is_persistent_homology_available():
+            betti = graph_with_window.compute_betti_numbers(max_dim=2)
+            print(f"  Betti numbers: b_0={betti[0]}, b_1={betti[1]}, b_2={betti.get(2, 0)}")
+            assert betti[0] >= 1, "b_0 should be at least 1 (at least one component)"
+            assert betti[0] == graph_with_window.num_components(), (
+                f"b_0 should equal number of components: {betti[0]} == {graph_with_window.num_components()}"
+            )
+            print("  ✓ Betti number computation validated")
+        else:
+            print("  (Betti number computation skipped: ripser/gudhi not available)")
+    except ImportError:
+        print("  (Betti number computation skipped: persistent_homology module not available)")
 
 
 def sanity_check_snntorch_controller() -> None:
