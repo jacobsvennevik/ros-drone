@@ -2,9 +2,33 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional, Tuple
+from typing import List, Optional, Tuple
 
 import numpy as np
+
+
+@dataclass(frozen=True)
+class CircularObstacle:
+    """Represents a circular obstacle in the environment."""
+
+    center_x: float
+    center_y: float
+    radius: float
+
+    def contains(self, position: Tuple[float, float]) -> bool:
+        """Return True if the position is inside this obstacle."""
+        x, y = position
+        dx = x - self.center_x
+        dy = y - self.center_y
+        return (dx * dx + dy * dy) <= (self.radius * self.radius)
+
+    def distance_to_edge(self, position: Tuple[float, float]) -> float:
+        """Return signed distance to obstacle edge (negative if inside, positive if outside)."""
+        x, y = position
+        dx = x - self.center_x
+        dy = y - self.center_y
+        distance_to_center = np.sqrt(dx * dx + dy * dy)
+        return distance_to_center - self.radius
 
 
 @dataclass(frozen=True)
@@ -26,12 +50,41 @@ class Bounds:
 
 
 class Environment:
-    """Continuous 2D environment with rectangular bounds."""
+    """Continuous 2D environment with rectangular bounds and optional obstacles."""
 
-    def __init__(self, width: float = 1.0, height: float = 1.0) -> None:
+    def __init__(
+        self,
+        width: float = 1.0,
+        height: float = 1.0,
+        obstacles: Optional[List[CircularObstacle]] = None,
+    ) -> None:
         if width <= 0 or height <= 0:
             raise ValueError("Environment dimensions must be positive.")
         self._bounds = Bounds(0.0, width, 0.0, height)
+        self._obstacles = obstacles or []
+
+        # Validate obstacles are within bounds
+        for obs in self._obstacles:
+            if obs.radius <= 0:
+                raise ValueError("Obstacle radius must be positive.")
+            # Check if obstacle center is within bounds
+            if not self._bounds.min_x <= obs.center_x <= self._bounds.max_x:
+                raise ValueError(f"Obstacle center_x {obs.center_x} is outside bounds.")
+            if not self._bounds.min_y <= obs.center_y <= self._bounds.max_y:
+                raise ValueError(f"Obstacle center_y {obs.center_y} is outside bounds.")
+            # Check if obstacle fits within bounds
+            if (
+                obs.center_x - obs.radius < self._bounds.min_x
+                or obs.center_x + obs.radius > self._bounds.max_x
+                or obs.center_y - obs.radius < self._bounds.min_y
+                or obs.center_y + obs.radius > self._bounds.max_y
+            ):
+                raise ValueError(f"Obstacle at ({obs.center_x}, {obs.center_y}) with radius {obs.radius} extends outside bounds.")
+
+    @property
+    def obstacles(self) -> List[CircularObstacle]:
+        """Return the list of obstacles in the environment."""
+        return self._obstacles.copy()
 
     @property
     def bounds(self) -> Bounds:
@@ -40,13 +93,26 @@ class Environment:
         return self._bounds
 
     def contains(self, position: Tuple[float, float]) -> bool:
-        """Return True if the given position lies inside the environment."""
+        """Return True if the given position lies inside the environment (excluding obstacles)."""
 
         x, y = position
-        return (
+        # Check bounds
+        if not (
             self._bounds.min_x <= x <= self._bounds.max_x
             and self._bounds.min_y <= y <= self._bounds.max_y
-        )
+        ):
+            return False
+
+        # Check obstacles
+        for obstacle in self._obstacles:
+            if obstacle.contains(position):
+                return False
+
+        return True
+
+    def contains_with_obstacles(self, position: Tuple[float, float]) -> bool:
+        """Return True if position is valid (inside bounds and not in obstacles)."""
+        return self.contains(position)
 
     def clip(self, position: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         """Clip the position to remain within bounds.
@@ -150,10 +216,49 @@ class Agent:
         proposed_position = self.position + self.velocity * dt
         clipped_position, clipped_axes = self.environment.clip(proposed_position)
 
+        # Check for obstacle collisions
+        if not self.environment.contains(tuple(clipped_position)):
+            # Position is in an obstacle, need to avoid it
+            # Find closest obstacle and push away from it
+            min_distance = float("inf")
+            closest_obstacle = None
+
+            for obstacle in self.environment.obstacles:
+                distance = obstacle.distance_to_edge(tuple(clipped_position))
+                if distance < min_distance:
+                    min_distance = distance
+                    closest_obstacle = obstacle
+
+            if closest_obstacle is not None:
+                # Push away from obstacle center
+                dx = clipped_position[0] - closest_obstacle.center_x
+                dy = clipped_position[1] - closest_obstacle.center_y
+                dist_to_center = np.sqrt(dx * dx + dy * dy)
+
+                if dist_to_center > 0:
+                    # Normalize and push to edge plus small margin
+                    push_distance = closest_obstacle.radius + 0.01
+                    clipped_position[0] = closest_obstacle.center_x + (dx / dist_to_center) * push_distance
+                    clipped_position[1] = closest_obstacle.center_y + (dy / dist_to_center) * push_distance
+
+                # Deflect velocity away from obstacle
+                normal = np.array([dx, dy], dtype=float)
+                if np.linalg.norm(normal) > 0:
+                    normal = normal / np.linalg.norm(normal)
+                    # Reflect velocity component along normal
+                    vel_normal = np.dot(self.velocity, normal)
+                    if vel_normal < 0:  # Moving towards obstacle
+                        self.velocity = self.velocity - 2 * vel_normal * normal
+
         # Reflect velocity components for any boundary hits.
         for axis, clipped in enumerate(clipped_axes):
             if clipped:
                 self.velocity[axis] *= -1.0
+
+        # Ensure final position is valid
+        if not self.environment.contains(tuple(clipped_position)):
+            # Fallback: stay at current position if can't find valid position
+            clipped_position = self.position.copy()
 
         self.position = clipped_position
         return self.position.copy()

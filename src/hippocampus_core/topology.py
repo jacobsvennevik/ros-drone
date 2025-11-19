@@ -255,6 +255,8 @@ class TopologicalGraph:
         ImportError
             If neither ripser nor gudhi is available and backend is "auto",
             or if the specified backend is not available.
+        ValueError
+            If max_dim is negative.
 
         Notes
         -----
@@ -265,6 +267,11 @@ class TopologicalGraph:
 
         The clique complex approach matches the method used in Hoffman et al.
         (2016) for topological mapping in bat hippocampus.
+
+        Important: When the graph has no edges (all nodes isolated), b_0 should
+        equal the number of nodes. However, persistent homology computation on
+        an empty clique complex may return b_0=1. In this case, prefer using
+        `num_components()` which correctly counts isolated nodes.
 
         Examples
         --------
@@ -291,6 +298,8 @@ class TopologicalGraph:
         >>> # Verify b_0 equals number of connected components
         >>> assert betti[0] == graph.num_components()
         """
+        if max_dim < 0:
+            raise ValueError(f"max_dim must be non-negative, got {max_dim}")
 
         try:
             from .persistent_homology import compute_betti_numbers_from_cliques

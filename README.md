@@ -128,8 +128,84 @@ See `examples/integration_window_demo.py` and `examples/betti_numbers_demo.py` f
 **For comprehensive documentation:**
 - Usage guide: `docs/topological_mapping_usage.md`
 - Paper analysis: `docs/hoffman_2016_analysis.md`
+- Troubleshooting: `docs/troubleshooting.md`
 - Visualization: `examples/topology_learning_visualization.py` (Betti number tracking over time)
 - Validation: `experiments/validate_hoffman_2016.py` (comprehensive validation experiment)
+- Obstacle environments: `examples/obstacle_environment_demo.py` (demonstrates holes with obstacles)
+
+## Obstacle Environments
+
+The environment supports circular obstacles to test topological learning with holes (b₁ > 0):
+
+```python
+from hippocampus_core.env import CircularObstacle, Environment
+
+# Create environment with central obstacle
+obstacle = CircularObstacle(center_x=0.5, center_y=0.5, radius=0.15)
+env = Environment(width=1.0, height=1.0, obstacles=[obstacle])
+
+# Agent will automatically avoid obstacles
+agent = Agent(environment=env)
+```
+
+**Expected topology:**
+- Without obstacle: b₁ = 0 (no holes)
+- With central obstacle: b₁ = 1 (one hole encircling obstacle)
+
+See `examples/obstacle_environment_demo.py` for a complete demonstration.
+
+## Troubleshooting
+
+### Integration Window Issues
+
+**Problem**: ϖ = 480s shows 0 edges in validation results
+
+**Solution**: Ensure simulation duration is ≥ 2× integration window. For ϖ = 480s (8 minutes), use `--duration 1200` (20 minutes) or longer.
+
+**Problem**: T_min shows 0.0 for all integration windows
+
+**Solution**: This was fixed in recent updates. If you see this, ensure you're using the latest version of the validation script.
+
+### Betti Number Computation
+
+**Problem**: "No module named 'ripser'" or Betti numbers show -1
+
+**Solution**: Install persistent homology library:
+```bash
+pip install ripser
+# or
+pip install gudhi
+```
+
+**Problem**: Betti numbers inconsistent with component count
+
+**Solution**: When edges = 0, use `graph.num_components()` instead of Betti b₀. The scripts now handle this automatically.
+
+### Common Issues
+
+**Problem**: Inconsistent stats (e.g., 0 edges but b₀ = 1)
+
+**Solution**: The validation script now includes consistency assertions. If you see this error, report it as a bug with your configuration parameters.
+
+**Problem**: Plots don't appear
+
+**Solution**: Use `--output filename.png` to save plots to files instead of displaying interactively.
+
+For more detailed troubleshooting, see `docs/troubleshooting.md`.
+
+## Recommended Simulation Durations
+
+For integration windows (ϖ), ensure simulation duration is sufficient:
+
+| Integration Window (ϖ) | Minimum Duration | Recommended Duration |
+|------------------------|------------------|---------------------|
+| None (immediate)       | 60 seconds       | 300 seconds (5 min) |
+| 60 seconds (1 min)     | 120 seconds      | 300 seconds         |
+| 120 seconds (2 min)    | 240 seconds      | 600 seconds (10 min)|
+| 240 seconds (4 min)    | 480 seconds      | 900 seconds (15 min)|
+| 480 seconds (8 min)    | 960 seconds      | 1200+ seconds (20+ min)|
+
+**Rule of thumb**: Use duration ≥ 2× integration_window to see complete learning.
 
 ## Testing
 ## Continuous Integration

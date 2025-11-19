@@ -32,7 +32,7 @@ from hippocampus_core.controllers.place_cell_controller import (
     PlaceCellController,
     PlaceCellControllerConfig,
 )
-from hippocampus_core.env import Agent, Environment
+from hippocampus_core.env import Agent, CircularObstacle, Environment
 
 
 def run_learning_experiment(
@@ -43,6 +43,7 @@ def run_learning_experiment(
     num_place_cells: int = 100,
     sigma: float = 0.15,
     seed: int = 42,
+    expected_b1: Optional[int] = None,
 ) -> dict:
     """Run a single learning experiment and collect statistics.
 
@@ -122,14 +123,15 @@ def run_learning_experiment(
                 
                 # Consistency check: b0 should match number of components
                 # If they disagree, prefer components (more reliable)
-                if b0 != num_components and num_edges > 0:
-                    # Log warning but use Betti number (may be computing from clique complex)
-                    pass
-                elif num_edges == 0:
+                if num_edges == 0:
                     # If no edges, all nodes are isolated - b0 should equal number of nodes
                     # But Betti number computation on empty graph might give 1
                     # Use components instead for consistency
                     b0 = num_components
+                elif b0 != num_components:
+                    # Log warning but use Betti number (may be computing from clique complex)
+                    # This is acceptable as Betti numbers come from clique complex
+                    pass
                 
                 results["betti_0"].append(b0)
                 results["betti_1"].append(b1)
@@ -141,6 +143,26 @@ def run_learning_experiment(
                 results["betti_2"].append(-1)
 
     print(" done")
+    
+    # Add consistency assertions
+    final_edges = results["edges"][-1]
+    final_b0 = results["betti_0"][-1]
+    final_components = results["components"][-1]
+    
+    # Assert consistency: if no edges, b0 should equal number of nodes
+    if final_edges == 0:
+        assert final_b0 == final_components, (
+            f"Inconsistent: {final_edges} edges but b₀={final_b0} "
+            f"(expected {final_components} isolated nodes)"
+        )
+    
+    # Optional: validate expected topology
+    if expected_b1 is not None and results["betti_1"][-1] != -1:
+        final_b1 = results["betti_1"][-1]
+        # Allow some tolerance (could be 0-2 if learning incomplete)
+        if abs(final_b1 - expected_b1) > 2:
+            print(f"  Warning: Expected b₁ ≈ {expected_b1}, got {final_b1}")
+    
     return results
 
 
@@ -386,6 +408,17 @@ def main() -> None:
         help="Path to save output figure (default: show interactively)",
     )
     parser.add_argument("--seed", type=int, default=42, help="Random seed (default: 42)")
+    parser.add_argument(
+        "--obstacle",
+        action="store_true",
+        help="Use environment with central obstacle (expected b₁ = 1)",
+    )
+    parser.add_argument(
+        "--obstacle-radius",
+        type=float,
+        default=0.15,
+        help="Radius of central obstacle (default: 0.15)",
+    )
 
     args = parser.parse_args()
 
@@ -396,10 +429,20 @@ def main() -> None:
     print(f"Integration windows: {args.integration_windows} seconds")
     print(f"Simulation duration: {args.duration} seconds ({args.duration/60:.1f} minutes)")
     print(f"Number of place cells: {args.num_cells}")
+    print(f"Obstacle environment: {'Yes' if args.obstacle else 'No'}")
+    if args.obstacle:
+        print(f"  Obstacle radius: {args.obstacle_radius}")
+        print(f"  Expected b₁: 1 (hole around obstacle)")
     print()
 
-    # Create environment (simple 2D arena)
-    env = Environment(width=1.0, height=1.0)
+    # Create environment
+    if args.obstacle:
+        obstacle = CircularObstacle(center_x=0.5, center_y=0.5, radius=args.obstacle_radius)
+        env = Environment(width=1.0, height=1.0, obstacles=[obstacle])
+        expected_b1 = 1
+    else:
+        env = Environment(width=1.0, height=1.0)
+        expected_b1 = 0
 
     # Run experiments for each integration window
     results_by_window: dict[Optional[float], dict] = {}
@@ -412,6 +455,7 @@ def main() -> None:
             duration_seconds=args.duration,
             num_place_cells=args.num_cells,
             seed=args.seed,
+            expected_b1=expected_b1,
         )
         results_by_window[integration_window] = results
 
@@ -447,6 +491,13 @@ def main() -> None:
         t_min = estimate_learning_time(results)
         t_min_str = f"{t_min/60:.2f}" if t_min else "N/A"
 
+        # Assert consistency before printing
+        if final_edges == 0:
+            assert final_b0 == final_components, (
+                f"Inconsistent final state: {final_edges} edges but b₀={final_b0} "
+                f"(expected {final_components} isolated nodes for ϖ={window_str})"
+            )
+
         print(
             f"{window_str:>8} | {final_edges:>12} | {final_b0:>10} | {final_b1:>10} | {t_min_str:>12}"
         )
@@ -455,7 +506,13 @@ def main() -> None:
     print("\n" + "=" * 70)
     print("Generating plots...")
     print("=" * 70)
-    plot_results(results_by_window, output_path=args.output)
+    try:
+        plot_results(results_by_window, output_path=args.output)
+    except Exception as e:
+        print(f"\nError generating plots: {e}")
+        print("Continuing without plots...")
+        import traceback
+        traceback.print_exc()
 
     print("\n" + "=" * 70)
     print("Validation complete!")

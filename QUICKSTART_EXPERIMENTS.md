@@ -72,6 +72,33 @@ python3 examples/topology_learning_visualization.py --integration-window 0 --out
 python3 examples/topology_learning_visualization.py --integration-window 480 --output results/with_window.png
 ```
 
+## Step 4: Run Obstacle Environment Demo
+
+Test topological learning with obstacles that create holes (b₁ > 0):
+
+### Quick Run:
+```bash
+python3 examples/obstacle_environment_demo.py
+```
+
+**What it does:**
+- Runs comparison with and without central obstacle
+- Shows how obstacles create holes (b₁ = 1)
+- Demonstrates correct topology learning
+
+### With Validation Script:
+```bash
+python3 experiments/validate_hoffman_2016.py \
+    --obstacle \
+    --obstacle-radius 0.15 \
+    --duration 1200 \
+    --integration-windows 0 120 240 480
+```
+
+**Expected results:**
+- With obstacle: b₁ = 1 (one hole around obstacle)
+- Without obstacle: b₁ = 0 (no holes)
+
 ## What to Look For
 
 ### Validation Experiment Output:

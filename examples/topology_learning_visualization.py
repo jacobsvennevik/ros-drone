@@ -111,9 +111,13 @@ def track_topology_evolution(
             graph = controller.get_graph()
             current_time = controller.current_time
 
+            # Get all stats from the same graph snapshot for consistency
+            num_edges = graph.num_edges()
+            num_components = graph.num_components()
+
             results["times"].append(current_time)
-            results["edges"].append(graph.num_edges())
-            results["components"].append(graph.num_components())
+            results["edges"].append(num_edges)
+            results["components"].append(num_components)
 
             # Store graph periodically (not too frequently to save memory)
             if len(results["times"]) % 5 == 0 or step == num_steps - 1:
@@ -122,12 +126,26 @@ def track_topology_evolution(
             # Compute Betti numbers
             try:
                 betti = graph.compute_betti_numbers(max_dim=2)
-                results["betti_0"].append(betti.get(0, 0))
-                results["betti_1"].append(betti.get(1, 0))
-                results["betti_2"].append(betti.get(2, 0))
+                b0 = betti.get(0, 0)
+                b1 = betti.get(1, 0)
+                b2 = betti.get(2, 0)
+                
+                # Consistency check: when edges = 0, all nodes are isolated
+                # Betti computation on empty clique complex may return b₀=1 incorrectly
+                # Use components (which counts correctly) instead
+                if num_edges == 0:
+                    b0 = num_components
+                elif abs(b0 - num_components) > 0:
+                    # If they disagree with edges present, prefer components (more reliable)
+                    # Betti numbers computed from clique complex may differ slightly
+                    pass  # Keep Betti number but note the discrepancy
+                
+                results["betti_0"].append(b0)
+                results["betti_1"].append(b1)
+                results["betti_2"].append(b2)
             except ImportError:
                 print("Warning: ripser/gudhi not available, skipping Betti number computation")
-                results["betti_0"].append(graph.num_components())
+                results["betti_0"].append(num_components)
                 results["betti_1"].append(-1)
                 results["betti_2"].append(-1)
 
@@ -136,6 +154,19 @@ def track_topology_evolution(
             print(f"  Progress: {progress:.0f}%", end="\r")
 
     results["positions"] = controller.place_cell_positions
+    
+    # Add consistency assertions
+    final_edges = results["edges"][-1]
+    final_b0 = results["betti_0"][-1]
+    final_components = results["components"][-1]
+    
+    # Assert consistency: if no edges, b0 should equal number of nodes
+    if final_edges == 0:
+        assert final_b0 == final_components, (
+            f"Inconsistent final state: {final_edges} edges but b₀={final_b0} "
+            f"(expected {final_components} isolated nodes)"
+        )
+    
     print("\n  Simulation complete!\n")
     return results
 

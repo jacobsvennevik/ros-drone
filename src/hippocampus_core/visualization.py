@@ -6,7 +6,7 @@ from typing import Iterable, Optional, Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 
-from .env import Environment
+from .env import CircularObstacle, Environment
 from .topology import TopologicalGraph
 
 
@@ -16,11 +16,45 @@ def _ensure_axes(ax: Optional[plt.Axes]) -> plt.Axes:
     return ax
 
 
+def plot_obstacles(env: Environment, ax: Optional[plt.Axes] = None) -> plt.Axes:
+    """Plot obstacles in the environment.
+
+    Parameters
+    ----------
+    env:
+        Environment containing obstacles.
+    ax:
+        Optional axes to plot on.
+
+    Returns
+    -------
+    plt.Axes
+        The axes with obstacles plotted.
+    """
+    ax = _ensure_axes(ax)
+    for obstacle in env.obstacles:
+        circle = plt.Circle(
+            (obstacle.center_x, obstacle.center_y),
+            radius=obstacle.radius,
+            color="red",
+            alpha=0.3,
+            edgecolor="darkred",
+            linewidth=2,
+            label="Obstacle" if obstacle == env.obstacles[0] else "",
+        )
+        ax.add_patch(circle)
+    return ax
+
+
 def plot_trajectory(env: Environment, trajectory: np.ndarray, ax: Optional[plt.Axes] = None) -> plt.Axes:
     """Plot the agent trajectory inside the environment bounds."""
 
     ax = _ensure_axes(ax)
     bounds = env.bounds
+    
+    # Plot obstacles first (behind trajectory)
+    plot_obstacles(env, ax=ax)
+    
     ax.plot(trajectory[:, 0], trajectory[:, 1], color="tab:blue", linewidth=1.0, alpha=0.8)
     ax.set_xlim(bounds.min_x, bounds.max_x)
     ax.set_ylim(bounds.min_y, bounds.max_y)
@@ -42,6 +76,10 @@ def plot_place_cells(
 
     ax = _ensure_axes(ax)
     bounds = env.bounds
+    
+    # Plot obstacles first (behind place cells)
+    plot_obstacles(env, ax=ax)
+    
     ax.scatter(positions[:, 0], positions[:, 1], s=20, color="tab:orange", alpha=0.9, label="Centers")
 
     if sigma > 0:
@@ -69,6 +107,10 @@ def plot_graph(
 
     ax = _ensure_axes(ax)
     bounds = env.bounds
+    
+    # Plot obstacles first (behind graph)
+    plot_obstacles(env, ax=ax)
+    
     ax.scatter(positions[:, 0], positions[:, 1], s=20, color="tab:green", alpha=0.9)
 
     for i, j in graph.graph.edges():
