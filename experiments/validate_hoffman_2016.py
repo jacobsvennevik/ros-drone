@@ -85,7 +85,7 @@ def run_learning_experiment(
     agent = Agent(environment=env, random_state=agent_rng)
 
     num_steps = int(duration_seconds / dt)
-    sample_interval = max(1, num_steps // 50)  # Sample ~50 times
+    sample_interval = max(1, num_steps // 20)  # Sample ~20 times (reduced for speed)
 
     results = {
         "times": [],

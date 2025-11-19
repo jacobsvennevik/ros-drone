@@ -3,6 +3,7 @@ pyproject.toml
 src/hippocampus_core/__init__.py
 src/hippocampus_core/coactivity.py
 src/hippocampus_core/env.py
+src/hippocampus_core/persistent_homology.py
 src/hippocampus_core/place_cells.py
 src/hippocampus_core/topology.py
 src/hippocampus_core/visualization.py

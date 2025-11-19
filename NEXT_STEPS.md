@@ -1,5 +1,9 @@
 # Next Steps for Topological Mapping Project
 
+> **📋 For a comprehensive long-term development plan, see [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md).**
+
+This document provides a quick reference for immediate next steps.
+
 ## ✅ What We've Accomplished
 
 1. **Analysis & Documentation**

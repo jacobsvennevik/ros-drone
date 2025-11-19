@@ -51,9 +51,9 @@ def main() -> None:
         sigma=0.15,
         max_rate=20.0,
         coactivity_window=0.2,
-        coactivity_threshold=5.0,
-        max_edge_distance=0.3,
-        integration_window=120.0,  # 2 minutes (shorter for demo)
+        coactivity_threshold=12.0,  # Much higher threshold for very sparse graph
+        max_edge_distance=0.3,  # Reduced to create sparser connections
+        integration_window=None,  # No integration window for faster learning
     )
 
     rng = np.random.default_rng(42)
@@ -76,7 +76,7 @@ def main() -> None:
     )
 
     # Run simulations
-    duration_seconds = 600.0  # 10 minutes
+    duration_seconds = 1200.0  # 20 minutes (longer for obstacle detection)
     dt = 0.05
     num_steps = int(duration_seconds / dt)
     sample_interval = max(1, num_steps // 50)

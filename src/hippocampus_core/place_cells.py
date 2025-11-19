@@ -48,11 +48,42 @@ class PlaceCellPopulation:
         self.rng = rng or np.random.default_rng()
 
         bounds = self.environment.bounds
-        self.centers = self.rng.uniform(
-            low=(bounds.min_x, bounds.min_y),
-            high=(bounds.max_x, bounds.max_y),
-            size=(self.num_cells, 2),
-        )
+        # Sample place cell centers only in valid (non-obstacle) positions
+        self.centers = np.zeros((num_cells, 2))
+        valid_count = 0
+        max_attempts = num_cells * 100   # Prevent infinite loops
+        attempts = 0
+        
+        while valid_count < num_cells and attempts < max_attempts:
+            candidate = self.rng.uniform(
+                low=(bounds.min_x, bounds.min_y),
+                high=(bounds.max_x, bounds.max_y),
+                size=(2,),
+            )
+            if self.environment.contains(tuple(candidate)):
+                self.centers[valid_count] = candidate
+                valid_count += 1
+            attempts += 1
+        
+        # If we couldn't place all cells (unlikely), fill remaining with valid positions
+        if valid_count < num_cells:
+            # Use rejection sampling with a grid-based approach as fallback
+            for i in range(valid_count, num_cells):
+                placed = False
+                for _ in range(1000):
+                    candidate = self.rng.uniform(
+                        low=(bounds.min_x, bounds.min_y),
+                        high=(bounds.max_x, bounds.max_y),
+                        size=(2,),
+                    )
+                    if self.environment.contains(tuple(candidate)):
+                        self.centers[i] = candidate
+                        placed = True
+                        break
+                if not placed:
+                    # Last resort: place at a safe corner position
+                    self.centers[i] = np.array([bounds.min_x + 0.01, bounds.min_y + 0.01])
+        
         self._inv_two_sigma_sq = 1.0 / (2.0 * self.sigma**2)
 
     def get_rates(self, x: float, y: float) -> np.ndarray:
