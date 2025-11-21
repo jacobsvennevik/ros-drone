@@ -1,0 +1,33 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/graph_edge__type_support_c.cpp.o"
+  "CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/graph_edge__type_support_c.cpp.o.d"
+  "CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/graph_node__type_support_c.cpp.o"
+  "CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/graph_node__type_support_c.cpp.o.d"
+  "CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/graph_snapshot__type_support_c.cpp.o"
+  "CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/graph_snapshot__type_support_c.cpp.o.d"
+  "CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/mission_goal__type_support_c.cpp.o"
+  "CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/mission_goal__type_support_c.cpp.o.d"
+  "CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/policy_decision__type_support_c.cpp.o"
+  "CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/policy_decision__type_support_c.cpp.o.d"
+  "CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/policy_status__type_support_c.cpp.o"
+  "CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/policy_status__type_support_c.cpp.o.d"
+  "libhippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.pdb"
+  "libhippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.so"
+  "rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/graph_edge__rosidl_typesupport_fastrtps_c.h"
+  "rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/graph_edge__type_support_c.cpp"
+  "rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/graph_node__rosidl_typesupport_fastrtps_c.h"
+  "rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/graph_node__type_support_c.cpp"
+  "rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/graph_snapshot__rosidl_typesupport_fastrtps_c.h"
+  "rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/graph_snapshot__type_support_c.cpp"
+  "rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/mission_goal__rosidl_typesupport_fastrtps_c.h"
+  "rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/mission_goal__type_support_c.cpp"
+  "rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/policy_decision__rosidl_typesupport_fastrtps_c.h"
+  "rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/policy_decision__type_support_c.cpp"
+  "rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/policy_status__rosidl_typesupport_fastrtps_c.h"
+  "rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/policy_status__type_support_c.cpp"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

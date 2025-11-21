@@ -1,0 +1,56 @@
+[0.798s] Invoking command in '/home/ros/ros2_ws/src/hippocampus_ros2': PYTHONPATH=/home/ros/ros2_ws/build/hippocampus_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ros/ros2_ws/install/hippocampus_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/hippocampus_ros2 build --build-base /home/ros/ros2_ws/build/hippocampus_ros2/build install --record /home/ros/ros2_ws/build/hippocampus_ros2/install.log --single-version-externally-managed install_data
+[1.090s] running egg_info
+[1.091s] creating ../../build/hippocampus_ros2/hippocampus_ros2.egg-info
+[1.092s] writing ../../build/hippocampus_ros2/hippocampus_ros2.egg-info/PKG-INFO
+[1.093s] writing dependency_links to ../../build/hippocampus_ros2/hippocampus_ros2.egg-info/dependency_links.txt
+[1.094s] writing entry points to ../../build/hippocampus_ros2/hippocampus_ros2.egg-info/entry_points.txt
+[1.095s] writing requirements to ../../build/hippocampus_ros2/hippocampus_ros2.egg-info/requires.txt
+[1.096s] writing top-level names to ../../build/hippocampus_ros2/hippocampus_ros2.egg-info/top_level.txt
+[1.097s] writing manifest file '../../build/hippocampus_ros2/hippocampus_ros2.egg-info/SOURCES.txt'
+[1.104s] reading manifest file '../../build/hippocampus_ros2/hippocampus_ros2.egg-info/SOURCES.txt'
+[1.106s] writing manifest file '../../build/hippocampus_ros2/hippocampus_ros2.egg-info/SOURCES.txt'
+[1.106s] running build
+[1.107s] running build_py
+[1.107s] creating /home/ros/ros2_ws/build/hippocampus_ros2/build
+[1.108s] creating /home/ros/ros2_ws/build/hippocampus_ros2/build/lib
+[1.108s] creating /home/ros/ros2_ws/build/hippocampus_ros2/build/lib/hippocampus_ros2
+[1.109s] copying hippocampus_ros2/__init__.py -> /home/ros/ros2_ws/build/hippocampus_ros2/build/lib/hippocampus_ros2
+[1.110s] running install
+[1.111s] running install_lib
+[1.112s] creating /home/ros/ros2_ws/install/hippocampus_ros2/lib/python3.10/site-packages/hippocampus_ros2
+[1.113s] copying /home/ros/ros2_ws/build/hippocampus_ros2/build/lib/hippocampus_ros2/__init__.py -> /home/ros/ros2_ws/install/hippocampus_ros2/lib/python3.10/site-packages/hippocampus_ros2
+[1.115s] byte-compiling /home/ros/ros2_ws/install/hippocampus_ros2/lib/python3.10/site-packages/hippocampus_ros2/__init__.py to __init__.cpython-310.pyc
+[1.117s] running install_data
+[1.118s] creating /home/ros/ros2_ws/install/hippocampus_ros2/share/ament_index
+[1.118s] creating /home/ros/ros2_ws/install/hippocampus_ros2/share/ament_index/resource_index
+[1.119s] creating /home/ros/ros2_ws/install/hippocampus_ros2/share/ament_index/resource_index/packages
+[1.119s] copying resource/hippocampus_ros2 -> /home/ros/ros2_ws/install/hippocampus_ros2/share/ament_index/resource_index/packages
+[1.121s] copying package.xml -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2
+[1.122s] creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/launch
+[1.123s] copying launch/tracing.launch.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/launch
+[1.125s] copying launch/brain.launch.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/launch
+[1.127s] copying launch/policy.launch.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/launch
+[1.129s] copying launch/mission_publisher.launch.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/launch
+[1.131s] creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/config
+[1.132s] copying config/brain.yaml -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/config
+[1.134s] copying config/policy.yaml -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/config
+[1.137s] creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/scripts
+[1.140s] copying scripts/replay_odom.sh -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/scripts
+[1.147s] copying scripts/record_brain_topics.sh -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/scripts
+[1.150s] creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests
+[1.151s] creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/launch
+[1.151s] copying system_tests/launch/brain_system_smoke.launch.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/launch
+[1.158s] creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/worlds
+[1.159s] copying system_tests/worlds/minimal.world -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/worlds
+[1.160s] creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/scripts
+[1.162s] copying system_tests/scripts/pose_publisher.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/scripts
+[1.167s] copying system_tests/scripts/assert_topics.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/scripts
+[1.169s] copying system_tests/README.md -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests
+[1.172s] running install_egg_info
+[1.174s] Copying ../../build/hippocampus_ros2/hippocampus_ros2.egg-info to /home/ros/ros2_ws/install/hippocampus_ros2/lib/python3.10/site-packages/hippocampus_ros2-0.1.0-py3.10.egg-info
+[1.195s] running install_scripts
+[1.222s] Installing mission_publisher script to /home/ros/ros2_ws/install/hippocampus_ros2/lib/hippocampus_ros2
+[1.225s] Installing policy_node script to /home/ros/ros2_ws/install/hippocampus_ros2/lib/hippocampus_ros2
+[1.227s] Installing snn_brain_node script to /home/ros/ros2_ws/install/hippocampus_ros2/lib/hippocampus_ros2
+[1.232s] writing list of installed files to '/home/ros/ros2_ws/build/hippocampus_ros2/install.log'
+[1.254s] Invoked command in '/home/ros/ros2_ws/src/hippocampus_ros2' returned '0': PYTHONPATH=/home/ros/ros2_ws/build/hippocampus_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ros/ros2_ws/install/hippocampus_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/hippocampus_ros2 build --build-base /home/ros/ros2_ws/build/hippocampus_ros2/build install --record /home/ros/ros2_ws/build/hippocampus_ros2/install.log --single-version-externally-managed install_data

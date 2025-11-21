@@ -1,0 +1,5 @@
+[console_scripts]
+mission_publisher = hippocampus_ros2.nodes.mission_publisher:main
+policy_node = hippocampus_ros2.nodes.policy_node:main
+snn_brain_node = hippocampus_ros2.nodes.brain_node:main
+

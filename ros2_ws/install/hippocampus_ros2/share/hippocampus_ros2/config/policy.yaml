@@ -1,0 +1,59 @@
+# Default parameters for hippocampus_ros2 PolicyNode.
+# These values configure the SNN Policy Service integration with ROS 2.
+
+hippocampus_ros2:
+  ros__parameters:
+    # Topic to subscribe for robot pose/odometry updates.
+    pose_topic: "/odom"
+
+    # Topic to publish velocity commands (geometry_msgs/msg/Twist).
+    cmd_vel_topic: "/cmd_vel"
+
+    # Topic for mission goal updates (optional).
+    mission_topic: "/mission/goal"
+
+    # Control loop frequency in Hz (timer period 1/control_rate).
+    control_rate: 10.0
+
+    # Clamp for Twist.linear.x (m/s). Keep conservative for safety.
+    max_linear: 0.3
+
+    # Clamp for Twist.angular.z (rad/s).
+    max_angular: 1.0
+
+    # Clamp for Twist.linear.z (m/s) for 3D flight.
+    max_vertical: 0.2
+
+    # Bounds of the simulated arena (width/height) used by place-cell controller.
+    arena_width: 1.0
+    arena_height: 1.0
+
+    # Random number generator seed for place cell initialization.
+    rng_seed: 1234
+
+    # Enable hierarchical planning with GraphNavigationService.
+    enable_hierarchical: false
+
+    # Path planning algorithm: "dijkstra", "astar", or "greedy".
+    navigation_algorithm: "dijkstra"
+
+    # Use SNN model for policy decisions (requires PyTorch/snnTorch).
+    use_snn: false
+
+    # Path to trained SNN model checkpoint (if use_snn is true).
+    snn_model_path: ""
+
+    # SNN model feature dimension (2D: ~44, 3D: ~60).
+    snn_feature_dim: 44
+
+    # SNN model hidden layer dimension.
+    snn_hidden_dim: 64
+
+    # Enable 3D mode (adds vertical velocity control).
+    is_3d: false
+
+    # Default goal position (used if no mission topic provided).
+    default_goal_x: 0.9
+    default_goal_y: 0.9
+    default_goal_z: 0.0
+

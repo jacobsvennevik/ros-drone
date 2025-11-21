@@ -1,0 +1,193 @@
+---
+description: Principles for sanity checks and test maintenance - preserve test integrity and coverage
+alwaysApply: false
+---
+
+# Sanity Check and Testing Principles
+
+This rule defines how to approach sanity checks and test maintenance in this project. It emphasizes preserving test integrity and coverage rather than weakening tests to achieve passing status.
+
+## Core Principle: Tests Are Specifications
+
+**Tests document expected behavior.** When a test fails, it indicates that either:
+1. The code under test has a bug (most common)
+2. The test itself is incorrect or outdated (less common)
+
+**Default assumption**: The test is correct and the code needs fixing.
+
+## When a Test Fails
+
+### Step 1: Understand the Failure
+
+Before making any changes:
+
+1. **Read the test carefully**:
+   - What behavior is it checking?
+   - What are the expected inputs and outputs?
+   - What edge cases does it cover?
+
+2. **Run the test in isolation**:
+   ```bash
+   python3 tests/test_policy_sanity.py
+   pytest tests/test_policy_validation.py::test_specific_function -v
+   ```
+
+3. **Examine the error message**:
+   - What assertion failed?
+   - What was the actual vs expected value?
+   - Is the failure due to a logic error or a test assumption?
+
+### Step 2: Fix the Code, Not the Test
+
+**Primary action**: Fix the code being tested.
+
+- If the test expects behavior X and the code does Y, change the code to do X.
+- If the test checks for proper error handling, ensure the code raises the expected exceptions.
+- If the test validates edge cases, ensure the code handles those cases correctly.
+
+**Only modify the test if**:
+- The test contains a clear bug (e.g., wrong expected value, incorrect assertion logic)
+- The test is testing outdated behavior that has been intentionally changed
+- The test is testing implementation details that should not be tested
+
+### Step 3: Preserve Coverage
+
+**Never reduce test coverage to make tests pass.**
+
+Examples of what NOT to do:
+- ❌ Removing assertions to make a test pass
+- ❌ Commenting out test cases that are failing
+- ❌ Making tests less strict (e.g., changing `assert x == 5` to `assert x > 0`)
+- ❌ Skipping tests with `@pytest.skip` without a documented reason
+- ❌ Narrowing test scope to avoid testing problematic code paths
+
+**Instead**:
+- ✅ Add more assertions to catch the bug
+- ✅ Add edge case tests if the failure reveals missing coverage
+- ✅ Make tests more specific if they're too vague
+- ✅ Document why a test is skipped if it must be skipped temporarily
+
+## Test Categories in This Project
+
+### Sanity Checks (No Dependencies)
+
+These tests validate basic structure and can run without external dependencies:
+
+- `test_policy_syntax.py` - Python syntax validation
+- `test_policy_quick_check.py` - File structure and class definitions
+- `test_ros_integration_sanity.py` - ROS node structure validation
+
+**These should always pass** - they check fundamental correctness.
+
+### Validation Tests
+
+These tests check behavior with minimal dependencies:
+
+- `test_policy_validation.py` - Core functionality validation
+- `test_policy_edge_cases.py` - Edge case handling
+- `test_policy_sanity.py` - End-to-end sanity checks
+
+**These should pass** - they validate expected behavior.
+
+### Integration Tests
+
+These tests require full dependencies and may be environment-specific:
+
+- `test_policy_integration.py` - Full system integration
+- `test_snn_components.py` - SNN component tests
+- `test_graph_navigation.py` - Graph navigation tests
+
+**These may require specific environments** - document requirements clearly.
+
+## Test Maintenance Workflow
+
+When encountering a failing test:
+
+1. **Investigate thoroughly**:
+   - Run the test multiple times to check for flakiness
+   - Check if related tests also fail
+   - Review recent changes that might have caused the failure
+
+2. **Fix the root cause**:
+   - Identify the bug in the code
+   - Fix the bug
+   - Verify the fix with the test
+
+3. **Improve if needed**:
+   - If the test revealed a gap in coverage, add tests for related cases
+   - If the test is unclear, improve its documentation
+   - If the test is brittle, make it more robust (without reducing coverage)
+
+4. **Document exceptions**:
+   - If a test must be skipped or modified, document why
+   - Add a TODO or issue reference if it's a known limitation
+   - Update test documentation if behavior has intentionally changed
+
+## Red Flags: When to Question a Test Change
+
+Be very cautious if you find yourself:
+
+- Removing assertions or making them less strict
+- Commenting out test code
+- Adding `# TODO: fix this test` comments
+- Making tests pass by catching and ignoring exceptions
+- Reducing the number of test cases
+- Narrowing the scope of what a test checks
+
+**These are signs that you should fix the code instead.**
+
+## Example: Good vs Bad Test Fixes
+
+### ❌ Bad: Weakening the Test
+
+```python
+# Before: Test expects exact match
+assert result == expected_value
+
+# Bad fix: Make test less strict
+assert result is not None  # This reduces coverage!
+```
+
+### ✅ Good: Fixing the Code
+
+```python
+# Test remains strict
+assert result == expected_value
+
+# Fix the code to produce the correct value
+def compute_result():
+    # Fix the bug here
+    return expected_value
+```
+
+### ❌ Bad: Removing Test Cases
+
+```python
+# Before: Tests multiple scenarios
+def test_edge_cases():
+    test_empty_input()
+    test_negative_input()
+    test_overflow_input()
+
+# Bad fix: Remove failing case
+def test_edge_cases():
+    test_empty_input()
+    # test_negative_input()  # Commented out because it fails
+    test_overflow_input()
+```
+
+### ✅ Good: Fixing All Cases
+
+```python
+# Keep all test cases
+def test_edge_cases():
+    test_empty_input()
+    test_negative_input()  # Fix code to handle this
+    test_overflow_input()
+```
+
+## Summary
+
+**Remember**: Tests are your safety net. Weakening tests to make them pass is like removing safety features to avoid false alarms. Instead, fix the underlying issues that the tests are catching.
+
+**When in doubt**: Fix the code, not the test.

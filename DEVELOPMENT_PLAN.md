@@ -60,6 +60,43 @@ This document outlines a comprehensive plan for continuing development of the hi
 - ✅ Visualizations show obstacles clearly
 - ✅ No regression in existing functionality
 
+#### Progress (2025-11-19)
+- Ran `python3 experiments/validate_hoffman_2016.py --obstacle --obstacle-radius 0.15 --duration 600 --integration-windows 0 --output results/hoffman_obstacle.png`. Simulation completed cleanly in ~5 s CPU, but summary still shows `b₀ = 1`, `b₁ = 0`, indicating the obstacle loop remains contractible under current parameters. Figure saved to `results/hoffman_obstacle.png`.
+- Collected a short smoke test via `--duration 120`, confirming the pipeline works with the same topology outcome (`results/hoffman_obstacle_short.png`).
+- Updated `examples/topology_learning_visualization.py` to support `--obstacle/--obstacle-radius` and generated `results/topology_obstacle_test.png` to inspect Betti barcodes and graph snapshots with obstacles present.
+- Observed that numerous cycles form around the obstacle but become filled rapidly (dense clique complex), so next step is to investigate sparser graph settings or obstacle-centric place-cell placement to achieve `b₁ = 1`.
+
+#### Progress (2025-11-20) — Betti-gap sweep
+
+| Run | Key parameters | Duration / windows | Final `(b₀, b₁)` | Artifact |
+| --- | -------------- | ------------------ | ---------------- | -------- |
+| Ring-50% / thr=6 | `N=80`, `σ=0.12`, `c_min=6`, `d_max=0.144`, ring frac 0.5 | 420 s, ϖ∈{0,120,240} | (6, 0) | `results/sweep_obstacle_ring_thresh6.png` |
+| Ring-35% / thr=7.5 | `N=90`, `σ=0.11`, `c_min=7.5`, `d_max=0.127`, ring frac 0.35 | 420 s, ϖ∈{0,120,240} | (12, 0) | `results/sweep_obstacle_ring_thresh7p5.png` |
+| Ring-40% / thr=5.5 | `N=100`, `σ=0.12`, `c_min=5.5`, `d_max=0.150`, ring frac 0.4 | 480 s, ϖ∈{0,120,240} | (4, 0) | `results/sweep_obstacle_ring_thresh5p5.png` |
+| Ring-30% / thr=6 | `N=90`, `σ=0.13`, `c_min=6`, `d_max=0.169`, ring frac 0.3 | 480 s, ϖ∈{0,120,240} | (4, 0) | `results/sweep_obstacle_ring_thresh6_b.png` |
+| Ring-35% / σ=0.16 | `N=90`, `σ=0.16`, `c_min=6.5`, `d_max=0.160`, ring frac 0.35 | 480 s, ϖ∈{0,120,240} | (6, 0) | `results/sweep_obstacle_ring_sigma16.png` |
+| Ring-20% / thr=4.5 | `N=90`, `σ=0.13`, `c_min=4.5`, `d_max=0.176`, ring frac 0.2 | 480 s, ϖ∈{0,120,240} | (2, 0) | `results/sweep_obstacle_ring_thresh4p5.png` |
+| Ring-20% / thr=4.0 | Same as above but `c_min=4.0`, `d_max=0.189` | 480 s, ϖ∈{0,120,240} | (2, 0) | `results/sweep_obstacle_ring_thresh4.png` |
+| Uniform / tight edges | `N=60`, `σ=0.14`, `c_min=5.0`, `d_max=0.126`, uniform placement | 600 s, ϖ∈{0,120,240} | (12, 0) | `results/sweep_uniform_sigma14.png` |
+| Long-duration check | `N=100`, `σ=0.12`, `c_min=5.0`, `d_max=0.150`, ring frac 0.3 | 900 s, ϖ∈{0,240,480} | (4, 0) | `results/sweep_longdur_thresh5.png` |
+| Ring+spokes v1 | `N=90`, `σ=0.12`, `c_min=5.5`, `d_max=0.144`, ring 0.35 + spokes 0.25 (6 spokes) | 600 s, ϖ∈{0,120,240} | (4, 0) | `results/sweeps/20251119-135257_ring_spokes_v1/figure.png` |
+| Ring+spokes v2 | `N=110`, `σ=0.11`, `c_min=6.5`, `d_max=0.121`, ring 0.4 + spokes 0.3 (8 spokes) | 720 s, ϖ∈{0,180,360} | (8, 0) | `results/sweeps/20251119-141624_ring_spokes_v2/figure.png` |
+| Ring+spokes v3 | `N=80`, `σ=0.14`, `c_min=4.5`, `d_max=0.189`, ring 0.25 + spokes 0.25 (5 spokes) | 600 s, ϖ∈{0,120,240} | (3, 0) | `results/sweeps/20251119-141649_ring_spokes_v3/figure.png` (+ default-window figure `results/validate_ring_spokes_v3.png`) |
+| Ring+spokes v4 | `N=90`, `σ=0.12`, `c_min=5.5`, `d_max=0.144`, ring 0.3 + spokes 0.2 (6 spokes) | 600 s, ϖ∈{0,120,240} | (8, 0) | `results/sweeps/20251119-142041_ring_spokes_v4/figure.png` |
+| Ring+spokes v5 | `N=80`, `σ=0.10`, `c_min=7.0`, `d_max=0.090`, ring 0.35 + spokes 0.15 (4 spokes) | 720 s, ϖ∈{0,180,360} | (19, 0) | `results/sweeps/20251119-142117_ring_spokes_v5/figure.png` |
+| Orbit+spokes v1 | `N=90`, `σ=0.12`, `c_min=5.5`, `d_max=0.144`, ring 0.25 + spokes 0.2 (6 spokes), `trajectory=orbit_then_random (180s orbit)` | 600 s, ϖ∈{0,120,240} | (7, 0) | `results/sweeps/20251119-145858_orbit_spokes_v1/figure.png` |
+
+Takeaways:
+- Raising `c_min` alone makes the clique complex too fragmented (b₀ ≫ 1). Lowering `d_max` without more targeted placement leaves the graph disconnected, so Betti₁ never registers.
+- Simple obstacle-ring placement keeps cycles near the obstacle but still fails to couple inner and outer rings; adding spokes (ring_spokes v1) improves coverage yet the clique complex still fills the obstacle due to dense cross-connections.
+- Extending the duration to 15 min did not change the asymptotic `(b₀, b₁)`, indicating the limitation is structural (placement/edge policy), not insufficient sampling time.
+- Ring+spokes variants (v1–v5) improved coverage and let us capture fully logged, multi-window runs (see `results/validate_ring_spokes_v3.png`), but still converged to `b₁ = 0` due to dense bridging edges that seal the obstacle. Even with orbit-biased trajectories (orbit+spokes v1–v2, orbit+uniform v1, orbit+tight v1), results remain similar: longer orbits (300–360s) and tighter edge distances (`d_max=0.110`) either fragment the graph (`b₀=16–17`) or still seal the hole (`b₁=0`). Uniform placement with orbit (orbit+uniform v1) shows `(b₀=5, b₁=0)`, suggesting the fundamental issue is that any clique complex built from pairwise coactivities will bridge across the obstacle when cells are within `d_max`.
+- Added `scripts/logged_validate.sh` to capture every sweep automatically (full CLI passthrough + logs + figures under `results/sweeps/<timestamp>_<label>/`). All future experiments should be invoked via this wrapper so parameters, stdout, and plots are archived without manual copy/paste.
+
+#### Next Actions
+- **Betti-gap investigation (1.1.1 / 1.1.2)**: Continue parameter sweeps (now logged via `scripts/logged_validate.sh`) exploring `coactivity_threshold`, `max_edge_distance`, ring/spoke placements, and agent trajectories to isolate a stable `(b₀ = 1, b₁ = 1)` regime.
+- **Obstacle-centric placement prototype**: Implement richer placement schemes (dual rings, spokes, obstacle-adjacent clusters) and use the logging wrapper + summary table template in `results/sweeps/README.md` to track outcomes.
+
 ---
 
 ### 1.2 Validate Existing Functionality
@@ -102,6 +139,9 @@ This document outlines a comprehensive plan for continuing development of the hi
 - ✅ Results match expected behavior from paper
 - ✅ No inconsistencies in summary tables
 - ✅ Visualizations are clear and informative
+
+#### Next Actions
+- **Full multi-window sweep (1.2.1)**: Once the Betti-gap investigation yields a stable `b₁ = 1` configuration, rerun `python3 experiments/validate_hoffman_2016.py --duration 900 --integration-windows 0 60 120 240 480` with those parameters and archive the resulting composite figure (barcode + summary table) as `results/validate_multi_window_obstacle.png`. Include the new summary table in the documentation to show that the obstacle loop persists across the default integration windows.
 
 ---
 
@@ -368,7 +408,7 @@ python3 experiments/validate_hoffman_2016_with_stats.py \
 
 ### 3.1 Paper Parameters Preset
 
-**Status**: Not started  
+**Status**: ✅ Complete  
 **Effort**: 6-8 hours  
 **Priority**: Medium  
 **Dependencies**: None
@@ -428,6 +468,15 @@ python3 experiments/replicate_paper.py \
 - ✅ T_min in reasonable range (20-35 minutes)
 - ✅ Documentation explains parameter choices
 
+#### Implementation Status (2025-01-27)
+- ✅ Created `src/hippocampus_core/presets.py` with `PaperPreset` dataclass
+- ✅ Implemented `get_paper_preset()` for full paper parameters
+- ✅ Implemented `get_paper_preset_2d()` for 2D-optimized version
+- ✅ Implemented `get_paper_preset_quick()` for quick testing
+- ✅ Created `experiments/replicate_paper.py` script
+- ✅ Created `docs/paper_parameter_mapping.md` documentation
+- ✅ All presets verified working
+
 ---
 
 ### 3.2 Extended Duration Tests
@@ -476,7 +525,7 @@ python3 experiments/replicate_paper.py \
 
 ### 3.3 Performance Profiling
 
-**Status**: Not started  
+**Status**: ✅ Complete  
 **Effort**: 4-5 hours  
 **Priority**: Low  
 **Dependencies**: None
@@ -522,6 +571,15 @@ python3 experiments/replicate_paper.py \
 - ✅ Profile reports are readable
 - ✅ Recommendations actionable
 - ✅ No significant regressions
+
+#### Implementation Status (2025-01-27)
+- ✅ Created `experiments/profile_performance.py` script
+- ✅ Integrated cProfile for function-level profiling
+- ✅ Profiled coactivity tracking (spike registration, matrix updates)
+- ✅ Profiled graph construction (edge building, integration window)
+- ✅ Profiled Betti number computation (clique extraction, persistent homology)
+- ✅ Generated comprehensive profiling reports with recommendations
+- ✅ All profiling functions verified working
 
 ---
 
@@ -904,19 +962,19 @@ tests/
 ### Must Have (P0)
 - ✅ Obstacle environments
 - ✅ Code quality improvements
-- ⏳ Unit tests for obstacles
-- ⏳ Statistical aggregation
+- ✅ Unit tests for obstacles (Section 2.1)
+- ✅ Statistical aggregation (Section 2.3)
 
 ### Should Have (P1)
-- ⏳ Multiple obstacles support
-- ⏳ Paper parameters preset
-- ⏳ Comprehensive test suite
+- ✅ Multiple obstacles support (Section 2.2)
+- ✅ Paper parameters preset (Section 3.1)
+- ✅ Edge case testing (Section 2.4)
 - ⏳ Extended duration tests
 
 ### Nice to Have (P2)
 - ⏳ 3D support
 - ⏳ Theta-precession experiments
-- ⏳ Performance optimization
+- ✅ Performance profiling (Section 3.3)
 - ⏳ Tutorial notebooks
 
 ### Future Work (P3)

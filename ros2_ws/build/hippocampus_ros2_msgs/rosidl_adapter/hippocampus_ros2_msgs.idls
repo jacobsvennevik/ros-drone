@@ -1,0 +1,6 @@
+/home/ros/ros2_ws/build/hippocampus_ros2_msgs/rosidl_adapter/hippocampus_ros2_msgs:msg/PolicyDecision.idl
+/home/ros/ros2_ws/build/hippocampus_ros2_msgs/rosidl_adapter/hippocampus_ros2_msgs:msg/PolicyStatus.idl
+/home/ros/ros2_ws/build/hippocampus_ros2_msgs/rosidl_adapter/hippocampus_ros2_msgs:msg/MissionGoal.idl
+/home/ros/ros2_ws/build/hippocampus_ros2_msgs/rosidl_adapter/hippocampus_ros2_msgs:msg/GraphNode.idl
+/home/ros/ros2_ws/build/hippocampus_ros2_msgs/rosidl_adapter/hippocampus_ros2_msgs:msg/GraphEdge.idl
+/home/ros/ros2_ws/build/hippocampus_ros2_msgs/rosidl_adapter/hippocampus_ros2_msgs:msg/GraphSnapshot.idl

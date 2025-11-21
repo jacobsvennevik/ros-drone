@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <world name="minimal">
+    <physics type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <gui>
+      <plugin name="minimal_gui" filename="libgazebo_gui.so">
+        <ignore_z>false</ignore_z>
+        <camera name="default_camera">
+          <pose>0 -3 2 0.7 0.3 1.57</pose>
+        </camera>
+      </plugin>
+    </gui>
+  </world>
+</sdf>
+

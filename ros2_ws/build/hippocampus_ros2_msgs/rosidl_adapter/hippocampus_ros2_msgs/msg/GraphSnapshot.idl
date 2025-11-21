@@ -1,0 +1,45 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from hippocampus_ros2_msgs/msg/GraphSnapshot.msg
+// generated code does not contain a copyright notice
+
+#include "builtin_interfaces/msg/Time.idl"
+#include "hippocampus_ros2_msgs/msg/GraphEdge.idl"
+#include "hippocampus_ros2_msgs/msg/GraphNode.idl"
+
+module hippocampus_ros2_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      "Graph snapshot message" "\n"
+      "Represents a snapshot of the topological graph")
+    struct GraphSnapshot {
+      @verbatim (language="comment", text=
+        "Graph metadata" "\n"
+        "Graph epoch/version ID")
+      uint32 epoch_id;
+
+      @verbatim (language="comment", text=
+        "Coordinate frame")
+      string frame_id;
+
+      builtin_interfaces::msg::Time stamp;
+
+      builtin_interfaces::msg::Time last_updated;
+
+      @verbatim (language="comment", text=
+        "Graph update rate (Hz)")
+      double update_rate;
+
+      @verbatim (language="comment", text=
+        "Staleness warning flag")
+      boolean staleness_warning;
+
+      @verbatim (language="comment", text=
+        "Nodes")
+      sequence<hippocampus_ros2_msgs::msg::GraphNode> nodes;
+
+      @verbatim (language="comment", text=
+        "Edges")
+      sequence<hippocampus_ros2_msgs::msg::GraphEdge> edges;
+    };
+  };
+};

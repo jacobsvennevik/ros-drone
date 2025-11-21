@@ -1,0 +1,28 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from hippocampus_ros2_msgs/msg/GraphEdge.msg
+// generated code does not contain a copyright notice
+
+
+module hippocampus_ros2_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      "Graph edge message")
+    struct GraphEdge {
+      @verbatim (language="comment", text=
+        "Source node ID")
+      int32 u;
+
+      @verbatim (language="comment", text=
+        "Target node ID")
+      int32 v;
+
+      @verbatim (language="comment", text=
+        "Edge length (m)")
+      double length;
+
+      @verbatim (language="comment", text=
+        "Is edge traversable")
+      boolean traversable;
+    };
+  };
+};

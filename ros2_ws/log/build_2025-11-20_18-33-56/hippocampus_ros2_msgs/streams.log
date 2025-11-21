@@ -1,0 +1,376 @@
+[0.043s] Invoking command in '/home/ros/ros2_ws/build/hippocampus_ros2_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/ros/ros2_ws/src/hippocampus_ros2_msgs -DCMAKE_INSTALL_PREFIX=/home/ros/ros2_ws/install/hippocampus_ros2_msgs
+[0.527s] -- The C compiler identification is GNU 11.4.0
+[0.841s] -- The CXX compiler identification is GNU 11.4.0
+[0.869s] -- Detecting C compiler ABI info
+[1.400s] -- Detecting C compiler ABI info - done
+[1.417s] -- Check for working C compiler: /usr/bin/cc - skipped
+[1.417s] -- Detecting C compile features
+[1.417s] -- Detecting C compile features - done
+[1.422s] -- Detecting CXX compiler ABI info
+[1.903s] -- Detecting CXX compiler ABI info - done
+[1.920s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[1.920s] -- Detecting CXX compile features
+[1.920s] -- Detecting CXX compile features - done
+[1.934s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[2.536s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[2.710s] -- Found geometry_msgs: 4.9.0 (/opt/ros/humble/share/geometry_msgs/cmake)
+[2.739s] -- Found rosidl_generator_c: 3.1.7 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[2.739s] -- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[2.745s] -- Found rosidl_generator_cpp: 3.1.7 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[2.757s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.769s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[2.801s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[3.599s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[4.773s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[5.440s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[5.530s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+[5.535s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[5.633s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+[5.633s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[5.634s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[5.634s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[5.730s] -- Found PythonExtra: .so  
+[5.960s] -- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[5.997s] -- Added test 'copyright' to check source files copyright and LICENSE
+[6.003s] -- Added test 'lint_cmake' to check CMake code style
+[6.006s] -- Added test 'xmllint' to check XML markup files
+[6.019s] -- Configuring done
+[6.175s] -- Generating done
+[6.222s] -- Build files have been written to: /home/ros/ros2_ws/build/hippocampus_ros2_msgs
+[6.230s] Invoked command in '/home/ros/ros2_ws/build/hippocampus_ros2_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/ros/ros2_ws/src/hippocampus_ros2_msgs -DCMAKE_INSTALL_PREFIX=/home/ros/ros2_ws/install/hippocampus_ros2_msgs
+[6.244s] Invoking command in '/home/ros/ros2_ws/build/hippocampus_ros2_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/ros/ros2_ws/build/hippocampus_ros2_msgs -- -j8 -l8
+[6.594s] [  1%] Generating C code for ROS interfaces
+[6.702s] [  2%] Generating C++ code for ROS interfaces
+[6.733s] [  2%] Built target ament_cmake_python_copy_hippocampus_ros2_msgs
+[7.182s] running egg_info
+[7.183s] creating hippocampus_ros2_msgs.egg-info
+[7.184s] writing hippocampus_ros2_msgs.egg-info/PKG-INFO
+[7.187s] writing dependency_links to hippocampus_ros2_msgs.egg-info/dependency_links.txt
+[7.191s] writing top-level names to hippocampus_ros2_msgs.egg-info/top_level.txt
+[7.199s] writing manifest file 'hippocampus_ros2_msgs.egg-info/SOURCES.txt'
+[7.202s] reading manifest file 'hippocampus_ros2_msgs.egg-info/SOURCES.txt'
+[7.204s] writing manifest file 'hippocampus_ros2_msgs.egg-info/SOURCES.txt'
+[7.290s] [  2%] Built target ament_cmake_python_build_hippocampus_ros2_msgs_egg
+[8.196s] [  5%] Built target hippocampus_ros2_msgs__cpp
+[8.201s] [  5%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_generator_c.dir/rosidl_generator_c/hippocampus_ros2_msgs/msg/detail/policy_decision__functions.c.o
+[8.205s] [  7%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_generator_c.dir/rosidl_generator_c/hippocampus_ros2_msgs/msg/detail/graph_edge__functions.c.o
+[8.215s] [  7%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_generator_c.dir/rosidl_generator_c/hippocampus_ros2_msgs/msg/detail/policy_status__functions.c.o
+[8.227s] [ 11%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_generator_c.dir/rosidl_generator_c/hippocampus_ros2_msgs/msg/detail/graph_snapshot__functions.c.o
+[8.231s] [ 11%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_generator_c.dir/rosidl_generator_c/hippocampus_ros2_msgs/msg/detail/graph_node__functions.c.o
+[8.233s] [ 11%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_generator_c.dir/rosidl_generator_c/hippocampus_ros2_msgs/msg/detail/mission_goal__functions.c.o
+[8.346s] [ 12%] Generating C++ type support for eProsima Fast-RTPS
+[8.348s] [ 14%] Generating C++ type support dispatch for ROS interfaces
+[8.842s] [ 15%] Linking C shared library libhippocampus_ros2_msgs__rosidl_generator_c.so
+[8.850s] [ 16%] Generating C++ introspection for ROS interfaces
+[9.078s] [ 16%] Built target hippocampus_ros2_msgs__rosidl_generator_c
+[9.201s] [ 21%] Generating C type support dispatch for ROS interfaces
+[9.203s] [ 21%] Generating C type support for eProsima Fast-RTPS
+[9.208s] [ 21%] Generating C introspection for ROS interfaces
+[9.889s] [ 22%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/hippocampus_ros2_msgs/msg/policy_decision__type_support.cpp.o
+[9.904s] [ 23%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/hippocampus_ros2_msgs/msg/policy_status__type_support.cpp.o
+[9.970s] [ 25%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/hippocampus_ros2_msgs/msg/mission_goal__type_support.cpp.o
+[10.263s] [ 26%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/hippocampus_ros2_msgs/msg/detail/dds_fastrtps/policy_decision__type_support.cpp.o
+[10.957s] [ 28%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/hippocampus_ros2_msgs/msg/detail/policy_decision__type_support.cpp.o
+[11.015s] [ 29%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/hippocampus_ros2_msgs/msg/policy_decision__type_support.cpp.o
+[11.131s] [ 30%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/hippocampus_ros2_msgs/msg/graph_node__type_support.cpp.o
+[11.162s] [ 32%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/hippocampus_ros2_msgs/msg/graph_snapshot__type_support.cpp.o
+[11.179s] [ 33%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/hippocampus_ros2_msgs/msg/graph_edge__type_support.cpp.o
+[11.477s] [ 36%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/hippocampus_ros2_msgs/msg/policy_status__type_support.cpp.o
+[11.479s] [ 36%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/hippocampus_ros2_msgs/msg/detail/policy_decision__type_support.c.o
+[11.551s] [ 38%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/hippocampus_ros2_msgs/msg/detail/dds_fastrtps/policy_status__type_support.cpp.o
+[11.575s] [ 39%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/policy_decision__type_support_c.cpp.o
+[12.096s] [ 40%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/hippocampus_ros2_msgs/msg/mission_goal__type_support.cpp.o
+[12.138s] [ 42%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/hippocampus_ros2_msgs/msg/detail/policy_status__type_support.c.o
+[12.216s] [ 43%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/hippocampus_ros2_msgs/msg/graph_node__type_support.cpp.o
+[12.230s] [ 45%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/hippocampus_ros2_msgs/msg/graph_edge__type_support.cpp.o
+[12.324s] [ 46%] Linking CXX shared library libhippocampus_ros2_msgs__rosidl_typesupport_cpp.so
+[12.368s] [ 47%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/hippocampus_ros2_msgs/msg/detail/policy_status__type_support.cpp.o
+[12.603s] [ 49%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/hippocampus_ros2_msgs/msg/detail/mission_goal__type_support.c.o
+[12.725s] [ 52%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/policy_status__type_support_c.cpp.o
+[12.731s] [ 52%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/hippocampus_ros2_msgs/msg/detail/mission_goal__type_support.cpp.o
+[12.769s] [ 53%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/hippocampus_ros2_msgs/msg/graph_snapshot__type_support.cpp.o
+[12.796s] [ 53%] Built target hippocampus_ros2_msgs__rosidl_typesupport_cpp
+[12.878s] [ 54%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/hippocampus_ros2_msgs/msg/detail/graph_node__type_support.cpp.o
+[12.915s] [ 56%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/mission_goal__type_support_c.cpp.o
+[12.991s] [ 57%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/hippocampus_ros2_msgs/msg/detail/dds_fastrtps/mission_goal__type_support.cpp.o
+[13.162s] [ 59%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/hippocampus_ros2_msgs/msg/detail/graph_node__type_support.c.o
+[13.301s] [ 60%] Linking CXX shared library libhippocampus_ros2_msgs__rosidl_typesupport_c.so
+[13.680s] [ 61%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/hippocampus_ros2_msgs/msg/detail/graph_edge__type_support.cpp.o
+[13.768s] [ 63%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/hippocampus_ros2_msgs/msg/detail/graph_edge__type_support.c.o
+[13.843s] [ 63%] Built target hippocampus_ros2_msgs__rosidl_typesupport_c
+[13.946s] [ 66%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/graph_node__type_support_c.cpp.o
+[13.954s] [ 66%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/hippocampus_ros2_msgs/msg/detail/graph_snapshot__type_support.cpp.o
+[14.003s] [ 67%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/hippocampus_ros2_msgs/msg/detail/graph_snapshot__type_support.c.o
+[14.223s] [ 69%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/hippocampus_ros2_msgs/msg/detail/dds_fastrtps/graph_node__type_support.cpp.o
+[14.249s] [ 70%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/hippocampus_ros2_msgs/msg/detail/dds_fastrtps/graph_edge__type_support.cpp.o
+[14.280s] [ 71%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/graph_edge__type_support_c.cpp.o
+[14.452s] [ 73%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/hippocampus_ros2_msgs/msg/detail/dds_fastrtps/graph_snapshot__type_support.cpp.o
+[14.579s] [ 74%] Linking C shared library libhippocampus_ros2_msgs__rosidl_typesupport_introspection_c.so
+[14.913s] [ 76%] Building CXX object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hippocampus_ros2_msgs/msg/detail/graph_snapshot__type_support_c.cpp.o
+[15.016s] [ 76%] Built target hippocampus_ros2_msgs__rosidl_typesupport_introspection_c
+[15.420s] [ 77%] Linking CXX shared library libhippocampus_ros2_msgs__rosidl_typesupport_introspection_cpp.so
+[15.721s] [ 77%] Built target hippocampus_ros2_msgs__rosidl_typesupport_introspection_cpp
+[15.825s] [ 78%] Linking CXX shared library libhippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cpp.so
+[15.999s] [ 80%] Linking CXX shared library libhippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.so
+[16.090s] [ 80%] Built target hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cpp
+[16.235s] [ 80%] Built target hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c
+[16.398s] [ 80%] Built target hippocampus_ros2_msgs
+[16.566s] [ 81%] Generating Python code for ROS interfaces
+[18.267s] [ 81%] Built target hippocampus_ros2_msgs__py
+[18.457s] [ 83%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_generator_py.dir/rosidl_generator_py/hippocampus_ros2_msgs/msg/_policy_decision_s.c.o
+[18.460s] [ 85%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_generator_py.dir/rosidl_generator_py/hippocampus_ros2_msgs/msg/_mission_goal_s.c.o
+[18.461s] [ 85%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_generator_py.dir/rosidl_generator_py/hippocampus_ros2_msgs/msg/_graph_edge_s.c.o
+[18.465s] [ 87%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_generator_py.dir/rosidl_generator_py/hippocampus_ros2_msgs/msg/_policy_status_s.c.o
+[18.465s] [ 88%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_generator_py.dir/rosidl_generator_py/hippocampus_ros2_msgs/msg/_graph_snapshot_s.c.o
+[18.479s] [ 90%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_generator_py.dir/rosidl_generator_py/hippocampus_ros2_msgs/msg/_graph_node_s.c.o
+[19.097s] [ 91%] Linking C shared library rosidl_generator_py/hippocampus_ros2_msgs/libhippocampus_ros2_msgs__rosidl_generator_py.so
+[19.296s] [ 91%] Built target hippocampus_ros2_msgs__rosidl_generator_py
+[19.490s] [ 95%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/hippocampus_ros2_msgs/_hippocampus_ros2_msgs_s.ep.rosidl_typesupport_introspection_c.c.o
+[19.490s] [ 95%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/hippocampus_ros2_msgs/_hippocampus_ros2_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.o
+[19.497s] [ 95%] Building C object CMakeFiles/hippocampus_ros2_msgs__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/hippocampus_ros2_msgs/_hippocampus_ros2_msgs_s.ep.rosidl_typesupport_c.c.o
+[19.922s] [ 97%] Linking C shared library rosidl_generator_py/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[19.989s] [ 98%] Linking C shared library rosidl_generator_py/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[20.007s] [100%] Linking C shared library rosidl_generator_py/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[20.165s] [100%] Built target hippocampus_ros2_msgs__rosidl_typesupport_c__pyext
+[20.206s] [100%] Built target hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c__pyext
+[20.233s] [100%] Built target hippocampus_ros2_msgs__rosidl_typesupport_introspection_c__pyext
+[20.285s] Invoked command in '/home/ros/ros2_ws/build/hippocampus_ros2_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/ros/ros2_ws/build/hippocampus_ros2_msgs -- -j8 -l8
+[20.335s] Invoking command in '/home/ros/ros2_ws/build/hippocampus_ros2_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/ros/ros2_ws/build/hippocampus_ros2_msgs
+[20.386s] -- Install configuration: ""
+[20.388s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/ament_index/resource_index/rosidl_interfaces/hippocampus_ros2_msgs
+[20.391s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs
+[20.392s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg
+[20.392s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/rosidl_generator_c__visibility_control.h
+[20.394s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/graph_edge.h
+[20.395s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/policy_decision.h
+[20.396s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/policy_status.h
+[20.397s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/graph_node.h
+[20.398s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/mission_goal.h
+[20.399s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail
+[20.400s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__struct.h
+[20.401s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__functions.h
+[20.402s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__type_support.h
+[20.403s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__struct.h
+[20.404s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__struct.h
+[20.405s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__functions.c
+[20.406s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__functions.c
+[20.407s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__struct.h
+[20.408s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__functions.c
+[20.409s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__functions.h
+[20.410s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__functions.c
+[20.411s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__type_support.h
+[20.413s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__struct.h
+[20.414s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__type_support.h
+[20.416s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__type_support.h
+[20.417s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__struct.h
+[20.418s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__functions.c
+[20.419s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__functions.h
+[20.421s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__type_support.h
+[20.422s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__type_support.h
+[20.423s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__functions.h
+[20.424s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__functions.h
+[20.425s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__functions.h
+[20.426s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__functions.c
+[20.428s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/graph_snapshot.h
+[20.429s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/environment/library_path.sh
+[20.431s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/environment/library_path.dsv
+[20.433s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_generator_c.so
+[20.437s] -- Set runtime path of "/home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_generator_c.so" to ""
+[20.437s] -- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs
+[20.437s] -- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg
+[20.437s] -- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail
+[20.438s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__rosidl_typesupport_fastrtps_c.h
+[20.439s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__rosidl_typesupport_fastrtps_c.h
+[20.440s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__rosidl_typesupport_fastrtps_c.h
+[20.441s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__rosidl_typesupport_fastrtps_c.h
+[20.442s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__rosidl_typesupport_fastrtps_c.h
+[20.444s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__rosidl_typesupport_fastrtps_c.h
+[20.444s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[20.446s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.so
+[20.447s] -- Set runtime path of "/home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.so" to ""
+[20.448s] -- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs
+[20.448s] -- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg
+[20.448s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/policy_decision.hpp
+[20.449s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/graph_snapshot.hpp
+[20.450s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/policy_status.hpp
+[20.451s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/graph_node.hpp
+[20.452s] -- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail
+[20.453s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__traits.hpp
+[20.454s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__builder.hpp
+[20.455s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__traits.hpp
+[20.457s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__type_support.hpp
+[20.458s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__builder.hpp
+[20.459s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__struct.hpp
+[20.460s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__type_support.hpp
+[20.461s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__builder.hpp
+[20.463s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__struct.hpp
+[20.463s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__builder.hpp
+[20.465s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__type_support.hpp
+[20.466s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__type_support.hpp
+[20.467s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__type_support.hpp
+[20.468s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__traits.hpp
+[20.469s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__traits.hpp
+[20.470s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__struct.hpp
+[20.471s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__struct.hpp
+[20.472s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__builder.hpp
+[20.473s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__traits.hpp
+[20.475s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__traits.hpp
+[20.476s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__type_support.hpp
+[20.477s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__struct.hpp
+[20.478s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__struct.hpp
+[20.479s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__builder.hpp
+[20.480s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/rosidl_generator_cpp__visibility_control.hpp
+[20.481s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/graph_edge.hpp
+[20.482s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/mission_goal.hpp
+[20.483s] -- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs
+[20.484s] -- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg
+[20.484s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[20.485s] -- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail
+[20.485s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__rosidl_typesupport_fastrtps_cpp.hpp
+[20.486s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__rosidl_typesupport_fastrtps_cpp.hpp
+[20.487s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__rosidl_typesupport_fastrtps_cpp.hpp
+[20.488s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__rosidl_typesupport_fastrtps_cpp.hpp
+[20.489s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__rosidl_typesupport_fastrtps_cpp.hpp
+[20.490s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__rosidl_typesupport_fastrtps_cpp.hpp
+[20.491s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/dds_fastrtps
+[20.492s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cpp.so
+[20.495s] -- Set runtime path of "/home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cpp.so" to ""
+[20.496s] -- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs
+[20.496s] -- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg
+[20.497s] -- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail
+[20.497s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__rosidl_typesupport_introspection_c.h
+[20.498s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__rosidl_typesupport_introspection_c.h
+[20.499s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__rosidl_typesupport_introspection_c.h
+[20.500s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__rosidl_typesupport_introspection_c.h
+[20.501s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__type_support.c
+[20.502s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__type_support.c
+[20.503s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__rosidl_typesupport_introspection_c.h
+[20.504s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__rosidl_typesupport_introspection_c.h
+[20.506s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__type_support.c
+[20.507s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__type_support.c
+[20.508s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__type_support.c
+[20.510s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__type_support.c
+[20.511s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[20.512s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_introspection_c.so
+[20.513s] -- Set runtime path of "/home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_introspection_c.so" to ""
+[20.514s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_c.so
+[20.515s] -- Set runtime path of "/home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_c.so" to ""
+[20.516s] -- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs
+[20.516s] -- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg
+[20.516s] -- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail
+[20.517s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__type_support.cpp
+[20.518s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__rosidl_typesupport_introspection_cpp.hpp
+[20.519s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__rosidl_typesupport_introspection_cpp.hpp
+[20.520s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__rosidl_typesupport_introspection_cpp.hpp
+[20.521s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__rosidl_typesupport_introspection_cpp.hpp
+[20.522s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__rosidl_typesupport_introspection_cpp.hpp
+[20.523s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__type_support.cpp
+[20.525s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__type_support.cpp
+[20.526s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__type_support.cpp
+[20.527s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__rosidl_typesupport_introspection_cpp.hpp
+[20.528s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__type_support.cpp
+[20.529s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__type_support.cpp
+[20.530s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_introspection_cpp.so
+[20.533s] -- Set runtime path of "/home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_introspection_cpp.so" to ""
+[20.533s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_cpp.so
+[20.535s] -- Set runtime path of "/home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_cpp.so" to ""
+[20.535s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/environment/pythonpath.sh
+[20.536s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/environment/pythonpath.dsv
+[20.537s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs-0.1.0-py3.10.egg-info
+[20.538s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs-0.1.0-py3.10.egg-info/PKG-INFO
+[20.539s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs-0.1.0-py3.10.egg-info/SOURCES.txt
+[20.541s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs-0.1.0-py3.10.egg-info/top_level.txt
+[20.542s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs-0.1.0-py3.10.egg-info/dependency_links.txt
+[20.543s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs
+[20.543s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg
+[20.544s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_mission_goal_s.c
+[20.545s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_policy_status_s.c
+[20.547s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_mission_goal.py
+[20.548s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_graph_snapshot_s.c
+[20.549s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_graph_snapshot.py
+[20.550s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_graph_node.py
+[20.551s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_graph_node_s.c
+[20.552s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_policy_decision_s.c
+[20.553s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/__init__.py
+[20.555s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_policy_status.py
+[20.556s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_policy_decision.py
+[20.559s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_graph_edge.py
+[20.560s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_graph_edge_s.c
+[20.561s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[20.562s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/_hippocampus_ros2_msgs_s.ep.rosidl_typesupport_c.c
+[20.563s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/_hippocampus_ros2_msgs_s.ep.rosidl_typesupport_fastrtps_c.c
+[20.564s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/__init__.py
+[20.565s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/libhippocampus_ros2_msgs__rosidl_generator_py.so
+[20.567s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[20.568s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/_hippocampus_ros2_msgs_s.ep.rosidl_typesupport_introspection_c.c
+[20.569s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[20.708s] Listing '/home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs'...
+[20.708s] Compiling '/home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/__init__.py'...
+[20.708s] Listing '/home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg'...
+[20.708s] Compiling '/home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/__init__.py'...
+[20.708s] Compiling '/home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_graph_edge.py'...
+[20.709s] Compiling '/home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_graph_node.py'...
+[20.709s] Compiling '/home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_graph_snapshot.py'...
+[20.709s] Compiling '/home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_mission_goal.py'...
+[20.709s] Compiling '/home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_policy_decision.py'...
+[20.709s] Compiling '/home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_policy_status.py'...
+[20.713s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[20.715s] -- Set runtime path of "/home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so" to ""
+[20.715s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[20.717s] -- Set runtime path of "/home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so" to ""
+[20.717s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[20.719s] -- Set runtime path of "/home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so" to ""
+[20.719s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_generator_py.so
+[20.721s] -- Set runtime path of "/home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_generator_py.so" to ""
+[20.721s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/PolicyDecision.idl
+[20.722s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/PolicyStatus.idl
+[20.724s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/MissionGoal.idl
+[20.725s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/GraphNode.idl
+[20.726s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/GraphEdge.idl
+[20.728s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/GraphSnapshot.idl
+[20.729s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/PolicyDecision.msg
+[20.730s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/PolicyStatus.msg
+[20.731s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/MissionGoal.msg
+[20.732s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/GraphNode.msg
+[20.733s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/GraphEdge.msg
+[20.734s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/GraphSnapshot.msg
+[20.736s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/ament_index/resource_index/package_run_dependencies/hippocampus_ros2_msgs
+[20.737s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/ament_index/resource_index/parent_prefix_path/hippocampus_ros2_msgs
+[20.739s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/environment/ament_prefix_path.sh
+[20.740s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/environment/ament_prefix_path.dsv
+[20.741s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/environment/path.sh
+[20.742s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/environment/path.dsv
+[20.743s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/local_setup.bash
+[20.744s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/local_setup.sh
+[20.746s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/local_setup.zsh
+[20.748s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/local_setup.dsv
+[20.749s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/package.dsv
+[20.751s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/ament_index/resource_index/packages/hippocampus_ros2_msgs
+[20.752s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_generator_cExport.cmake
+[20.754s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_generator_cExport-noconfig.cmake
+[20.755s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cExport.cmake
+[20.756s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[20.757s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_generator_cppExport.cmake
+[20.758s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cppExport.cmake
+[20.760s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[20.761s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgs__rosidl_typesupport_introspection_cExport.cmake
+[20.762s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[20.763s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgs__rosidl_typesupport_cExport.cmake
+[20.764s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[20.765s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[20.767s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[20.768s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgs__rosidl_typesupport_cppExport.cmake
+[20.769s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[20.770s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_generator_pyExport.cmake
+[20.771s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_generator_pyExport-noconfig.cmake
+[20.772s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/rosidl_cmake-extras.cmake
+[20.773s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[20.774s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[20.776s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[20.777s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[20.778s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[20.779s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[20.780s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgsConfig.cmake
+[20.781s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgsConfig-version.cmake
+[20.782s] -- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/package.xml
+[20.795s] Invoked command in '/home/ros/ros2_ws/build/hippocampus_ros2_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/ros/ros2_ws/build/hippocampus_ros2_msgs

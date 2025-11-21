@@ -1,0 +1,28 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from hippocampus_ros2_msgs/msg/GraphNode.msg
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/Point.idl"
+#include "geometry_msgs/msg/Vector3.idl"
+
+module hippocampus_ros2_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      "Graph node message")
+    struct GraphNode {
+      int32 node_id;
+
+      geometry_msgs::msg::Point position;
+
+      @verbatim (language="comment", text=
+        "Surface normal (for 3D)")
+      geometry_msgs::msg::Vector3 normal;
+
+      @verbatim (language="comment", text=
+        "Node degree")
+      uint32 degree;
+
+      sequence<string> tags;
+    };
+  };
+};

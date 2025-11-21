@@ -1,0 +1,50 @@
+======================================================================
+Hoffman et al. (2016) Topological Mapping Validation
+======================================================================
+
+Integration windows: [0.0, 300.0, 600.0, 900.0] seconds
+Simulation duration: 1200.0 seconds (20.0 minutes)
+Number of place cells: 87
+Place-field sigma: 0.118
+Coactivity threshold: 6.2
+Max edge distance: 0.126
+Obstacle environment: Yes
+  Number of obstacles: 1
+  Layout: random
+  Obstacle radius: 0.16
+  Expected b₁: 1 (one hole per obstacle)
+Placement mode: ring_spokes
+  Ring fraction: 0.29, spokes: 0.31 (num-spokes=7), ring offset: 0.023, ring jitter: 0.010, spoke ext: 0.143, spoke jitter: 0.010
+Trajectory mode: random
+
+  Running with ϖ=Nones... done
+  Running with ϖ=300.0s... done
+  Running with ϖ=600.0s... done
+  Running with ϖ=900.0s... done
+
+======================================================================
+Summary Statistics
+======================================================================
+
+   ϖ (s) |  Final Edges |   Final b₀ |   Final b₁ |  T_min (min)
+----------------------------------------------------------------------
+    None |          301 |          7 |          0 |         1.00
+     300 |          301 |          7 |          0 |         6.00
+     600 |          301 |          7 |          0 |        11.00
+     900 |          301 |          7 |          0 |        16.00
+
+======================================================================
+Generating plots...
+======================================================================
+
+Saved figure to: results/sweeps/20251120-211730_variation_3/figure.png
+
+======================================================================
+Validation complete!
+======================================================================
+
+Key findings from paper:
+  1. Longer integration windows (ϖ) should reduce spurious loops (b₁)
+  2. Integration windows should reduce fragmentation (b₀ → 1 faster)
+  3. Learning time T_min may increase slightly with ϖ, but maps are more stable
+

@@ -1,0 +1,54 @@
+running egg_info
+creating ../../build/hippocampus_ros2/hippocampus_ros2.egg-info
+writing ../../build/hippocampus_ros2/hippocampus_ros2.egg-info/PKG-INFO
+writing dependency_links to ../../build/hippocampus_ros2/hippocampus_ros2.egg-info/dependency_links.txt
+writing entry points to ../../build/hippocampus_ros2/hippocampus_ros2.egg-info/entry_points.txt
+writing requirements to ../../build/hippocampus_ros2/hippocampus_ros2.egg-info/requires.txt
+writing top-level names to ../../build/hippocampus_ros2/hippocampus_ros2.egg-info/top_level.txt
+writing manifest file '../../build/hippocampus_ros2/hippocampus_ros2.egg-info/SOURCES.txt'
+reading manifest file '../../build/hippocampus_ros2/hippocampus_ros2.egg-info/SOURCES.txt'
+writing manifest file '../../build/hippocampus_ros2/hippocampus_ros2.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/ros/ros2_ws/build/hippocampus_ros2/build
+creating /home/ros/ros2_ws/build/hippocampus_ros2/build/lib
+creating /home/ros/ros2_ws/build/hippocampus_ros2/build/lib/hippocampus_ros2
+copying hippocampus_ros2/__init__.py -> /home/ros/ros2_ws/build/hippocampus_ros2/build/lib/hippocampus_ros2
+running install
+running install_lib
+creating /home/ros/ros2_ws/install/hippocampus_ros2/lib/python3.10/site-packages/hippocampus_ros2
+copying /home/ros/ros2_ws/build/hippocampus_ros2/build/lib/hippocampus_ros2/__init__.py -> /home/ros/ros2_ws/install/hippocampus_ros2/lib/python3.10/site-packages/hippocampus_ros2
+byte-compiling /home/ros/ros2_ws/install/hippocampus_ros2/lib/python3.10/site-packages/hippocampus_ros2/__init__.py to __init__.cpython-310.pyc
+running install_data
+creating /home/ros/ros2_ws/install/hippocampus_ros2/share/ament_index
+creating /home/ros/ros2_ws/install/hippocampus_ros2/share/ament_index/resource_index
+creating /home/ros/ros2_ws/install/hippocampus_ros2/share/ament_index/resource_index/packages
+copying resource/hippocampus_ros2 -> /home/ros/ros2_ws/install/hippocampus_ros2/share/ament_index/resource_index/packages
+copying package.xml -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2
+creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/launch
+copying launch/tracing.launch.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/launch
+copying launch/brain.launch.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/launch
+copying launch/policy.launch.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/launch
+copying launch/mission_publisher.launch.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/launch
+creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/config
+copying config/brain.yaml -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/config
+copying config/policy.yaml -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/config
+creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/scripts
+copying scripts/replay_odom.sh -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/scripts
+copying scripts/record_brain_topics.sh -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/scripts
+creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests
+creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/launch
+copying system_tests/launch/brain_system_smoke.launch.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/launch
+creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/worlds
+copying system_tests/worlds/minimal.world -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/worlds
+creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/scripts
+copying system_tests/scripts/pose_publisher.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/scripts
+copying system_tests/scripts/assert_topics.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/scripts
+copying system_tests/README.md -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests
+running install_egg_info
+Copying ../../build/hippocampus_ros2/hippocampus_ros2.egg-info to /home/ros/ros2_ws/install/hippocampus_ros2/lib/python3.10/site-packages/hippocampus_ros2-0.1.0-py3.10.egg-info
+running install_scripts
+Installing mission_publisher script to /home/ros/ros2_ws/install/hippocampus_ros2/lib/hippocampus_ros2
+Installing policy_node script to /home/ros/ros2_ws/install/hippocampus_ros2/lib/hippocampus_ros2
+Installing snn_brain_node script to /home/ros/ros2_ws/install/hippocampus_ros2/lib/hippocampus_ros2
+writing list of installed files to '/home/ros/ros2_ws/build/hippocampus_ros2/install.log'

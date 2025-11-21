@@ -1,0 +1,26 @@
+======================================================================
+Hoffman et al. (2016) Topological Mapping Validation
+======================================================================
+
+Integration windows: [0.0, 120.0, 240.0] seconds
+Simulation duration: 600.0 seconds (10.0 minutes)
+Number of place cells: 90
+Place-field sigma: 0.12
+Coactivity threshold: 8.5
+Max edge distance: 0.140
+Obstacle environment: Yes
+  Number of obstacles: 1
+  Layout: random
+  Obstacle radius: 0.15
+  Expected b₁: 1 (one hole per obstacle)
+Placement mode: uniform
+Trajectory mode: random
+
+Traceback (most recent call last):
+  File "/Users/jacobhornsvennevik/Documents/GitHub/ros-drone/experiments/validate_hoffman_2016.py", line 1124, in <module>
+    main()
+    ~~~~^^
+  File "/Users/jacobhornsvennevik/Documents/GitHub/ros-drone/experiments/validate_hoffman_2016.py", line 1041, in main
+    results_by_window = execute_window_sweep(args.integration_windows, env)
+                                                                       ^^^
+UnboundLocalError: cannot access local variable 'env' where it is not associated with a value

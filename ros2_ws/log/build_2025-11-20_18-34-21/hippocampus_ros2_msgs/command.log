@@ -1,0 +1,4 @@
+Invoking command in '/home/ros/ros2_ws/build/hippocampus_ros2_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/ros/ros2_ws/build/hippocampus_ros2_msgs -- -j8 -l8
+Invoked command in '/home/ros/ros2_ws/build/hippocampus_ros2_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/ros/ros2_ws/build/hippocampus_ros2_msgs -- -j8 -l8
+Invoking command in '/home/ros/ros2_ws/build/hippocampus_ros2_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/ros/ros2_ws/build/hippocampus_ros2_msgs
+Invoked command in '/home/ros/ros2_ws/build/hippocampus_ros2_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/ros/ros2_ws/build/hippocampus_ros2_msgs

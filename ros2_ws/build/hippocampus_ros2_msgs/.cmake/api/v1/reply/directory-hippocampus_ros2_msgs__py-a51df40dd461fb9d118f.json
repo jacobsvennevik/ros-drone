@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "hippocampus_ros2_msgs__py",
+		"source" : "/home/ros/ros2_ws/build/hippocampus_ros2_msgs/hippocampus_ros2_msgs__py"
+	}
+}

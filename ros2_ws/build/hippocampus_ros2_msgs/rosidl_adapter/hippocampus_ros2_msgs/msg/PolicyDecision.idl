@@ -1,0 +1,44 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from hippocampus_ros2_msgs/msg/PolicyDecision.msg
+// generated code does not contain a copyright notice
+
+#include "builtin_interfaces/msg/Time.idl"
+
+module hippocampus_ros2_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      "Policy decision message" "\n"
+      "Represents a decision made by the SNN Policy Service")
+    struct PolicyDecision {
+      @verbatim (language="comment", text=
+        "Action proposal" "\n"
+        "Linear velocity (m/s)")
+      double linear_x;
+
+      @verbatim (language="comment", text=
+        "Angular velocity (rad/s)")
+      double angular_z;
+
+      @verbatim (language="comment", text=
+        "Vertical velocity (m/s) for 3D, 0.0 for 2D")
+      double linear_z;
+
+      @verbatim (language="comment", text=
+        "Decision metadata" "\n"
+        "Confidence score [0.0, 1.0]")
+      double confidence;
+
+      @verbatim (language="comment", text=
+        "Decision reason (\"heuristic\", \"snn\", etc.)")
+      string reason;
+
+      @verbatim (language="comment", text=
+        "Next waypoint node ID (-1 if none)")
+      int32 next_waypoint;
+
+      @verbatim (language="comment", text=
+        "Timestamp")
+      builtin_interfaces::msg::Time stamp;
+    };
+  };
+};

@@ -1,0 +1,233 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-a4c8332396731bc13111.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17
+					]
+				},
+				{
+					"build" : "hippocampus_ros2_msgs__py",
+					"jsonFile" : "directory-hippocampus_ros2_msgs__py-a51df40dd461fb9d118f.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/ros/ros2_ws/build/hippocampus_ros2_msgs/hippocampus_ros2_msgs__py",
+					"targetIndexes" : 
+					[
+						4
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1
+					],
+					"name" : "hippocampus_ros2_msgs",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_hippocampus_ros2_msgs_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_hippocampus_ros2_msgs_egg-e696aab8ec42e4b2f085.json",
+					"name" : "ament_cmake_python_build_hippocampus_ros2_msgs_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_copy_hippocampus_ros2_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_copy_hippocampus_ros2_msgs-3376783ea82a1a2537b2.json",
+					"name" : "ament_cmake_python_copy_hippocampus_ros2_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hippocampus_ros2_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hippocampus_ros2_msgs-6fac9880c60d4d6bdaaa.json",
+					"name" : "hippocampus_ros2_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hippocampus_ros2_msgs__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hippocampus_ros2_msgs__cpp-3cb000acfda8d6d9fb69.json",
+					"name" : "hippocampus_ros2_msgs__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "hippocampus_ros2_msgs__py::@52f3a33c16fb4d1cafb3",
+					"jsonFile" : "target-hippocampus_ros2_msgs__py-40ad8cb02e2c21396380.json",
+					"name" : "hippocampus_ros2_msgs__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hippocampus_ros2_msgs__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hippocampus_ros2_msgs__rosidl_generator_c-85a980d1ddd29032bff1.json",
+					"name" : "hippocampus_ros2_msgs__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hippocampus_ros2_msgs__rosidl_generator_py::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hippocampus_ros2_msgs__rosidl_generator_py-75002ac6face42af7b19.json",
+					"name" : "hippocampus_ros2_msgs__rosidl_generator_py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hippocampus_ros2_msgs__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hippocampus_ros2_msgs__rosidl_typesupport_c-28d6488d6afdc03ad8a9.json",
+					"name" : "hippocampus_ros2_msgs__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hippocampus_ros2_msgs__rosidl_typesupport_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hippocampus_ros2_msgs__rosidl_typesupport_c__pyext-0316ff916ea58d5f864a.json",
+					"name" : "hippocampus_ros2_msgs__rosidl_typesupport_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hippocampus_ros2_msgs__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hippocampus_ros2_msgs__rosidl_typesupport_cpp-ed93f85520a5daf0e87a.json",
+					"name" : "hippocampus_ros2_msgs__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c-cd3a7469b8169ce1593e.json",
+					"name" : "hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c__pyext-c11dafa3b839db597572.json",
+					"name" : "hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cpp-a952540f299ec488da35.json",
+					"name" : "hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hippocampus_ros2_msgs__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hippocampus_ros2_msgs__rosidl_typesupport_introspection_c-4d25c6b1c5e75d42b2bb.json",
+					"name" : "hippocampus_ros2_msgs__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hippocampus_ros2_msgs__rosidl_typesupport_introspection_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hippocampus_ros2_msgs__rosidl_typesupport_introspection_c__pyext-52dae64c32e3d5791370.json",
+					"name" : "hippocampus_ros2_msgs__rosidl_typesupport_introspection_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hippocampus_ros2_msgs__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hippocampus_ros2_msgs__rosidl_typesupport_introspection_cpp-41465fd806bbd7c093ff.json",
+					"name" : "hippocampus_ros2_msgs__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hippocampus_ros2_msgs_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hippocampus_ros2_msgs_uninstall-9b881ff139c41a32746e.json",
+					"name" : "hippocampus_ros2_msgs_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-947584ddb47aa6bc3c18.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/ros/ros2_ws/build/hippocampus_ros2_msgs",
+		"source" : "/home/ros/ros2_ws/src/hippocampus_ros2_msgs"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

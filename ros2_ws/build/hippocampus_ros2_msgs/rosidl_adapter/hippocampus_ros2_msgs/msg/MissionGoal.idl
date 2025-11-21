@@ -1,0 +1,64 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from hippocampus_ros2_msgs/msg/MissionGoal.msg
+// generated code does not contain a copyright notice
+
+#include "builtin_interfaces/msg/Time.idl"
+#include "geometry_msgs/msg/Point.idl"
+
+module hippocampus_ros2_msgs {
+  module msg {
+    module MissionGoal_Constants {
+      @verbatim (language="comment", text=
+        "Goal type")
+      const uint8 GOAL_TYPE_POINT = 0;
+      const uint8 GOAL_TYPE_NODE = 1;
+      const uint8 GOAL_TYPE_REGION = 2;
+    };
+    @verbatim (language="comment", text=
+      "Mission goal message" "\n"
+      "Represents a navigation goal for the policy system")
+    struct MissionGoal {
+      @verbatim (language="comment", text=
+        "Type of goal (POINT, NODE, REGION)")
+      uint8 goal_type;
+
+      @verbatim (language="comment", text=
+        "Point goal (for GOAL_TYPE_POINT)")
+      geometry_msgs::msg::Point point_position;
+
+      @verbatim (language="comment", text=
+        "Distance tolerance (m)")
+      double point_tolerance;
+
+      @verbatim (language="comment", text=
+        "Node goal (for GOAL_TYPE_NODE)" "\n"
+        "Graph node ID")
+      int32 node_id;
+
+      @verbatim (language="comment", text=
+        "Region goal (for GOAL_TYPE_REGION)")
+      geometry_msgs::msg::Point region_center;
+
+      @verbatim (language="comment", text=
+        "Region radius (m)")
+      double region_radius;
+
+      @verbatim (language="comment", text=
+        "Goal metadata" "\n"
+        "Coordinate frame")
+      string frame_id;
+
+      @verbatim (language="comment", text=
+        "Timeout in seconds (0.0 = no timeout)")
+      double timeout;
+
+      @verbatim (language="comment", text=
+        "Goal reached flag")
+      boolean is_reached;
+
+      @verbatim (language="comment", text=
+        "Timestamp")
+      builtin_interfaces::msg::Time stamp;
+    };
+  };
+};

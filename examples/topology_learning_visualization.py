@@ -33,7 +33,7 @@ from hippocampus_core.controllers.place_cell_controller import (
     PlaceCellController,
     PlaceCellControllerConfig,
 )
-from hippocampus_core.env import Agent, Environment
+from hippocampus_core.env import Agent, CircularObstacle, Environment
 
 
 def track_topology_evolution(
@@ -403,6 +403,17 @@ def main() -> None:
         help="Path to save output figure (default: show interactively)",
     )
     parser.add_argument("--seed", type=int, default=42, help="Random seed (default: 42)")
+    parser.add_argument(
+        "--obstacle",
+        action="store_true",
+        help="Include a central circular obstacle (default: off)",
+    )
+    parser.add_argument(
+        "--obstacle-radius",
+        type=float,
+        default=0.15,
+        help="Radius for the central obstacle when --obstacle is set (default: 0.15)",
+    )
 
     args = parser.parse_args()
 
@@ -412,8 +423,13 @@ def main() -> None:
     print("=" * 70)
     print()
 
-    # Create environment
-    env = Environment(width=1.0, height=1.0)
+    # Create environment (optionally with obstacle)
+    if args.obstacle:
+        obstacle = CircularObstacle(center_x=0.5, center_y=0.5, radius=args.obstacle_radius)
+        env = Environment(width=1.0, height=1.0, obstacles=[obstacle])
+        print(f"Obstacle enabled: radius={args.obstacle_radius}")
+    else:
+        env = Environment(width=1.0, height=1.0)
 
     # Track topology evolution
     integration_window = args.integration_window if args.integration_window > 0 else None

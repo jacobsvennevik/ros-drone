@@ -7,9 +7,12 @@ Requires ``networkx``. Install via:
 """
 from __future__ import annotations
 
-from typing import Iterable, Optional
+from typing import TYPE_CHECKING, Iterable, Optional
 
 import numpy as np
+
+if TYPE_CHECKING:
+    from .env import Environment
 
 try:
     import networkx as nx
@@ -17,6 +20,67 @@ except ImportError as exc:  # pragma: no cover - import guard
     raise ImportError(
         "TopologicalGraph requires networkx. Install it with 'python3 -m pip install networkx'."
     ) from exc
+
+
+def _line_intersects_circle(
+    p1: np.ndarray,
+    p2: np.ndarray,
+    circle_center: np.ndarray,
+    radius: float,
+) -> bool:
+    """Check if a line segment intersects (or is inside) a circle.
+    
+    Parameters
+    ----------
+    p1, p2:
+        Line segment endpoints, each as a 2D array.
+    circle_center:
+        Center of the circle as a 2D array.
+    radius:
+        Radius of the circle.
+    
+    Returns
+    -------
+    bool
+        True if the line segment intersects the circle or is entirely inside it.
+    
+    Notes
+    -----
+    This uses the standard line-circle intersection test. The line segment
+    intersects the circle if:
+    1. Either endpoint is inside the circle, OR
+    2. The closest point on the line segment to the circle center is within
+       the circle and lies on the segment.
+    """
+    # Vector from p1 to p2
+    d = p2 - p1
+    # Vector from p1 to circle center
+    f = circle_center - p1
+    
+    # Check if either endpoint is inside the circle
+    dist_p1 = np.linalg.norm(f)
+    dist_p2 = np.linalg.norm(p2 - circle_center)
+    if dist_p1 <= radius or dist_p2 <= radius:
+        return True
+    
+    # Project circle center onto line segment
+    # If d is zero, p1 == p2, already handled above
+    if np.linalg.norm(d) < 1e-10:
+        return dist_p1 <= radius
+    
+    # Parameter t along the line (0 = p1, 1 = p2)
+    t = np.dot(f, d) / np.dot(d, d)
+    
+    # Clamp t to [0, 1] to stay on the segment
+    t = max(0.0, min(1.0, t))
+    
+    # Closest point on segment to circle center
+    closest = p1 + t * d
+    
+    # Distance from closest point to circle center
+    dist_to_closest = np.linalg.norm(closest - circle_center)
+    
+    return dist_to_closest <= radius
 
 
 class TopologicalGraph:
@@ -41,6 +105,7 @@ class TopologicalGraph:
         integration_window: Optional[float] = None,
         current_time: Optional[float] = None,
         integration_times: Optional[dict[tuple[int, int], float]] = None,
+        environment: Optional["Environment"] = None,
     ) -> None:
         """Populate edges using coactivity counts and spatial proximity.
 
@@ -61,6 +126,10 @@ class TopologicalGraph:
         integration_times:
             Dictionary mapping (i, j) pairs to the time when they first exceeded c_min.
             Required if integration_window is provided.
+        environment:
+            Optional environment containing obstacles. If provided, edges that would
+            cross obstacles are filtered out to preserve hole topology (Solution 1:
+            obstacle-aware edge filtering).
 
         Examples
         --------
@@ -121,6 +190,21 @@ class TopologicalGraph:
                 
                 distance = np.linalg.norm(self.positions[i] - self.positions[j])
                 if distance <= max_distance:
+                    # Solution 1: Obstacle-aware edge filtering
+                    # Skip edges that would cross obstacles to preserve hole topology
+                    if environment is not None and environment.obstacles:
+                        pos_i = self.positions[i]
+                        pos_j = self.positions[j]
+                        # Check if edge intersects any obstacle
+                        edge_intersects_obstacle = False
+                        for obstacle in environment.obstacles:
+                            circle_center = np.array([obstacle.center_x, obstacle.center_y])
+                            if _line_intersects_circle(pos_i, pos_j, circle_center, obstacle.radius):
+                                edge_intersects_obstacle = True
+                                break
+                        if edge_intersects_obstacle:
+                            continue  # Skip this edge - it crosses an obstacle
+                    
                     self.graph.add_edge(i, j, weight=float(coactivity[i, j]), distance=float(distance))
 
     def num_nodes(self) -> int:

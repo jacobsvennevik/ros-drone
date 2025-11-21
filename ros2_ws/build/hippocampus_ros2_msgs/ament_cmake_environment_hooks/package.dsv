@@ -1,0 +1,4 @@
+source;share/hippocampus_ros2_msgs/local_setup.bash
+source;share/hippocampus_ros2_msgs/local_setup.dsv
+source;share/hippocampus_ros2_msgs/local_setup.sh
+source;share/hippocampus_ros2_msgs/local_setup.zsh

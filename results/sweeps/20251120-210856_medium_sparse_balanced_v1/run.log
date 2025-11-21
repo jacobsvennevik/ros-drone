@@ -1,0 +1,50 @@
+======================================================================
+Hoffman et al. (2016) Topological Mapping Validation
+======================================================================
+
+Integration windows: [0.0, 210.0, 420.0, 630.0] seconds
+Simulation duration: 1050.0 seconds (17.5 minutes)
+Number of place cells: 78
+Place-field sigma: 0.112
+Coactivity threshold: 7.0
+Max edge distance: 0.118
+Obstacle environment: Yes
+  Number of obstacles: 1
+  Layout: random
+  Obstacle radius: 0.15
+  Expected b₁: 1 (one hole per obstacle)
+Placement mode: obstacle_ring
+  Ring fraction: 0.40, offset: 0.020, jitter: 0.010
+Trajectory mode: random
+
+  Running with ϖ=Nones... done
+  Running with ϖ=210.0s... done
+  Running with ϖ=420.0s... done
+  Running with ϖ=630.0s... done
+
+======================================================================
+Summary Statistics
+======================================================================
+
+   ϖ (s) |  Final Edges |   Final b₀ |   Final b₁ |  T_min (min)
+----------------------------------------------------------------------
+    None |          170 |         16 |          0 |         0.88
+     210 |          170 |         16 |          0 |         4.38
+     420 |          170 |         16 |          0 |         7.88
+     630 |          170 |         16 |          0 |        11.38
+
+======================================================================
+Generating plots...
+======================================================================
+
+Saved figure to: results/sweeps/20251120-210856_medium_sparse_balanced_v1/figure.png
+
+======================================================================
+Validation complete!
+======================================================================
+
+Key findings from paper:
+  1. Longer integration windows (ϖ) should reduce spurious loops (b₁)
+  2. Integration windows should reduce fragmentation (b₀ → 1 faster)
+  3. Learning time T_min may increase slightly with ϖ, but maps are more stable
+

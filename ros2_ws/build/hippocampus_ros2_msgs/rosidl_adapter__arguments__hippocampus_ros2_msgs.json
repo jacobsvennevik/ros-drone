@@ -1,0 +1,11 @@
+{
+  "package_name": "hippocampus_ros2_msgs",
+  "non_idl_tuples": [
+    "/home/ros/ros2_ws/src/hippocampus_ros2_msgs:msg/PolicyDecision.msg",
+    "/home/ros/ros2_ws/src/hippocampus_ros2_msgs:msg/PolicyStatus.msg",
+    "/home/ros/ros2_ws/src/hippocampus_ros2_msgs:msg/MissionGoal.msg",
+    "/home/ros/ros2_ws/src/hippocampus_ros2_msgs:msg/GraphNode.msg",
+    "/home/ros/ros2_ws/src/hippocampus_ros2_msgs:msg/GraphEdge.msg",
+    "/home/ros/ros2_ws/src/hippocampus_ros2_msgs:msg/GraphSnapshot.msg"
+  ]
+}

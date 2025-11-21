@@ -1,0 +1,78 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from hippocampus_ros2_msgs/msg/PolicyStatus.msg
+// generated code does not contain a copyright notice
+
+#include "builtin_interfaces/msg/Time.idl"
+
+module hippocampus_ros2_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      "Policy status message" "\n"
+      "Diagnostics and status information for the policy system")
+    struct PolicyStatus {
+      @verbatim (language="comment", text=
+        "Status flags" "\n"
+        "Policy is active and making decisions")
+      boolean is_active;
+
+      @verbatim (language="comment", text=
+        "Topological graph is stale")
+      boolean graph_stale;
+
+      @verbatim (language="comment", text=
+        "Currently using SNN (vs heuristic)")
+      boolean using_snn;
+
+      @verbatim (language="comment", text=
+        "Hierarchical planning enabled")
+      boolean hierarchical_enabled;
+
+      @verbatim (language="comment", text=
+        "Performance metrics" "\n"
+        "Feature computation time (ms)")
+      double feature_compute_time_ms;
+
+      @verbatim (language="comment", text=
+        "Policy decision time (ms)")
+      double policy_decision_time_ms;
+
+      @verbatim (language="comment", text=
+        "Safety filtering time (ms)")
+      double safety_filter_time_ms;
+
+      @verbatim (language="comment", text=
+        "Total latency (ms)")
+      double total_latency_ms;
+
+      @verbatim (language="comment", text=
+        "Graph information" "\n"
+        "Number of nodes in graph")
+      uint32 graph_nodes;
+
+      @verbatim (language="comment", text=
+        "Number of edges in graph")
+      uint32 graph_edges;
+
+      @verbatim (language="comment", text=
+        "Time since last graph update (seconds)")
+      double graph_staleness_s;
+
+      @verbatim (language="comment", text=
+        "Current state" "\n"
+        "Current decision confidence")
+      double current_confidence;
+
+      @verbatim (language="comment", text=
+        "Current decision reason")
+      string current_reason;
+
+      @verbatim (language="comment", text=
+        "Current waypoint node ID (-1 if none)")
+      int32 current_waypoint;
+
+      @verbatim (language="comment", text=
+        "Timestamp")
+      builtin_interfaces::msg::Time stamp;
+    };
+  };
+};

@@ -51,6 +51,8 @@ setup(
     entry_points={
         "console_scripts": [
             "snn_brain_node = hippocampus_ros2.nodes.brain_node:main",
+            "policy_node = hippocampus_ros2.nodes.policy_node:main",
+            "mission_publisher = hippocampus_ros2.nodes.mission_publisher:main",
         ],
     },
 )

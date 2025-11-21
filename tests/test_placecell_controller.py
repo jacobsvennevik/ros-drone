@@ -145,3 +145,32 @@ def test_integration_window_allows_edges_after_duration():
         # Should have some edges after integration window
         assert graph.num_edges() >= 0  # Could be 0 or more depending on coactivity
 
+
+def test_controller_respects_explicit_place_cell_positions():
+    env = Environment(width=1.0, height=1.0)
+    centers = np.array(
+        [
+            [0.2, 0.5],
+            [0.5, 0.8],
+            [0.8, 0.5],
+            [0.5, 0.2],
+        ],
+        dtype=float,
+    )
+
+    config = PlaceCellControllerConfig(
+        num_place_cells=len(centers),
+        sigma=0.12,
+        max_rate=18.0,
+        coactivity_window=0.05,
+        coactivity_threshold=3.0,
+        max_edge_distance=0.3,
+        place_cell_positions=centers,
+    )
+
+    controller = PlaceCellController(environment=env, config=config, rng=np.random.default_rng(321))
+
+    assert np.allclose(controller.place_cell_positions, centers)
+    controller.reset()
+    assert np.allclose(controller.place_cell_positions, centers)
+

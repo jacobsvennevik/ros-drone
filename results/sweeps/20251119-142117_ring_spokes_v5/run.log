@@ -1,0 +1,45 @@
+======================================================================
+Hoffman et al. (2016) Topological Mapping Validation
+======================================================================
+
+Integration windows: [0.0, 180.0, 360.0] seconds
+Simulation duration: 720.0 seconds (12.0 minutes)
+Number of place cells: 80
+Place-field sigma: 0.1
+Coactivity threshold: 7.0
+Max edge distance: 0.090
+Obstacle environment: Yes
+  Obstacle radius: 0.15
+  Expected b₁: 1 (hole around obstacle)
+Placement mode: ring_spokes
+  Ring fraction: 0.35, spokes: 0.15 (num-spokes=4), ring offset: 0.020, ring jitter: 0.003, spoke ext: 0.250, spoke jitter: 0.008
+
+  Running with ϖ=Nones... done
+  Running with ϖ=180.0s... done
+  Running with ϖ=360.0s... done
+
+======================================================================
+Summary Statistics
+======================================================================
+
+   ϖ (s) |  Final Edges |   Final b₀ |   Final b₁ |  T_min (min)
+----------------------------------------------------------------------
+    None |          126 |         19 |          0 |         0.60
+     180 |          126 |         19 |          0 |         3.60
+     360 |          126 |         19 |          0 |         6.60
+
+======================================================================
+Generating plots...
+======================================================================
+
+Saved figure to: results/sweeps/20251119-142117_ring_spokes_v5/figure.png
+
+======================================================================
+Validation complete!
+======================================================================
+
+Key findings from paper:
+  1. Longer integration windows (ϖ) should reduce spurious loops (b₁)
+  2. Integration windows should reduce fragmentation (b₀ → 1 faster)
+  3. Learning time T_min may increase slightly with ϖ, but maps are more stable
+

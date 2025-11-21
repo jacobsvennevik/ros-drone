@@ -1,0 +1,348 @@
+[0.000000] (-) TimerEvent: {}
+[0.001403] (hippocampus_ros2) JobQueued: {'identifier': 'hippocampus_ros2', 'dependencies': OrderedDict()}
+[0.001606] (hippocampus_ros2_msgs) JobQueued: {'identifier': 'hippocampus_ros2_msgs', 'dependencies': OrderedDict()}
+[0.001664] (hippocampus_ros2) JobStarted: {'identifier': 'hippocampus_ros2'}
+[0.012984] (hippocampus_ros2_msgs) JobStarted: {'identifier': 'hippocampus_ros2_msgs'}
+[0.098958] (-) TimerEvent: {}
+[0.204172] (-) TimerEvent: {}
+[0.309663] (-) TimerEvent: {}
+[0.337401] (hippocampus_ros2_msgs) JobProgress: {'identifier': 'hippocampus_ros2_msgs', 'progress': 'cmake'}
+[0.338617] (hippocampus_ros2_msgs) JobProgress: {'identifier': 'hippocampus_ros2_msgs', 'progress': 'build'}
+[0.340799] (hippocampus_ros2_msgs) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/ros/ros2_ws/build/hippocampus_ros2_msgs', '--', '-j8', '-l8'], 'cwd': '/home/ros/ros2_ws/build/hippocampus_ros2_msgs', 'env': OrderedDict([('HOSTNAME', 'docker-desktop'), ('SHLVL', '0'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/root'), ('ROS_PYTHON_VERSION', '3'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'), ('DISPLAY', ':0'), ('LANG', 'C.UTF-8'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('PWD', '/home/ros/ros2_ws/build/hippocampus_ros2_msgs'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.411142] (-) TimerEvent: {}
+[0.514446] (-) TimerEvent: {}
+[0.615470] (-) TimerEvent: {}
+[0.717441] (-) TimerEvent: {}
+[0.777411] (hippocampus_ros2_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target hippocampus_ros2_msgs__rosidl_generator_c\n'}
+[0.788873] (hippocampus_ros2) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/hippocampus_ros2', 'build', '--build-base', '/home/ros/ros2_ws/build/hippocampus_ros2/build', 'install', '--record', '/home/ros/ros2_ws/build/hippocampus_ros2/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/ros/ros2_ws/src/hippocampus_ros2', 'env': {'HOSTNAME': 'docker-desktop', 'SHLVL': '0', 'LD_LIBRARY_PATH': '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'HOME': '/root', 'ROS_PYTHON_VERSION': '3', 'ROS_DISTRO': 'humble', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin', 'DISPLAY': ':0', 'LANG': 'C.UTF-8', 'AMENT_PREFIX_PATH': '/opt/ros/humble', 'PWD': '/home/ros/ros2_ws/build/hippocampus_ros2', 'LC_ALL': 'C.UTF-8', 'PYTHONPATH': '/home/ros/ros2_ws/build/hippocampus_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ros/ros2_ws/install/hippocampus_ros2/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1'}, 'shell': False}
+[0.812877] (hippocampus_ros2_msgs) StdoutLine: {'line': b'[  1%] Built target hippocampus_ros2_msgs__cpp\n'}
+[0.818368] (-) TimerEvent: {}
+[0.901932] (hippocampus_ros2_msgs) StdoutLine: {'line': b'[  1%] Built target ament_cmake_python_copy_hippocampus_ros2_msgs\n'}
+[0.919461] (-) TimerEvent: {}
+[0.922561] (hippocampus_ros2_msgs) StdoutLine: {'line': b'[ 12%] Built target hippocampus_ros2_msgs__rosidl_generator_c\n'}
+[1.020759] (-) TimerEvent: {}
+[1.092356] (hippocampus_ros2) StdoutLine: {'line': b'running egg_info\n'}
+[1.093408] (hippocampus_ros2) StdoutLine: {'line': b'creating ../../build/hippocampus_ros2/hippocampus_ros2.egg-info\n'}
+[1.094066] (hippocampus_ros2) StdoutLine: {'line': b'writing ../../build/hippocampus_ros2/hippocampus_ros2.egg-info/PKG-INFO\n'}
+[1.095758] (hippocampus_ros2) StdoutLine: {'line': b'writing dependency_links to ../../build/hippocampus_ros2/hippocampus_ros2.egg-info/dependency_links.txt\n'}
+[1.096612] (hippocampus_ros2) StdoutLine: {'line': b'writing entry points to ../../build/hippocampus_ros2/hippocampus_ros2.egg-info/entry_points.txt\n'}
+[1.097038] (hippocampus_ros2_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target hippocampus_ros2_msgs__rosidl_typesupport_c\n'}
+[1.097615] (hippocampus_ros2) StdoutLine: {'line': b'writing requirements to ../../build/hippocampus_ros2/hippocampus_ros2.egg-info/requires.txt\n'}
+[1.098418] (hippocampus_ros2) StdoutLine: {'line': b'writing top-level names to ../../build/hippocampus_ros2/hippocampus_ros2.egg-info/top_level.txt\n'}
+[1.099237] (hippocampus_ros2) StdoutLine: {'line': b"writing manifest file '../../build/hippocampus_ros2/hippocampus_ros2.egg-info/SOURCES.txt'\n"}
+[1.105989] (hippocampus_ros2) StdoutLine: {'line': b"reading manifest file '../../build/hippocampus_ros2/hippocampus_ros2.egg-info/SOURCES.txt'\n"}
+[1.108281] (hippocampus_ros2) StdoutLine: {'line': b"writing manifest file '../../build/hippocampus_ros2/hippocampus_ros2.egg-info/SOURCES.txt'\n"}
+[1.108714] (hippocampus_ros2) StdoutLine: {'line': b'running build\n'}
+[1.109140] (hippocampus_ros2) StdoutLine: {'line': b'running build_py\n'}
+[1.109487] (hippocampus_ros2) StdoutLine: {'line': b'creating /home/ros/ros2_ws/build/hippocampus_ros2/build\n'}
+[1.109998] (hippocampus_ros2) StdoutLine: {'line': b'creating /home/ros/ros2_ws/build/hippocampus_ros2/build/lib\n'}
+[1.110630] (hippocampus_ros2) StdoutLine: {'line': b'creating /home/ros/ros2_ws/build/hippocampus_ros2/build/lib/hippocampus_ros2\n'}
+[1.110943] (hippocampus_ros2) StdoutLine: {'line': b'copying hippocampus_ros2/__init__.py -> /home/ros/ros2_ws/build/hippocampus_ros2/build/lib/hippocampus_ros2\n'}
+[1.112605] (hippocampus_ros2) StdoutLine: {'line': b'running install\n'}
+[1.113101] (hippocampus_ros2) StdoutLine: {'line': b'running install_lib\n'}
+[1.114423] (hippocampus_ros2) StdoutLine: {'line': b'creating /home/ros/ros2_ws/install/hippocampus_ros2/lib/python3.10/site-packages/hippocampus_ros2\n'}
+[1.114937] (hippocampus_ros2) StdoutLine: {'line': b'copying /home/ros/ros2_ws/build/hippocampus_ros2/build/lib/hippocampus_ros2/__init__.py -> /home/ros/ros2_ws/install/hippocampus_ros2/lib/python3.10/site-packages/hippocampus_ros2\n'}
+[1.117135] (hippocampus_ros2) StdoutLine: {'line': b'byte-compiling /home/ros/ros2_ws/install/hippocampus_ros2/lib/python3.10/site-packages/hippocampus_ros2/__init__.py to __init__.cpython-310.pyc\n'}
+[1.119582] (hippocampus_ros2) StdoutLine: {'line': b'running install_data\n'}
+[1.120093] (hippocampus_ros2) StdoutLine: {'line': b'creating /home/ros/ros2_ws/install/hippocampus_ros2/share/ament_index\n'}
+[1.120611] (hippocampus_ros2) StdoutLine: {'line': b'creating /home/ros/ros2_ws/install/hippocampus_ros2/share/ament_index/resource_index\n'}
+[1.121168] (-) TimerEvent: {}
+[1.121270] (hippocampus_ros2) StdoutLine: {'line': b'creating /home/ros/ros2_ws/install/hippocampus_ros2/share/ament_index/resource_index/packages\n'}
+[1.121660] (hippocampus_ros2) StdoutLine: {'line': b'copying resource/hippocampus_ros2 -> /home/ros/ros2_ws/install/hippocampus_ros2/share/ament_index/resource_index/packages\n'}
+[1.122914] (hippocampus_ros2) StdoutLine: {'line': b'copying package.xml -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2\n'}
+[1.124572] (hippocampus_ros2) StdoutLine: {'line': b'creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/launch\n'}
+[1.125345] (hippocampus_ros2) StdoutLine: {'line': b'copying launch/tracing.launch.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/launch\n'}
+[1.127414] (hippocampus_ros2) StdoutLine: {'line': b'copying launch/brain.launch.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/launch\n'}
+[1.129258] (hippocampus_ros2) StdoutLine: {'line': b'copying launch/policy.launch.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/launch\n'}
+[1.130435] (hippocampus_ros2_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target hippocampus_ros2_msgs__rosidl_typesupport_introspection_c\n'}
+[1.131744] (hippocampus_ros2) StdoutLine: {'line': b'copying launch/mission_publisher.launch.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/launch\n'}
+[1.133353] (hippocampus_ros2) StdoutLine: {'line': b'creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/config\n'}
+[1.133891] (hippocampus_ros2) StdoutLine: {'line': b'copying config/brain.yaml -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/config\n'}
+[1.135344] (hippocampus_ros2) StdoutLine: {'line': b'copying config/policy.yaml -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/config\n'}
+[1.138965] (hippocampus_ros2) StdoutLine: {'line': b'creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/scripts\n'}
+[1.140163] (hippocampus_ros2) StdoutLine: {'line': b'copying scripts/replay_odom.sh -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/scripts\n'}
+[1.143151] (hippocampus_ros2_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target hippocampus_ros2_msgs__rosidl_typesupport_cpp\n'}
+[1.146439] (hippocampus_ros2) StdoutLine: {'line': b'copying scripts/record_brain_topics.sh -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/scripts\n'}
+[1.151559] (hippocampus_ros2) StdoutLine: {'line': b'creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests\n'}
+[1.152396] (hippocampus_ros2) StdoutLine: {'line': b'creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/launch\n'}
+[1.153325] (hippocampus_ros2) StdoutLine: {'line': b'copying system_tests/launch/brain_system_smoke.launch.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/launch\n'}
+[1.158949] (hippocampus_ros2) StdoutLine: {'line': b'creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/worlds\n'}
+[1.160766] (hippocampus_ros2) StdoutLine: {'line': b'copying system_tests/worlds/minimal.world -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/worlds\n'}
+[1.162529] (hippocampus_ros2) StdoutLine: {'line': b'creating /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/scripts\n'}
+[1.163797] (hippocampus_ros2) StdoutLine: {'line': b'copying system_tests/scripts/pose_publisher.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/scripts\n'}
+[1.167295] (hippocampus_ros2) StdoutLine: {'line': b'copying system_tests/scripts/assert_topics.py -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests/scripts\n'}
+[1.171321] (hippocampus_ros2) StdoutLine: {'line': b'copying system_tests/README.md -> /home/ros/ros2_ws/install/hippocampus_ros2/share/hippocampus_ros2/system_tests\n'}
+[1.174392] (hippocampus_ros2) StdoutLine: {'line': b'running install_egg_info\n'}
+[1.176317] (hippocampus_ros2) StdoutLine: {'line': b'Copying ../../build/hippocampus_ros2/hippocampus_ros2.egg-info to /home/ros/ros2_ws/install/hippocampus_ros2/lib/python3.10/site-packages/hippocampus_ros2-0.1.0-py3.10.egg-info\n'}
+[1.194057] (hippocampus_ros2_msgs) StdoutLine: {'line': b'[ 23%] Built target hippocampus_ros2_msgs__rosidl_typesupport_c\n'}
+[1.196618] (hippocampus_ros2) StdoutLine: {'line': b'running install_scripts\n'}
+[1.207116] (hippocampus_ros2_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target hippocampus_ros2_msgs__rosidl_typesupport_introspection_cpp\n'}
+[1.221481] (-) TimerEvent: {}
+[1.223700] (hippocampus_ros2) StdoutLine: {'line': b'Installing mission_publisher script to /home/ros/ros2_ws/install/hippocampus_ros2/lib/hippocampus_ros2\n'}
+[1.226144] (hippocampus_ros2) StdoutLine: {'line': b'Installing policy_node script to /home/ros/ros2_ws/install/hippocampus_ros2/lib/hippocampus_ros2\n'}
+[1.229166] (hippocampus_ros2) StdoutLine: {'line': b'Installing snn_brain_node script to /home/ros/ros2_ws/install/hippocampus_ros2/lib/hippocampus_ros2\n'}
+[1.233431] (hippocampus_ros2) StdoutLine: {'line': b"writing list of installed files to '/home/ros/ros2_ws/build/hippocampus_ros2/install.log'\n"}
+[1.234577] (hippocampus_ros2_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cpp\n'}
+[1.242471] (hippocampus_ros2_msgs) StdoutLine: {'line': b'[ 35%] Built target hippocampus_ros2_msgs__rosidl_typesupport_introspection_c\n'}
+[1.256119] (hippocampus_ros2) CommandEnded: {'returncode': 0}
+[1.289098] (hippocampus_ros2) JobEnded: {'identifier': 'hippocampus_ros2', 'rc': 0}
+[1.291887] (hippocampus_ros2_msgs) StdoutLine: {'line': b'[ 46%] Built target hippocampus_ros2_msgs__rosidl_typesupport_cpp\n'}
+[1.297542] (hippocampus_ros2_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c\n'}
+[1.314245] (hippocampus_ros2_msgs) StdoutLine: {'line': b'[ 57%] Built target hippocampus_ros2_msgs__rosidl_typesupport_introspection_cpp\n'}
+[1.323505] (-) TimerEvent: {}
+[1.340448] (hippocampus_ros2_msgs) StdoutLine: {'line': b'[ 69%] Built target hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cpp\n'}
+[1.356738] (hippocampus_ros2_msgs) StdoutLine: {'line': b'running egg_info\n'}
+[1.357564] (hippocampus_ros2_msgs) StdoutLine: {'line': b'writing hippocampus_ros2_msgs.egg-info/PKG-INFO\n'}
+[1.361362] (hippocampus_ros2_msgs) StdoutLine: {'line': b'writing dependency_links to hippocampus_ros2_msgs.egg-info/dependency_links.txt\n'}
+[1.362083] (hippocampus_ros2_msgs) StdoutLine: {'line': b'writing top-level names to hippocampus_ros2_msgs.egg-info/top_level.txt\n'}
+[1.364435] (hippocampus_ros2_msgs) StdoutLine: {'line': b"reading manifest file 'hippocampus_ros2_msgs.egg-info/SOURCES.txt'\n"}
+[1.365444] (hippocampus_ros2_msgs) StdoutLine: {'line': b"writing manifest file 'hippocampus_ros2_msgs.egg-info/SOURCES.txt'\n"}
+[1.393878] (hippocampus_ros2_msgs) StdoutLine: {'line': b'[ 80%] Built target hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c\n'}
+[1.424449] (-) TimerEvent: {}
+[1.439198] (hippocampus_ros2_msgs) StdoutLine: {'line': b'[ 80%] Built target ament_cmake_python_build_hippocampus_ros2_msgs_egg\n'}
+[1.525586] (-) TimerEvent: {}
+[1.569998] (hippocampus_ros2_msgs) StdoutLine: {'line': b'[ 80%] Built target hippocampus_ros2_msgs\n'}
+[1.626408] (-) TimerEvent: {}
+[1.730942] (-) TimerEvent: {}
+[1.747151] (hippocampus_ros2_msgs) StdoutLine: {'line': b'[ 81%] Built target hippocampus_ros2_msgs__py\n'}
+[1.832600] (-) TimerEvent: {}
+[1.929970] (hippocampus_ros2_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target hippocampus_ros2_msgs__rosidl_generator_py\n'}
+[1.933397] (-) TimerEvent: {}
+[2.024035] (hippocampus_ros2_msgs) StdoutLine: {'line': b'[ 91%] Built target hippocampus_ros2_msgs__rosidl_generator_py\n'}
+[2.034387] (-) TimerEvent: {}
+[2.140478] (-) TimerEvent: {}
+[2.168604] (hippocampus_ros2_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target hippocampus_ros2_msgs__rosidl_typesupport_introspection_c__pyext\n'}
+[2.169575] (hippocampus_ros2_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c__pyext\n'}
+[2.180368] (hippocampus_ros2_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target hippocampus_ros2_msgs__rosidl_typesupport_c__pyext\n'}
+[2.241393] (-) TimerEvent: {}
+[2.271205] (hippocampus_ros2_msgs) StdoutLine: {'line': b'[ 94%] Built target hippocampus_ros2_msgs__rosidl_typesupport_introspection_c__pyext\n'}
+[2.273134] (hippocampus_ros2_msgs) StdoutLine: {'line': b'[ 97%] Built target hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c__pyext\n'}
+[2.284849] (hippocampus_ros2_msgs) StdoutLine: {'line': b'[100%] Built target hippocampus_ros2_msgs__rosidl_typesupport_c__pyext\n'}
+[2.338012] (hippocampus_ros2_msgs) CommandEnded: {'returncode': 0}
+[2.343177] (hippocampus_ros2_msgs) JobProgress: {'identifier': 'hippocampus_ros2_msgs', 'progress': 'install'}
+[2.343422] (-) TimerEvent: {}
+[2.382463] (hippocampus_ros2_msgs) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/ros/ros2_ws/build/hippocampus_ros2_msgs'], 'cwd': '/home/ros/ros2_ws/build/hippocampus_ros2_msgs', 'env': OrderedDict([('HOSTNAME', 'docker-desktop'), ('SHLVL', '0'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/root'), ('ROS_PYTHON_VERSION', '3'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'), ('DISPLAY', ':0'), ('LANG', 'C.UTF-8'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('PWD', '/home/ros/ros2_ws/build/hippocampus_ros2_msgs'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[2.433628] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[2.435691] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/ament_index/resource_index/rosidl_interfaces/hippocampus_ros2_msgs\n'}
+[2.436520] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs\n'}
+[2.437249] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg\n'}
+[2.437804] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/rosidl_generator_c__visibility_control.h\n'}
+[2.438162] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/graph_edge.h\n'}
+[2.438566] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/policy_decision.h\n'}
+[2.438870] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/policy_status.h\n'}
+[2.439184] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/graph_node.h\n'}
+[2.439511] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/mission_goal.h\n'}
+[2.439838] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail\n'}
+[2.440489] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__struct.h\n'}
+[2.440813] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__functions.h\n'}
+[2.441222] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__type_support.h\n'}
+[2.441521] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__struct.h\n'}
+[2.441854] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__struct.h\n'}
+[2.442165] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__functions.c\n'}
+[2.442470] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__functions.c\n'}
+[2.442765] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__struct.h\n'}
+[2.443078] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__functions.c\n'}
+[2.443349] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__functions.h\n'}
+[2.443576] (-) TimerEvent: {}
+[2.443701] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__functions.c\n'}
+[2.444007] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__type_support.h\n'}
+[2.444323] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__struct.h\n'}
+[2.444633] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__type_support.h\n'}
+[2.444900] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__type_support.h\n'}
+[2.445159] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__struct.h\n'}
+[2.445482] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__functions.c\n'}
+[2.445749] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__functions.h\n'}
+[2.446039] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__type_support.h\n'}
+[2.446323] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__type_support.h\n'}
+[2.446625] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__functions.h\n'}
+[2.446910] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__functions.h\n'}
+[2.447245] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__functions.h\n'}
+[2.447589] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__functions.c\n'}
+[2.447924] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/graph_snapshot.h\n'}
+[2.448412] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/environment/library_path.sh\n'}
+[2.448831] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/environment/library_path.dsv\n'}
+[2.451116] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_generator_c.so\n'}
+[2.452197] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs\n'}
+[2.452684] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg\n'}
+[2.453150] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail\n'}
+[2.453855] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__rosidl_typesupport_fastrtps_c.h\n'}
+[2.454189] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__rosidl_typesupport_fastrtps_c.h\n'}
+[2.454552] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__rosidl_typesupport_fastrtps_c.h\n'}
+[2.454831] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__rosidl_typesupport_fastrtps_c.h\n'}
+[2.455243] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__rosidl_typesupport_fastrtps_c.h\n'}
+[2.455673] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__rosidl_typesupport_fastrtps_c.h\n'}
+[2.456213] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h\n'}
+[2.456903] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_fastrtps_c.so\n'}
+[2.457594] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs\n'}
+[2.458072] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg\n'}
+[2.458591] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/policy_decision.hpp\n'}
+[2.458912] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/graph_snapshot.hpp\n'}
+[2.459211] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/policy_status.hpp\n'}
+[2.459519] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/graph_node.hpp\n'}
+[2.459821] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail\n'}
+[2.460397] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__traits.hpp\n'}
+[2.460696] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__builder.hpp\n'}
+[2.460976] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__traits.hpp\n'}
+[2.461306] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__type_support.hpp\n'}
+[2.461588] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__builder.hpp\n'}
+[2.461902] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__struct.hpp\n'}
+[2.462265] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__type_support.hpp\n'}
+[2.462582] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__builder.hpp\n'}
+[2.462884] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__struct.hpp\n'}
+[2.463155] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__builder.hpp\n'}
+[2.463486] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__type_support.hpp\n'}
+[2.463891] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__type_support.hpp\n'}
+[2.464246] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__type_support.hpp\n'}
+[2.464504] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__traits.hpp\n'}
+[2.464788] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__traits.hpp\n'}
+[2.465129] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__struct.hpp\n'}
+[2.465410] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__struct.hpp\n'}
+[2.465742] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__builder.hpp\n'}
+[2.466170] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__traits.hpp\n'}
+[2.466495] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__traits.hpp\n'}
+[2.466880] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__type_support.hpp\n'}
+[2.467195] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__struct.hpp\n'}
+[2.467474] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__struct.hpp\n'}
+[2.467794] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__builder.hpp\n'}
+[2.468159] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/rosidl_generator_cpp__visibility_control.hpp\n'}
+[2.468429] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/graph_edge.hpp\n'}
+[2.468706] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/mission_goal.hpp\n'}
+[2.469095] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs\n'}
+[2.469466] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg\n'}
+[2.469955] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h\n'}
+[2.470243] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail\n'}
+[2.470810] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[2.471106] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[2.471412] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[2.471725] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[2.472000] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[2.472323] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[2.472701] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/dds_fastrtps\n'}
+[2.473607] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cpp.so\n'}
+[2.474247] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs\n'}
+[2.474674] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg\n'}
+[2.475090] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail\n'}
+[2.475631] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__rosidl_typesupport_introspection_c.h\n'}
+[2.475945] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__rosidl_typesupport_introspection_c.h\n'}
+[2.476242] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__rosidl_typesupport_introspection_c.h\n'}
+[2.476569] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__rosidl_typesupport_introspection_c.h\n'}
+[2.476872] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__type_support.c\n'}
+[2.477188] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__type_support.c\n'}
+[2.477387] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__rosidl_typesupport_introspection_c.h\n'}
+[2.477568] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__rosidl_typesupport_introspection_c.h\n'}
+[2.477805] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__type_support.c\n'}
+[2.478119] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__type_support.c\n'}
+[2.478316] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__type_support.c\n'}
+[2.478463] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__type_support.c\n'}
+[2.478669] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h\n'}
+[2.479001] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_introspection_c.so\n'}
+[2.479656] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_c.so\n'}
+[2.480075] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs\n'}
+[2.480396] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg\n'}
+[2.480700] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail\n'}
+[2.481051] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__type_support.cpp\n'}
+[2.481383] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_snapshot__rosidl_typesupport_introspection_cpp.hpp\n'}
+[2.481707] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__rosidl_typesupport_introspection_cpp.hpp\n'}
+[2.481982] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__rosidl_typesupport_introspection_cpp.hpp\n'}
+[2.482325] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__rosidl_typesupport_introspection_cpp.hpp\n'}
+[2.482629] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__rosidl_typesupport_introspection_cpp.hpp\n'}
+[2.482900] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_status__type_support.cpp\n'}
+[2.483180] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_node__type_support.cpp\n'}
+[2.483442] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/graph_edge__type_support.cpp\n'}
+[2.483756] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__rosidl_typesupport_introspection_cpp.hpp\n'}
+[2.484057] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/mission_goal__type_support.cpp\n'}
+[2.484407] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/include/hippocampus_ros2_msgs/hippocampus_ros2_msgs/msg/detail/policy_decision__type_support.cpp\n'}
+[2.485415] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_introspection_cpp.so\n'}
+[2.486396] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_typesupport_cpp.so\n'}
+[2.487118] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/environment/pythonpath.sh\n'}
+[2.487518] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/environment/pythonpath.dsv\n'}
+[2.487982] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs-0.1.0-py3.10.egg-info\n'}
+[2.488552] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs-0.1.0-py3.10.egg-info/PKG-INFO\n'}
+[2.490674] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs-0.1.0-py3.10.egg-info/SOURCES.txt\n'}
+[2.492071] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs-0.1.0-py3.10.egg-info/top_level.txt\n'}
+[2.493344] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs-0.1.0-py3.10.egg-info/dependency_links.txt\n'}
+[2.494511] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs\n'}
+[2.494939] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg\n'}
+[2.495360] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_mission_goal_s.c\n'}
+[2.495593] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_policy_status_s.c\n'}
+[2.495816] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_mission_goal.py\n'}
+[2.496131] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_graph_snapshot_s.c\n'}
+[2.496408] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_graph_snapshot.py\n'}
+[2.496678] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_graph_node.py\n'}
+[2.496903] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_graph_node_s.c\n'}
+[2.497131] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_policy_decision_s.c\n'}
+[2.497459] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/__init__.py\n'}
+[2.497731] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_policy_status.py\n'}
+[2.497961] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_policy_decision.py\n'}
+[2.498292] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_graph_edge.py\n'}
+[2.498643] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg/_graph_edge_s.c\n'}
+[2.498861] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[2.499069] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/_hippocampus_ros2_msgs_s.ep.rosidl_typesupport_c.c\n'}
+[2.499287] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/_hippocampus_ros2_msgs_s.ep.rosidl_typesupport_fastrtps_c.c\n'}
+[2.499519] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/__init__.py\n'}
+[2.499711] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/libhippocampus_ros2_msgs__rosidl_generator_py.so\n'}
+[2.501499] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[2.501628] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/_hippocampus_ros2_msgs_s.ep.rosidl_typesupport_introspection_c.c\n'}
+[2.501772] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[2.544388] (-) TimerEvent: {}
+[2.614327] (hippocampus_ros2_msgs) StdoutLine: {'line': b"Listing '/home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs'...\n"}
+[2.619128] (hippocampus_ros2_msgs) StdoutLine: {'line': b"Listing '/home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/msg'...\n"}
+[2.620517] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[2.621210] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[2.621844] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/local/lib/python3.10/dist-packages/hippocampus_ros2_msgs/hippocampus_ros2_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[2.622508] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/lib/libhippocampus_ros2_msgs__rosidl_generator_py.so\n'}
+[2.623157] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/PolicyDecision.idl\n'}
+[2.623541] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/PolicyStatus.idl\n'}
+[2.623983] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/MissionGoal.idl\n'}
+[2.624261] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/GraphNode.idl\n'}
+[2.624657] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/GraphEdge.idl\n'}
+[2.625057] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/GraphSnapshot.idl\n'}
+[2.625425] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/PolicyDecision.msg\n'}
+[2.625694] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/PolicyStatus.msg\n'}
+[2.626026] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/MissionGoal.msg\n'}
+[2.626410] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/GraphNode.msg\n'}
+[2.626869] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/GraphEdge.msg\n'}
+[2.627148] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/msg/GraphSnapshot.msg\n'}
+[2.627445] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/ament_index/resource_index/package_run_dependencies/hippocampus_ros2_msgs\n'}
+[2.627840] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/ament_index/resource_index/parent_prefix_path/hippocampus_ros2_msgs\n'}
+[2.628230] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/environment/ament_prefix_path.sh\n'}
+[2.628584] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/environment/ament_prefix_path.dsv\n'}
+[2.628924] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/environment/path.sh\n'}
+[2.629314] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/environment/path.dsv\n'}
+[2.629723] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/local_setup.bash\n'}
+[2.630100] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/local_setup.sh\n'}
+[2.630484] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/local_setup.zsh\n'}
+[2.630908] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/local_setup.dsv\n'}
+[2.631322] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Installing: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/package.dsv\n'}
+[2.633261] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/ament_index/resource_index/packages/hippocampus_ros2_msgs\n'}
+[2.634877] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_generator_cExport.cmake\n'}
+[2.635354] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_generator_cExport-noconfig.cmake\n'}
+[2.636008] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cExport.cmake\n'}
+[2.636371] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cExport-noconfig.cmake\n'}
+[2.637097] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_generator_cppExport.cmake\n'}
+[2.637717] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cppExport.cmake\n'}
+[2.637988] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake\n'}
+[2.638616] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgs__rosidl_typesupport_introspection_cExport.cmake\n'}
+[2.638890] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake\n'}
+[2.639388] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgs__rosidl_typesupport_cExport.cmake\n'}
+[2.639716] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgs__rosidl_typesupport_cExport-noconfig.cmake\n'}
+[2.640303] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgs__rosidl_typesupport_introspection_cppExport.cmake\n'}
+[2.640642] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake\n'}
+[2.641256] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgs__rosidl_typesupport_cppExport.cmake\n'}
+[2.641553] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgs__rosidl_typesupport_cppExport-noconfig.cmake\n'}
+[2.642076] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_generator_pyExport.cmake\n'}
+[2.642365] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/export_hippocampus_ros2_msgs__rosidl_generator_pyExport-noconfig.cmake\n'}
+[2.642678] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/rosidl_cmake-extras.cmake\n'}
+[2.642911] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[2.643213] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[2.643553] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/ament_cmake_export_libraries-extras.cmake\n'}
+[2.643806] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/ament_cmake_export_targets-extras.cmake\n'}
+[2.644038] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake\n'}
+[2.644271] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake\n'}
+[2.644492] (-) TimerEvent: {}
+[2.644552] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgsConfig.cmake\n'}
+[2.645225] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/cmake/hippocampus_ros2_msgsConfig-version.cmake\n'}
+[2.645785] (hippocampus_ros2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/ros/ros2_ws/install/hippocampus_ros2_msgs/share/hippocampus_ros2_msgs/package.xml\n'}
+[2.652350] (hippocampus_ros2_msgs) CommandEnded: {'returncode': 0}
+[2.682438] (hippocampus_ros2_msgs) JobEnded: {'identifier': 'hippocampus_ros2_msgs', 'rc': 0}
+[2.684373] (-) EventReactorShutdown: {}

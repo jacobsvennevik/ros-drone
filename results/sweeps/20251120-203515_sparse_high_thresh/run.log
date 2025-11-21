@@ -1,0 +1,46 @@
+======================================================================
+Hoffman et al. (2016) Topological Mapping Validation
+======================================================================
+
+Integration windows: [0.0] seconds
+Simulation duration: 120.0 seconds (2.0 minutes)
+Number of place cells: 90
+Place-field sigma: 0.12
+Coactivity threshold: 8.5
+Max edge distance: 0.140
+Obstacle environment: Yes
+  Number of obstacles: 1
+  Layout: random
+  Obstacle radius: 0.15
+  Expected b₁: 1 (one hole per obstacle)
+Placement mode: uniform
+Trajectory mode: random
+
+Traceback (most recent call last):
+  File "/Users/jacobhornsvennevik/Documents/GitHub/ros-drone/experiments/validate_hoffman_2016.py", line 1127, in <module>
+    main()
+    ~~~~^^
+  File "/Users/jacobhornsvennevik/Documents/GitHub/ros-drone/experiments/validate_hoffman_2016.py", line 1044, in main
+    results_by_window = execute_window_sweep(args.integration_windows, env)
+  File "/Users/jacobhornsvennevik/Documents/GitHub/ros-drone/experiments/validate_hoffman_2016.py", line 1026, in execute_window_sweep
+    results = run_learning_experiment(
+        env=environment,
+    ...<10 lines>...
+        trajectory_params=trajectory_params,
+    )
+  File "/Users/jacobhornsvennevik/Documents/GitHub/ros-drone/experiments/validate_hoffman_2016.py", line 313, in run_learning_experiment
+    controller = PlaceCellController(environment=env, config=config, rng=rng)
+  File "/Users/jacobhornsvennevik/Documents/GitHub/ros-drone/src/hippocampus_core/controllers/place_cell_controller.py", line 98, in __init__
+    self.place_cells = PlaceCellPopulation(
+                       ~~~~~~~~~~~~~~~~~~~^
+        environment=self.environment,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        centers=self.config.place_cell_positions,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/jacobhornsvennevik/Documents/GitHub/ros-drone/src/hippocampus_core/place_cells.py", line 51, in __init__
+    bounds = self.environment.bounds
+             ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'bounds'

@@ -147,7 +147,13 @@ class Environment:
 
 
 class Agent:
-    """Point-mass agent performing a random walk inside an environment."""
+    """Point-mass agent performing a random walk inside an environment.
+
+    The agent maintains planar position and velocity by default. Callers can
+    optionally request the agent's instantaneous heading (θ) and/or an altitude
+    channel (z) when retrieving observations. The defaults preserve the legacy
+    2D `(x, y)` interface so existing experiments remain compatible.
+    """
 
     def __init__(
         self,
@@ -157,6 +163,10 @@ class Agent:
         max_speed: float = 0.4,
         velocity_noise: float = 0.2,
         random_state: Optional[np.random.Generator] = None,
+        track_heading: bool = False,
+        track_altitude: bool = False,
+        initial_heading: Optional[float] = None,
+        altitude: float = 0.0,
     ) -> None:
         if base_speed <= 0:
             raise ValueError("base_speed must be positive.")
@@ -170,6 +180,8 @@ class Agent:
         self.max_speed = max_speed
         self.velocity_noise = velocity_noise
         self.random = random_state or np.random.default_rng()
+        self.track_heading = track_heading
+        self.track_altitude = track_altitude
 
         bounds = self.environment.bounds
         if position is None:
@@ -187,6 +199,10 @@ class Agent:
 
         self.position = start_position
         self.velocity = self._initialize_velocity()
+        self.heading = float(initial_heading) if initial_heading is not None else float(
+            np.arctan2(self.velocity[1], self.velocity[0])
+        )
+        self.altitude = float(altitude)
 
     def _initialize_velocity(self) -> np.ndarray:
         angle = self.random.uniform(0.0, 2.0 * np.pi)
@@ -194,11 +210,38 @@ class Agent:
         vy = self.base_speed * np.sin(angle)
         return np.array([vx, vy], dtype=float)
 
-    def step(self, dt: float) -> np.ndarray:
-        """Advance the agent state by dt seconds and return the new position."""
+    def step(
+        self,
+        dt: float,
+        include_theta: Optional[bool] = None,
+        include_altitude: Optional[bool] = None,
+    ) -> np.ndarray:
+        """Advance the agent and return an observation.
+
+        Parameters
+        ----------
+        dt:
+            Simulation step in seconds.
+        include_theta:
+            When True (or when ``track_heading`` was enabled during construction
+            and this argument is left as ``None``), append the instantaneous
+            heading angle θ (radians) to the returned observation.
+        include_altitude:
+            When True (or ``track_altitude`` was enabled at construction) append
+            the altitude channel ``z`` to the observation.
+
+        Returns
+        -------
+        np.ndarray
+            Observation vector containing ``(x, y)``, optionally followed by θ
+            and/or z depending on the flags.
+        """
 
         if dt <= 0:
             raise ValueError("dt must be positive.")
+
+        include_theta = self.track_heading if include_theta is None else include_theta
+        include_altitude = self.track_altitude if include_altitude is None else include_altitude
 
         # Randomly perturb the velocity.
         noise = self.random.normal(scale=self.velocity_noise, size=2)
@@ -261,4 +304,11 @@ class Agent:
             clipped_position = self.position.copy()
 
         self.position = clipped_position
-        return self.position.copy()
+        self.heading = float(np.arctan2(self.velocity[1], self.velocity[0]))
+
+        observation = [float(self.position[0]), float(self.position[1])]
+        if include_theta:
+            observation.append(self.heading)
+        if include_altitude:
+            observation.append(self.altitude)
+        return np.array(observation, dtype=float)

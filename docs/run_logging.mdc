@@ -1,0 +1,45 @@
+# Sweep Logging Guide
+
+Use this guide to archive every `experiments/validate_hoffman_2016.py` run automatically. The goal is to keep parameters, console output, and generated plots tied together for later analysis.
+
+## Script
+
+- `scripts/logged_validate.sh <label> [args...]`
+  - `label`: short identifier for the run (e.g., `ring50_thr6`).
+  - Remaining arguments are passed directly to `validate_hoffman_2016.py`.
+  - Stdout/stderr is captured to `results/sweeps/<timestamp>_<label>/run.log`.
+  - The main figure is saved (or copied) to `results/sweeps/<timestamp>_<label>/figure.png`.
+  - If `--default-window-output path.png` is supplied, that PNG is copied into the same folder.
+
+Example:
+
+```
+scripts/logged_validate.sh ring35_thr6 \
+  --obstacle \
+  --placement-mode obstacle_ring \
+  --ring-fraction 0.35 \
+  --ring-offset 0.03 \
+  --ring-jitter 0.01 \
+  --num-cells 90 \
+  --sigma 0.12 \
+  --coactivity-threshold 6.0 \
+  --edge-distance-multiplier 1.2 \
+  --duration 480 \
+  --integration-windows 0 120 240
+```
+
+## Directory layout
+
+```
+results/
+└── sweeps/
+    ├── 20251119-110248_smoke/
+    │   ├── run.log
+    │   └── figure.png
+    └── <timestamp>_<label>/
+        ├── run.log
+        ├── figure.png
+        └── validate_multi_window.png  (optional, from --default-window-output)
+```
+
+Consider keeping a summary table in `results/sweeps/README.md` (columns: timestamp, label, key parameters, final `(b₀,b₁)`, notes) to make comparisons easier.

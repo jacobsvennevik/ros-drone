@@ -24,12 +24,21 @@ class PlaceCellControllerConfig:
     coactivity_threshold: float = 5.0
     max_edge_distance: Optional[float] = None
     integration_window: Optional[float] = None
+    place_cell_positions: Optional[np.ndarray] = None
 
     def __post_init__(self) -> None:
         if self.max_edge_distance is None:
             self.max_edge_distance = 2.0 * self.sigma
         if self.integration_window is not None and self.integration_window < 0:
             raise ValueError("integration_window must be non-negative if provided")
+        if self.place_cell_positions is not None:
+            centers = np.asarray(self.place_cell_positions, dtype=float)
+            if centers.shape != (self.num_place_cells, 2):
+                raise ValueError(
+                    "place_cell_positions must have shape "
+                    f"({self.num_place_cells}, 2); got {centers.shape}"
+                )
+            self.place_cell_positions = centers
 
 
 class PlaceCellController(SNNController):
@@ -92,6 +101,7 @@ class PlaceCellController(SNNController):
             sigma=self.config.sigma,
             max_rate=self.config.max_rate,
             rng=self.rng,
+            centers=self.config.place_cell_positions,
         )
         self.coactivity = CoactivityTracker(
             num_cells=self.config.num_place_cells,
@@ -122,12 +132,11 @@ class PlaceCellController(SNNController):
         if observation.ndim != 1 or observation.shape[0] < 2:
             raise ValueError("Observation must include at least (x, y) position")
 
-        x, y = float(observation[0]), float(observation[1])
-        rates = self.place_cells.get_rates(x, y)
+        rates = self._compute_rates(observation, dt)
         self._cell_rate_sums += rates
         self._mean_rate_sum += float(rates.mean())
 
-        spikes = self.place_cells.sample_spikes(rates, dt)
+        spikes = self._sample_spikes(rates, dt)
         self._spike_counts += spikes.astype(float)
 
         self._time += dt
@@ -142,6 +151,15 @@ class PlaceCellController(SNNController):
         self._steps += 1
 
         return np.zeros(2, dtype=float)
+
+    def _compute_rates(self, observation: np.ndarray, dt: float) -> np.ndarray:
+        """Compute place-cell firing rates for the provided observation."""
+        x, y = float(observation[0]), float(observation[1])
+        return self.place_cells.get_rates(x, y)
+
+    def _sample_spikes(self, rates: np.ndarray, dt: float) -> np.ndarray:
+        """Sample spikes for the provided firing rates."""
+        return self.place_cells.sample_spikes(rates, dt)
 
     @property
     def steps(self) -> int:
@@ -194,6 +212,7 @@ class PlaceCellController(SNNController):
                 integration_window=self.config.integration_window,
                 current_time=self._time if self.config.integration_window is not None else None,
                 integration_times=integration_times,
+                environment=self.environment,  # Pass environment for obstacle-aware filtering
             )
             self._graph_dirty = False
         return self._graph
