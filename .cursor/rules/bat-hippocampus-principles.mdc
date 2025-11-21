@@ -1,8 +1,6 @@
 ---
-description: Implementation principles from Hoffman et al. (2016) bat hippocampus topological mapping paper
 alwaysApply: false
 ---
-
 # Bat Hippocampus Topological Mapping Principles (Hoffman et al. 2016)
 
 This rule captures key implementation principles from the topological mapping approach in bat hippocampus (arXiv:1601.04253). See `docs/hoffman_2016_analysis.md` for detailed analysis.

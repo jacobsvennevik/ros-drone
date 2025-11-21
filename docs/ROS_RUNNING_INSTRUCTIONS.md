@@ -44,11 +44,33 @@ source install/setup.bash
 
 ## Running
 
-### 1. Policy Node
+### 1. Brain Node (Low-level Controller)
 
 ```bash
-# Terminal 1: Launch policy node
-ros2 launch hippocampus_ros2 policy.launch.py
+# Terminal 1: Launch brain node with bat navigation controller
+ros2 launch hippocampus_ros2 brain.launch.py \
+  controller_backend:=bat_navigation
+
+# Terminal 2: Publish fake odometry (with heading)
+ros2 topic pub /odom nav_msgs/msg/Odometry \
+  "{pose: {pose: {position: {x: 0.5, y: 0.5}, orientation: {z: 0.0, w: 1.0}}}}" -r 10
+
+# Terminal 3: Check outputs
+ros2 topic echo /cmd_vel
+ros2 topic echo /snn_action
+```
+
+**Controller Backends:**
+- `place_cells` - Legacy place-cell only controller (default)
+- `bat_navigation` - HD/grid attractors with conjunctive place cells (requires heading data)
+- `snntorch` - Trained SNN model (requires model_path parameter)
+
+### 2. Policy Node (Full Policy Service)
+
+```bash
+# Terminal 1: Launch policy node with bat navigation controller
+ros2 launch hippocampus_ros2 policy.launch.py \
+  controller_backend:=bat_navigation
 
 # Terminal 2: Publish fake odometry
 ros2 topic pub /odom nav_msgs/msg/Odometry \
@@ -60,7 +82,7 @@ ros2 topic echo /policy/decision
 ros2 topic echo /policy/status
 ```
 
-### 2. Mission Publisher
+### 3. Mission Publisher
 
 ```bash
 # Publish a point goal
@@ -75,7 +97,7 @@ ros2 launch hippocampus_ros2 mission_publisher.launch.py \
   node_id:=5
 ```
 
-### 3. With Visualization
+### 4. With Visualization
 
 ```bash
 # Launch policy node with visualization
@@ -130,6 +152,58 @@ ros2 node list
 # /policy_node
 # /mission_publisher (if running)
 ```
+
+## Bat Navigation Controller
+
+The `bat_navigation` backend provides HD/grid attractors with conjunctive place cells, reproducing bat hippocampal navigation behavior (see `notebooks/rubin_hd_validation.ipynb` and `notebooks/yartsev_grid_without_theta.ipynb`).
+
+### Requirements
+
+- **Heading data**: The bat controller requires heading (yaw) information in odometry messages. Ensure your `/odom` topic includes valid orientation data.
+- **3D observations**: The controller expects observations as `[x, y, theta]` where theta is the yaw angle in radians.
+
+### Usage
+
+```bash
+# Launch with bat navigation controller
+ros2 launch hippocampus_ros2 brain.launch.py \
+  controller_backend:=bat_navigation \
+  arena_width:=5.0 \
+  arena_height:=5.0
+
+# Or in policy node
+ros2 launch hippocampus_ros2 policy.launch.py \
+  controller_backend:=bat_navigation
+```
+
+### Configuration
+
+Edit `config/brain.yaml` or `config/policy.yaml`:
+
+```yaml
+controller_backend: "bat_navigation"
+arena_width: 5.0    # Match your environment
+arena_height: 5.0   # Match your environment
+```
+
+### Differences from Place-Cell Controller
+
+| Feature | Place Cells | Bat Navigation |
+|---------|-------------|----------------|
+| Observations | `[x, y]` | `[x, y, θ]` |
+| HD tracking | No | Yes |
+| Grid cells | No | Yes |
+| Calibration | No | Periodic phase calibration |
+| Computational cost | Low | Medium |
+
+### Troubleshooting Bat Controller
+
+**"Controller requires observations containing (x, y, θ)"**
+- Ensure odometry includes valid orientation (quaternion → yaw conversion)
+
+**HD/grid drift issues**
+- Increase `calibration_interval` in config (default: 250 steps)
+- Check that heading updates are timely and accurate
 
 ## Troubleshooting
 

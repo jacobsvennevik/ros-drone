@@ -74,6 +74,9 @@ class RSTDPControllerConfig:
         Penalty for large angular commands (encourages smoother motion).
     reward_clip:
         Maximum absolute reward magnitude before scaling.
+    reward_timescale:
+        Time scale for reward signals (seconds). Used to normalize reward
+        scaling across different simulation timesteps. Default: 1.0 s.
     weight_init_scale:
         Standard deviation for random initial weights.
     keep_weights_on_reset:
@@ -115,6 +118,7 @@ class RSTDPControllerConfig:
     collision_penalty: float = -1.0
     angular_penalty_gain: float = 0.2
     reward_clip: float = 1.0
+    reward_timescale: float = 1.0
 
     weight_init_scale: float = 0.2
     keep_weights_on_reset: bool = False
@@ -202,7 +206,7 @@ class RSTDPController(SNNController):
         action = self._update_output(hidden_spikes)
 
         reward = self._compute_reward(observation, action, dt)
-        self._apply_learning(reward)
+        self._apply_learning(reward, dt)
 
         self._last_action = action
         self._step_count += 1
@@ -331,13 +335,26 @@ class RSTDPController(SNNController):
         reward = float(np.clip(reward, -self.config.reward_clip, self.config.reward_clip))
         return reward * self.config.reward_scale
 
-    def _apply_learning(self, reward: float) -> None:
+    def _apply_learning(self, reward: float, dt: float) -> None:
+        """Apply R-STDP learning with reward scaling for time invariance.
+        
+        Parameters
+        ----------
+        reward:
+            Raw reward signal (per timestep).
+        dt:
+            Time step in seconds. Used to scale reward to reward_timescale.
+        """
         if reward == 0.0:
             # Still decay eligibility to keep traces bounded.
             self._eligibility *= self.config.eligibility_decay
             return
 
-        delta_w = self.config.learning_rate * reward * self._eligibility
+        # Scale reward by dt/reward_timescale to ensure invariance across simulation rates
+        # If reward is per-second and we call this every dt seconds, scale appropriately
+        scaled_reward = reward * (dt / self.config.reward_timescale)
+        
+        delta_w = self.config.learning_rate * scaled_reward * self._eligibility
         self._w_out += delta_w
         np.clip(self._w_out, self.config.weight_min, self.config.weight_max, out=self._w_out)
 

@@ -62,6 +62,7 @@ Edit `config/policy.yaml` to customize:
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
+| `controller_backend` | string | `"place_cells"` | Controller backend: `"place_cells"` or `"bat_navigation"` |
 | `pose_topic` | string | `/odom` | Input odometry topic |
 | `cmd_vel_topic` | string | `/cmd_vel` | Output velocity command topic |
 | `mission_topic` | string | `/mission/goal` | Mission goal topic (optional) |
@@ -70,10 +71,15 @@ Edit `config/policy.yaml` to customize:
 | `max_angular` | double | `1.0` | Max angular velocity (rad/s) |
 | `max_vertical` | double | `0.2` | Max vertical velocity (m/s) for 3D |
 | `enable_hierarchical` | bool | `false` | Enable graph navigation |
-| `navigation_algorithm` | string | `dijkstra` | Path planning algorithm |
+| `navigation_algorithm` | string | `"dijkstra"` | Path planning algorithm |
 | `use_snn` | bool | `false` | Use SNN model (requires PyTorch) |
 | `snn_model_path` | string | `""` | Path to SNN checkpoint |
 | `is_3d` | bool | `false` | Enable 3D mode |
+
+### Controller Backends
+
+- **`place_cells`** (default): Legacy place-cell only controller. Uses `[x, y]` observations.
+- **`bat_navigation`**: HD/grid attractors with conjunctive place cells. Requires `[x, y, θ]` observations (heading must be available in odometry).
 
 ## Topics
 

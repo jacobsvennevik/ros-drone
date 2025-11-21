@@ -4,8 +4,10 @@
 
 hippocampus_ros2:
   ros__parameters:
-    # Controller backend to instantiate. Options include "place_cells"
-    # (deterministic, lightweight) and "snntorch" (requires trained model).
+    # Controller backend to instantiate. Options include:
+    # - "place_cells" (deterministic, lightweight place-cell only)
+    # - "bat_navigation" (HD/grid attractors with conjunctive place cells)
+    # - "snntorch" (requires trained model checkpoint)
     controller_backend: "place_cells"
 
     # Path to a trained model checkpoint exported by experiments/train_snntorch_controller.py.

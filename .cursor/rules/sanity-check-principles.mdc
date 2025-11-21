@@ -1,8 +1,6 @@
 ---
-description: Principles for sanity checks and test maintenance - preserve test integrity and coverage
 alwaysApply: false
 ---
-
 # Sanity Check and Testing Principles
 
 This rule defines how to approach sanity checks and test maintenance in this project. It emphasizes preserving test integrity and coverage rather than weakening tests to achieve passing status.

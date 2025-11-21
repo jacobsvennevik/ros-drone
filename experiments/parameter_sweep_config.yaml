@@ -1,0 +1,31 @@
+# Parameter Sweep Configuration
+# This file configures automated parameter sweeps for sensitivity analysis
+#
+# Usage:
+#   python experiments/parameter_sweep.py --config experiments/parameter_sweep_config.yaml
+
+parameters:
+  # Global inhibition mode: subtractive (mean subtraction) vs divisive (L2 normalization)
+  normalize_mode: ["subtractive", "divisive"]
+  
+  # Adaptive calibration: trigger calibration based on drift threshold vs fixed interval
+  adaptive_calibration: [false, true]
+  
+  # Calibration drift threshold (for adaptive mode)
+  calibration_drift_threshold: [0.05, 0.1, 0.2]
+  
+  # Grid size (affects spatial resolution)
+  # grid_size: [(15, 15), (20, 20)]
+  
+  # Velocity gain (affects path integration sensitivity)
+  # velocity_gain: [0.5, 1.0, 1.5]
+
+simulation:
+  duration_seconds: 60.0  # Simulation duration in seconds
+  dt: 0.05                 # Time step in seconds
+  num_trials: 3            # Number of trials per parameter combination
+  seed: 42                 # Base random seed
+
+output:
+  results_file: "results/parameter_sweep_results.json"  # Output file path
+

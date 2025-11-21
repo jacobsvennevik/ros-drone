@@ -202,9 +202,9 @@ class ActionProposal:
 class PolicyDecision:
     """Policy decision output."""
 
-    next_waypoint: Optional[int] = None
     action_proposal: ActionProposal
     confidence: float  # [0, 1]
+    next_waypoint: Optional[int] = None
     reason: str = "snn"  # "snn", "heuristic", "fallback"
 
 

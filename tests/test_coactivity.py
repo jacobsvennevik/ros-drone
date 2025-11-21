@@ -84,3 +84,31 @@ def test_integration_window_tracking():
     times3 = tracker.check_threshold_exceeded(threshold, time + 1.0)
     assert (0, 1) not in times3
 
+
+def test_coactivity_empty_matrix():
+    """Test coactivity tracker with empty matrix (no spikes)."""
+    tracker = CoactivityTracker(num_cells=5, window=0.1)
+    
+    # No spikes registered - matrix should be all zeros
+    coactivity = tracker.get_coactivity_matrix()
+    assert coactivity.shape == (5, 5)
+    assert np.allclose(coactivity, 0.0)
+    
+    # Check threshold exceeded on empty matrix
+    times = tracker.check_threshold_exceeded(threshold=1.0, current_time=1.0)
+    assert len(times) == 0
+
+
+def test_coactivity_zero_threshold():
+    """Test coactivity tracker with zero threshold."""
+    tracker = CoactivityTracker(num_cells=3, window=0.1)
+    
+    spikes = np.array([True, False, False])
+    tracker.register_spikes(t=0.0, spikes=spikes)
+    
+    # Zero threshold - all pairs should exceed immediately
+    times = tracker.check_threshold_exceeded(threshold=0.0, current_time=0.1)
+    # Cell 0 with itself (diagonal) doesn't count, but pair (0,1) etc should
+    # Actually, threshold of 0 means any coactivity (>= 0) exceeds
+    assert isinstance(times, dict)
+

@@ -231,6 +231,43 @@ def test_end_to_end_pipeline(
         assert -1.0 <= safe_cmd.cmd[1] <= 1.0
 
 
+def test_policy_service_freeze_integration(feature_service, policy_service):
+    """Test policy freeze integration with end-to-end pipeline."""
+    # Build features
+    robot_state = RobotState(
+        pose=(0.5, 0.5, 0.0),
+        time=0.0,
+    )
+    mission = Mission(
+        goal=MissionGoal(
+            type=GoalType.POINT,
+            value=PointGoal(position=(0.9, 0.9)),
+        )
+    )
+    
+    features, context = feature_service.build_features(robot_state, mission)
+    
+    # Make normal decision
+    decision1 = policy_service.decide(features, context, dt=0.05)
+    assert decision1.reason != "policy_frozen"
+    
+    # Freeze policy
+    policy_service.freeze()
+    
+    # Make decision while frozen
+    decision2 = policy_service.decide(features, context, dt=0.05)
+    assert decision2.reason == "policy_frozen"
+    assert decision2.action_proposal.v == 0.0
+    assert decision2.action_proposal.omega == 0.0
+    
+    # Unfreeze
+    policy_service.unfreeze()
+    
+    # Should work normally again
+    decision3 = policy_service.decide(features, context, dt=0.05)
+    assert decision3.reason != "policy_frozen"
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
 

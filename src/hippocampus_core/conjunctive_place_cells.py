@@ -61,9 +61,32 @@ class ConjunctivePlaceCellPopulation:
                 f"got {hd_activity.shape}"
             )
 
+        # Multiplicative modulation: grid × HD interaction
+        # This matches biological conjunctive place cells (e.g., in bat MEC)
+        # where grid and HD signals interact multiplicatively rather than additively
+        grid_contribution = self.grid_weights @ grid_activity
+        hd_contribution = self.hd_weights @ hd_activity
+        
+        # Normalize contributions before multiplication to prevent runaway amplitude
+        # This preserves tuning-shape stability and prevents single-cell saturation
+        grid_norm = np.linalg.norm(grid_contribution)
+        hd_norm = np.linalg.norm(hd_contribution)
+        if grid_norm > 1e-6:
+            grid_contribution = grid_contribution / grid_norm
+        if hd_norm > 1e-6:
+            hd_contribution = hd_contribution / hd_norm
+        
+        # Bilinear interaction: element-wise product plus bias
+        # This captures the multiplicative modulation while maintaining tractability
+        multiplicative_term = grid_contribution * hd_contribution
+        
+        # Combine multiplicative and additive terms
+        # The multiplicative term captures grid×HD interaction
+        # Additive terms provide baseline responses
         combined = (
-            self.grid_weights @ grid_activity
-            + self.hd_weights @ hd_activity
+            0.7 * multiplicative_term  # Multiplicative interaction (primary)
+            + 0.3 * grid_contribution  # Grid baseline
+            + 0.3 * hd_contribution    # HD baseline
             + self.bias
         )
         return np.maximum(combined, 0.0)

@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional, Tuple
+from typing import Literal, Optional, Tuple
 
 import numpy as np
 
@@ -35,6 +35,10 @@ class BatNavigationControllerConfig(PlaceCellControllerConfig):
     conj_bias: float = 0.0
     calibration_history: int = 256
     calibration_interval: int = 200
+    adaptive_calibration: bool = False
+    calibration_drift_threshold: float = 0.1  # Trigger calibration if drift exceeds this
+    normalize_mode: Literal["subtractive", "divisive"] = "subtractive"
+    """Global inhibition mode for both grid and HD attractors."""
 
 
 class BatNavigationController(PlaceCellController):
@@ -54,11 +58,13 @@ class BatNavigationController(PlaceCellController):
             tau=self.config.hd_tau,
             gamma=self.config.hd_gamma,
             weight_sigma=self.config.hd_weight_sigma,
+            normalize_mode=self.config.normalize_mode,
         )
         grid_config = GridAttractorConfig(
             size=self.config.grid_size,
             tau=self.config.grid_tau,
             velocity_gain=self.config.grid_velocity_gain,
+            normalize_mode=self.config.normalize_mode,
         )
         conj_config = ConjunctivePlaceCellConfig(
             num_place_cells=self.config.num_place_cells,
@@ -94,7 +100,18 @@ class BatNavigationController(PlaceCellController):
             )
 
         position = observation[:2]
-        theta = float(observation[2])
+        theta_raw = observation[2]
+        
+        # Validate heading: check for NaN/Inf
+        if not np.isfinite(theta_raw):
+            if self._prev_heading is not None:
+                # Fallback to last valid heading
+                theta = self._prev_heading
+            else:
+                # Fallback to zero if no previous heading
+                theta = 0.0
+        else:
+            theta = float(theta_raw)
 
         omega = 0.0
         if self._prev_heading is not None:
@@ -125,7 +142,20 @@ class BatNavigationController(PlaceCellController):
         )
 
         self._steps_since_calibration += 1
-        if self._steps_since_calibration < self.config.calibration_interval:
+        
+        # Adaptive calibration: trigger if drift exceeds threshold
+        if self.config.adaptive_calibration:
+            grid_drift = self.grid_attractor.drift_metric()
+            hd_activity = self.hd_attractor.activity()
+            hd_norm = np.linalg.norm(hd_activity)
+            # Trigger if grid drift or HD activity is unstable
+            should_calibrate = (grid_drift > self.config.calibration_drift_threshold or
+                              hd_norm > self.config.calibration_drift_threshold * 10)
+        else:
+            # Fixed interval calibration
+            should_calibrate = self._steps_since_calibration >= self.config.calibration_interval
+        
+        if not should_calibrate:
             return
 
         correction = self.calibration.estimate_correction()

@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable, Optional
+from typing import Callable, Literal, Optional
 
 import numpy as np
 
@@ -21,6 +21,8 @@ class HeadDirectionConfig:
     gamma: float = 1.0
     weight_sigma: float = 0.4
     activation: Optional[Callable[[np.ndarray], np.ndarray]] = None
+    normalize_mode: Literal["subtractive", "divisive"] = "subtractive"
+    """Global inhibition mode: 'subtractive' (mean subtraction) or 'divisive' (L2 normalization)."""
 
 
 class HeadDirectionAttractor:
@@ -87,6 +89,19 @@ class HeadDirectionAttractor:
 
         delta = (-self.state + drive) / self.config.tau
         self.state += dt * delta
+        
+        # Global inhibition: prevent amplitude drift and maintain stability
+        if self.config.normalize_mode == "divisive":
+            # Divisive normalization: L2 norm normalization
+            # This provides gain control and noise robustness (Burak & Fiete, 2009; Cueva & Wei, 2018)
+            norm = np.linalg.norm(self.state)
+            if norm > 1e-6:
+                self.state /= norm
+        else:
+            # Subtractive normalization: mean subtraction (default)
+            # This maintains attractor stability under floating-point arithmetic
+            self.state -= self.state.mean()
+        
         return self.state.copy()
 
     def estimate_heading(self) -> float:

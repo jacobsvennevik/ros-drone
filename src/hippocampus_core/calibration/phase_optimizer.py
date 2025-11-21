@@ -49,9 +49,42 @@ class PhaseOptimizer:
         """Return True if enough samples exist to compute a correction."""
         return len(self._positions) >= min_samples
 
-    def estimate_correction(self) -> Optional[PhaseCorrection]:
-        """Return a suggested correction if sufficient data exist."""
+    def effective_sample_size(self) -> float:
+        """Compute effective sample size (ESS) for current history window.
+        
+        ESS = (sum(w_i))^2 / sum(w_i^2) where w_i are sample weights.
+        For uniform weights (current implementation), ESS equals number of samples.
+        This can be extended with temporal weighting in the future.
+        
+        Returns
+        -------
+        float
+            Effective sample size. If ESS < 20, window may be too noisy.
+        """
+        n = len(self._positions)
+        if n == 0:
+            return 0.0
+        # For uniform weights, ESS = n (all samples are independent)
+        # Future: could add temporal decay weights for more sophisticated ESS
+        return float(n)
+
+    def estimate_correction(self, min_ess: float = 20.0) -> Optional[PhaseCorrection]:
+        """Return a suggested correction if sufficient data exist.
+        
+        Parameters
+        ----------
+        min_ess:
+            Minimum effective sample size required. If ESS < min_ess,
+            returns None (window is too noisy for reliable correction).
+            Default: 20.0 (recommended for statistical rigor).
+        """
         if not self.ready():
+            return None
+        
+        # Check effective sample size to ensure statistical reliability
+        ess = self.effective_sample_size()
+        if ess < min_ess:
+            # Window is too noisy - don't compute correction yet
             return None
 
         positions = np.stack(self._positions)
@@ -62,7 +95,14 @@ class PhaseOptimizer:
         headings = np.array(self._headings)
         estimates = np.array(self._hd_estimates)
         heading_error = _wrap_angle(headings - estimates)
-        heading_delta = float(np.mean(heading_error))
+        
+        # Circular mean: use vector average instead of linear mean
+        # This correctly handles angles near ±π boundary (e.g., [350°, 10°] → 0°)
+        complex_sum = np.sum(np.exp(1j * heading_error))
+        if np.abs(complex_sum) < 1e-12:
+            heading_delta = 0.0
+        else:
+            heading_delta = float(np.angle(complex_sum))
 
         return PhaseCorrection(heading_delta=heading_delta, grid_translation=translation)
 

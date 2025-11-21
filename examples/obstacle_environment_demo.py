@@ -6,7 +6,9 @@ With a central obstacle, the graph should correctly identify b₁ = 1 (one hole
 encircling the obstacle), matching the paper's findings.
 
 Run with: python3 examples/obstacle_environment_demo.py
+Run with bat controller: python3 examples/obstacle_environment_demo.py --controller bat
 """
+import argparse
 import sys
 from pathlib import Path
 
@@ -21,14 +23,48 @@ from hippocampus_core.controllers.place_cell_controller import (
     PlaceCellController,
     PlaceCellControllerConfig,
 )
+try:
+    from hippocampus_core.controllers.bat_navigation_controller import (
+        BatNavigationController,
+        BatNavigationControllerConfig,
+    )
+    BAT_AVAILABLE = True
+except ImportError:
+    BAT_AVAILABLE = False
+    BatNavigationController = None
+    BatNavigationControllerConfig = None
 from hippocampus_core.env import Agent, CircularObstacle, Environment
 
 
 def main() -> None:
     """Demonstrate obstacle environment with topological mapping."""
+    parser = argparse.ArgumentParser(
+        description="Obstacle environment topological mapping demo"
+    )
+    parser.add_argument(
+        "--controller",
+        type=str,
+        default="place",
+        choices=["place", "bat"],
+        help="Controller type: 'place' (default) or 'bat' (requires heading data)",
+    )
+    args = parser.parse_args()
+    
+    controller_type = args.controller.lower()
+    if controller_type == "bat" and not BAT_AVAILABLE:
+        print("ERROR: Bat navigation controller not available.")
+        print("Ensure hippocampus_core is properly installed.")
+        sys.exit(1)
+    
     print("=" * 70)
     print("Obstacle Environment Topological Mapping Demo")
     print("=" * 70)
+    print()
+    print(f"Controller: {controller_type.upper()}")
+    if controller_type == "bat":
+        print("  Using BatNavigationController with HD/grid attractors")
+    else:
+        print("  Using PlaceCellController")
     print()
     print("This demonstrates how obstacles create holes in the learned map.")
     print("With a central obstacle, we expect b₁ = 1 (one hole encircling obstacle).")
@@ -46,34 +82,67 @@ def main() -> None:
     # Create environment without obstacle for comparison
     env_no_obstacle = Environment(width=1.0, height=1.0)
 
-    config = PlaceCellControllerConfig(
-        num_place_cells=120,
-        sigma=0.15,
-        max_rate=20.0,
-        coactivity_window=0.2,
-        coactivity_threshold=12.0,  # Much higher threshold for very sparse graph
-        max_edge_distance=0.3,  # Reduced to create sparser connections
-        integration_window=None,  # No integration window for faster learning
-    )
-
     rng = np.random.default_rng(42)
     seed_offset = 100
 
-    print("Running simulation WITH obstacle...")
-    controller_obstacle = PlaceCellController(
-        environment=env_with_obstacle, config=config, rng=rng
-    )
-    agent_obstacle = Agent(
-        environment=env_with_obstacle, random_state=np.random.default_rng(42 + seed_offset)
-    )
+    # Configure controller based on type
+    if controller_type == "bat":
+        config = BatNavigationControllerConfig(
+            num_place_cells=120,
+            sigma=0.15,
+            coactivity_window=0.2,
+            coactivity_threshold=12.0,
+            max_edge_distance=0.3,
+            integration_window=None,
+            hd_num_neurons=72,
+            grid_size=(16, 16),
+            calibration_interval=250,
+        )
+        controller_obstacle = BatNavigationController(
+            environment=env_with_obstacle, config=config, rng=rng
+        )
+        controller_no_obstacle = BatNavigationController(
+            environment=env_no_obstacle, config=config, rng=np.random.default_rng(43)
+        )
+        agent_obstacle = Agent(
+            environment=env_with_obstacle,
+            random_state=np.random.default_rng(42 + seed_offset),
+            track_heading=True,
+        )
+        agent_no_obstacle = Agent(
+            environment=env_no_obstacle,
+            random_state=np.random.default_rng(43 + seed_offset),
+            track_heading=True,
+        )
+        include_theta = True
+    else:
+        config = PlaceCellControllerConfig(
+            num_place_cells=120,
+            sigma=0.15,
+            max_rate=20.0,
+            coactivity_window=0.2,
+            coactivity_threshold=12.0,
+            max_edge_distance=0.3,
+            integration_window=None,
+        )
+        controller_obstacle = PlaceCellController(
+            environment=env_with_obstacle, config=config, rng=rng
+        )
+        controller_no_obstacle = PlaceCellController(
+            environment=env_no_obstacle, config=config, rng=np.random.default_rng(43)
+        )
+        agent_obstacle = Agent(
+            environment=env_with_obstacle,
+            random_state=np.random.default_rng(42 + seed_offset),
+        )
+        agent_no_obstacle = Agent(
+            environment=env_no_obstacle,
+            random_state=np.random.default_rng(43 + seed_offset),
+        )
+        include_theta = False
 
+    print("Running simulation WITH obstacle...")
     print("Running simulation WITHOUT obstacle (for comparison)...")
-    controller_no_obstacle = PlaceCellController(
-        environment=env_no_obstacle, config=config, rng=np.random.default_rng(43)
-    )
-    agent_no_obstacle = Agent(
-        environment=env_no_obstacle, random_state=np.random.default_rng(43 + seed_offset)
-    )
 
     # Run simulations
     duration_seconds = 1200.0  # 20 minutes (longer for obstacle detection)
@@ -102,12 +171,12 @@ def main() -> None:
 
     for step in range(num_steps):
         # With obstacle
-        position_obstacle = agent_obstacle.step(dt)
-        controller_obstacle.step(np.asarray(position_obstacle), dt)
+        obs_obstacle = agent_obstacle.step(dt, include_theta=include_theta)
+        controller_obstacle.step(np.asarray(obs_obstacle), dt)
 
         # Without obstacle
-        position_no_obstacle = agent_no_obstacle.step(dt)
-        controller_no_obstacle.step(np.asarray(position_no_obstacle), dt)
+        obs_no_obstacle = agent_no_obstacle.step(dt, include_theta=include_theta)
+        controller_no_obstacle.step(np.asarray(obs_no_obstacle), dt)
 
         if step % sample_interval == 0 or step == num_steps - 1:
             # Sample with obstacle
@@ -147,6 +216,21 @@ def main() -> None:
 
     print("\n\nSimulation complete!")
     print()
+
+    # Print bat controller stats if applicable
+    if controller_type == "bat":
+        print("=" * 70)
+        print("Bat Controller Statistics")
+        print("=" * 70)
+        hd_estimate_obs = controller_obstacle.hd_attractor.estimate_heading()
+        grid_drift_obs = controller_obstacle.grid_attractor.drift_metric()
+        hd_estimate_no = controller_no_obstacle.hd_attractor.estimate_heading()
+        grid_drift_no = controller_no_obstacle.grid_attractor.drift_metric()
+        print(f"  HD estimate (with obstacle): {np.degrees(hd_estimate_obs):.1f}°")
+        print(f"  HD estimate (without obstacle): {np.degrees(hd_estimate_no):.1f}°")
+        print(f"  Grid drift (with obstacle): {grid_drift_obs:.4f}")
+        print(f"  Grid drift (without obstacle): {grid_drift_no:.4f}")
+        print()
 
     # Print comparison
     print("=" * 70)
@@ -190,7 +274,8 @@ def main() -> None:
         import matplotlib.pyplot as plt
 
         fig, axes = plt.subplots(2, 3, figsize=(15, 10))
-        fig.suptitle("Obstacle Environment Comparison", fontsize=14, fontweight="bold")
+        controller_label = "BatNavigationController" if controller_type == "bat" else "PlaceCellController"
+        fig.suptitle(f"Obstacle Environment Comparison ({controller_label})", fontsize=14, fontweight="bold")
 
         times = np.array(results_obstacle["times"]) / 60.0  # Convert to minutes
 

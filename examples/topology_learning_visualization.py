@@ -11,6 +11,7 @@ Inspired by Figure 1A from Hoffman et al. (2016), which shows timelines of
 
 Usage:
     python examples/topology_learning_visualization.py [--integration-window 480]
+    python examples/topology_learning_visualization.py --controller bat
 """
 from __future__ import annotations
 
@@ -33,6 +34,10 @@ from hippocampus_core.controllers.place_cell_controller import (
     PlaceCellController,
     PlaceCellControllerConfig,
 )
+from hippocampus_core.controllers.bat_navigation_controller import (
+    BatNavigationController,
+    BatNavigationControllerConfig,
+)
 from hippocampus_core.env import Agent, CircularObstacle, Environment
 
 
@@ -44,6 +49,7 @@ def track_topology_evolution(
     num_place_cells: int = 120,
     sigma: float = 0.15,
     seed: int = 42,
+    controller_type: str = "place",
 ) -> dict:
     """Track topology evolution over time.
 
@@ -69,20 +75,38 @@ def track_topology_evolution(
     dict
         Time series of topology metrics
     """
-    config = PlaceCellControllerConfig(
-        num_place_cells=num_place_cells,
-        sigma=sigma,
-        max_rate=20.0,
-        coactivity_window=0.2,
-        coactivity_threshold=5.0,
-        max_edge_distance=2.0 * sigma,
-        integration_window=integration_window,
-    )
-
     rng = np.random.default_rng(seed)
-    controller = PlaceCellController(environment=env, config=config, rng=rng)
     agent_rng = np.random.default_rng(seed + 1)
-    agent = Agent(environment=env, random_state=agent_rng)
+
+    controller_type = controller_type.lower()
+    if controller_type == "bat":
+        config = BatNavigationControllerConfig(
+            num_place_cells=num_place_cells,
+            sigma=sigma,
+            coactivity_window=0.2,
+            coactivity_threshold=5.0,
+            max_edge_distance=2.0 * sigma,
+            integration_window=integration_window,
+            hd_num_neurons=90,
+            grid_size=(18, 18),
+            calibration_interval=500,
+        )
+        controller = BatNavigationController(environment=env, config=config, rng=rng)
+        agent = Agent(environment=env, random_state=agent_rng, track_heading=True)
+        include_theta = True
+    else:
+        config = PlaceCellControllerConfig(
+            num_place_cells=num_place_cells,
+            sigma=sigma,
+            max_rate=20.0,
+            coactivity_window=0.2,
+            coactivity_threshold=5.0,
+            max_edge_distance=2.0 * sigma,
+            integration_window=integration_window,
+        )
+        controller = PlaceCellController(environment=env, config=config, rng=rng)
+        agent = Agent(environment=env, random_state=agent_rng)
+        include_theta = False
 
     num_steps = int(duration_seconds / dt)
     sample_interval = max(1, num_steps // 100)  # Sample ~100 times for smooth plots
@@ -96,7 +120,16 @@ def track_topology_evolution(
         "betti_2": [],
         "graphs": [],  # Store graphs at sample points
         "positions": None,
+        "mean_rate": [],
     }
+    if controller_type == "bat":
+        results.update(
+            {
+                "heading": [],
+                "hd_estimate": [],
+                "grid_drift": [],
+            }
+        )
 
     print("Running simulation...")
     print(f"  Duration: {duration_seconds/60:.1f} minutes")
@@ -104,8 +137,8 @@ def track_topology_evolution(
     print(f"  Sampling every {sample_interval * dt:.1f} seconds\n")
 
     for step in range(num_steps):
-        position = agent.step(dt)
-        controller.step(np.asarray(position), dt)
+        observation = agent.step(dt, include_theta=include_theta)
+        controller.step(np.asarray(observation), dt)
 
         if step % sample_interval == 0 or step == num_steps - 1:
             graph = controller.get_graph()
@@ -118,11 +151,25 @@ def track_topology_evolution(
             results["times"].append(current_time)
             results["edges"].append(num_edges)
             results["components"].append(num_components)
+            last_rates = getattr(controller, "last_rates", None)
+            if last_rates is not None:
+                results["mean_rate"].append(float(np.mean(last_rates)))
+            else:
+                results["mean_rate"].append(float("nan"))
 
             # Store graph periodically (not too frequently to save memory)
             if len(results["times"]) % 5 == 0 or step == num_steps - 1:
                 results["graphs"].append((current_time, graph.graph.copy()))
 
+            # Collect HD/grid stats for bat controller (always, not just on exception)
+            if controller_type == "bat":
+                theta_val = float(observation[2])
+                hd_estimate = controller.hd_attractor.estimate_heading()
+                grid_drift = controller.grid_attractor.drift_metric()
+                results["heading"].append(theta_val)
+                results["hd_estimate"].append(hd_estimate)
+                results["grid_drift"].append(grid_drift)
+            
             # Compute Betti numbers
             try:
                 betti = graph.compute_betti_numbers(max_dim=2)
@@ -237,6 +284,7 @@ def visualize_topology_learning(
     results: dict,
     output_path: Optional[Path] = None,
     integration_window: Optional[float] = None,
+    controller_type: str = "place",
 ) -> None:
     """Create comprehensive visualization of topology learning.
 
@@ -249,13 +297,20 @@ def visualize_topology_learning(
     integration_window:
         Integration window used (for title)
     """
-    fig = plt.figure(figsize=(16, 12))
-    gs = fig.add_gridspec(3, 3, hspace=0.3, wspace=0.3)
+    rows = 4 if controller_type == "bat" else 3
+    fig_height = 14 if controller_type == "bat" else 12
+    fig = plt.figure(figsize=(16, fig_height))
+    gs = fig.add_gridspec(rows, 3, hspace=0.3, wspace=0.3)
 
     # Title
-    window_str = f"ϖ = {integration_window/60:.1f} min" if integration_window else "ϖ = None"
+    window_str = (
+        f"ϖ = {integration_window/60:.1f} min" if integration_window else "ϖ = None"
+    )
+    controller_str = (
+        "BatNavigationController" if controller_type == "bat" else "PlaceCellController"
+    )
     fig.suptitle(
-        f"Topological Learning Evolution ({window_str})",
+        f"Topological Learning Evolution ({window_str}, {controller_str})",
         fontsize=16,
         fontweight="bold",
     )
@@ -308,26 +363,61 @@ def visualize_topology_learning(
                 ha="center", va="center", transform=ax6.transAxes, fontsize=12)
 
     # Plot 7-9: Graph snapshots at different times
+    graph_row = rows - 2
     if results["graphs"]:
         positions = results["positions"]
         
         # Early time
         if len(results["graphs"]) >= 1:
             time1, graph1 = results["graphs"][0]
-            ax7 = fig.add_subplot(gs[2, 0])
+            ax7 = fig.add_subplot(gs[graph_row, 0])
             plot_graph_snapshot(ax7, graph1, positions, f"Early: t = {time1/60:.1f} min")
         
         # Middle time
         if len(results["graphs"]) >= 2:
             mid_idx = len(results["graphs"]) // 2
             time2, graph2 = results["graphs"][mid_idx]
-            ax8 = fig.add_subplot(gs[2, 1])
+            ax8 = fig.add_subplot(gs[graph_row, 1])
             plot_graph_snapshot(ax8, graph2, positions, f"Middle: t = {time2/60:.1f} min")
         
         # Final time
         if len(results["graphs"]) >= 1:
             time3, graph3 = results["graphs"][-1]
-            ax9 = fig.add_subplot(gs[2, 2])
+            ax9 = fig.add_subplot(gs[graph_row, 2])
+
+    if controller_type == "bat" and results.get("heading"):
+        hd_row = rows - 1
+        heading_ax = fig.add_subplot(gs[hd_row, 0])
+        times_minutes = np.array(results["times"]) / 60.0
+        headings_deg = np.degrees(np.unwrap(np.array(results["heading"])))
+        hd_est_deg = np.degrees(np.unwrap(np.array(results["hd_estimate"])))
+        heading_ax.plot(times_minutes, headings_deg, label="Actual θ", linewidth=2)
+        heading_ax.plot(
+            times_minutes,
+            hd_est_deg,
+            label="HD estimate",
+            linestyle="--",
+            linewidth=2,
+        )
+        heading_ax.set_xlabel("Time (minutes)")
+        heading_ax.set_ylabel("Heading (deg)")
+        heading_ax.set_title("Head Direction Tracking")
+        heading_ax.legend()
+        heading_ax.grid(True, alpha=0.3)
+
+        grid_ax = fig.add_subplot(gs[hd_row, 1])
+        grid_ax.plot(times_minutes, results["grid_drift"], "m-", linewidth=2)
+        grid_ax.set_xlabel("Time (minutes)")
+        grid_ax.set_ylabel("Grid activity norm")
+        grid_ax.set_title("Grid Attractor Drift Metric")
+        grid_ax.grid(True, alpha=0.3)
+
+        rate_ax = fig.add_subplot(gs[hd_row, 2])
+        rate_ax.plot(times_minutes, results["mean_rate"], "c-", linewidth=2)
+        rate_ax.set_xlabel("Time (minutes)")
+        rate_ax.set_ylabel("Mean place rate (Hz)")
+        rate_ax.set_title("Conjunctive Place Activity")
+        rate_ax.grid(True, alpha=0.3)
             plot_graph_snapshot(ax9, graph3, positions, f"Final: t = {time3/60:.1f} min")
 
     if output_path:
@@ -398,6 +488,12 @@ def main() -> None:
         help="Number of place cells (default: 120)",
     )
     parser.add_argument(
+        "--controller",
+        choices=["place", "bat"],
+        default="place",
+        help="Controller choice: 'place' for legacy, 'bat' for HD+grid integration.",
+    )
+    parser.add_argument(
         "--output",
         type=Path,
         help="Path to save output figure (default: show interactively)",
@@ -439,12 +535,16 @@ def main() -> None:
         duration_seconds=args.duration,
         num_place_cells=args.num_cells,
         seed=args.seed,
+        controller_type=args.controller,
     )
 
     # Visualize
     print("Generating visualizations...")
     visualize_topology_learning(
-        results, output_path=args.output, integration_window=integration_window
+        results,
+        output_path=args.output,
+        integration_window=integration_window,
+        controller_type=args.controller,
     )
 
     print("\n" + "=" * 70)

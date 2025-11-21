@@ -26,6 +26,9 @@ jobs:
       - name: Run pytest
         run: python -m pytest
 
+      - name: Run notebook execution tests
+        run: python -m pytest tests/test_notebook_execution.py -v
+
   colcon-build-test:
     name: Build and Test (colcon)
     runs-on: ubuntu-22.04

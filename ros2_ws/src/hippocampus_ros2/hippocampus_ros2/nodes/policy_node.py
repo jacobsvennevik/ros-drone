@@ -16,6 +16,14 @@ from hippocampus_core.controllers.place_cell_controller import (
     PlaceCellController,
     PlaceCellControllerConfig,
 )
+try:
+    from hippocampus_core.controllers.bat_navigation_controller import (
+        BatNavigationController,
+        BatNavigationControllerConfig,
+    )
+except ImportError:
+    BatNavigationController = None
+    BatNavigationControllerConfig = None
 from hippocampus_core.env import Environment
 from hippocampus_core.policy import (
     TopologyService,
@@ -53,6 +61,7 @@ class PolicyNode(Node):
         super().__init__("policy_node")
 
         # Declare parameters
+        self.declare_parameter("controller_backend", "place_cells")
         self.declare_parameter("pose_topic", "/odom")
         self.declare_parameter("cmd_vel_topic", "/cmd_vel")
         self.declare_parameter("mission_topic", "/mission/goal")
@@ -75,6 +84,9 @@ class PolicyNode(Node):
         self.declare_parameter("default_goal_z", 0.0)
 
         # Get parameters
+        self._controller_backend = (
+            self.get_parameter("controller_backend").get_parameter_value().string_value
+        )
         self._pose_topic = self.get_parameter("pose_topic").get_parameter_value().string_value
         self._cmd_vel_topic = (
             self.get_parameter("cmd_vel_topic").get_parameter_value().string_value
@@ -125,15 +137,39 @@ class PolicyNode(Node):
             self.get_parameter("default_goal_z").get_parameter_value().double_value or 0.0
         )
 
-        # Initialize place cell controller (for topology)
+        # Initialize controller (for topology)
         controller_rng = np.random.default_rng(int(rng_seed))
         self._environment = Environment(width=arena_width, height=arena_height)
-        controller_config = PlaceCellControllerConfig()
-        self._place_controller = PlaceCellController(
-            environment=self._environment,
-            config=controller_config,
-            rng=controller_rng,
-        )
+        
+        if self._controller_backend == "bat_navigation" and BatNavigationController is not None:
+            controller_config = BatNavigationControllerConfig(
+                num_place_cells=80,
+                hd_num_neurons=72,
+                grid_size=(16, 16),
+                calibration_interval=250,
+                integration_window=None,  # Disable for real-time ROS operation
+            )
+            self._place_controller = BatNavigationController(
+                environment=self._environment,
+                config=controller_config,
+                rng=controller_rng,
+            )
+            self.get_logger().info(
+                "Using bat navigation controller (HD neurons=%d, grid size=%s).",
+                controller_config.hd_num_neurons,
+                controller_config.grid_size,
+            )
+        else:
+            if self._controller_backend == "bat_navigation":
+                self.get_logger().warning(
+                    "Bat navigation requested but not available; falling back to place_cells."
+                )
+            controller_config = PlaceCellControllerConfig()
+            self._place_controller = PlaceCellController(
+                environment=self._environment,
+                config=controller_config,
+                rng=controller_rng,
+            )
 
         # Initialize policy services
         self._topology_service = TopologyService()
@@ -248,6 +284,9 @@ class PolicyNode(Node):
         # State
         self._last_pose: Optional[Tuple[float, float, float]] = None  # (x, y, yaw) or (x, y, z, yaw, pitch) for 3D
         self._last_time: Optional[float] = None
+        self._last_msg_timestamp = None  # For latency compensation
+        self._prev_obs_position: Optional[np.ndarray] = None  # For latency compensation
+        self._prev_obs_heading: Optional[float] = None  # For latency compensation
         self._step_count = 0
         self._topology_update_counter = 0
 
@@ -270,6 +309,8 @@ class PolicyNode(Node):
 
         # Store pose (2D for now, can extend to 3D)
         self._last_pose = (float(position.x), float(position.y), yaw)
+        # Store message timestamp for latency compensation
+        self._last_msg_timestamp = msg.header.stamp
 
     def _control_timer_callback(self) -> None:
         """Control loop timer callback."""
@@ -289,9 +330,39 @@ class PolicyNode(Node):
             dt = max(now - self._last_time, 1e-6)
         self._last_time = now
 
-        # Update place cell controller
-        position = np.array([self._last_pose[0], self._last_pose[1]])
-        self._place_controller.step(position, dt)
+        # Optional timestamp latency compensation
+        # Apply correction if message is stale (latency > 20 ms)
+        obs_position = np.array([self._last_pose[0], self._last_pose[1]])
+        obs_heading = self._last_pose[2]
+        
+        if hasattr(self, '_last_msg_timestamp') and self._last_msg_timestamp:
+            msg_time = self._last_msg_timestamp.sec + self._last_msg_timestamp.nanosec / 1e9
+            latency = now - msg_time
+            
+            # Apply latency compensation if latency > 20 ms
+            if latency > 0.02:  # 20 ms threshold
+                # Estimate velocity from previous state
+                if hasattr(self, '_prev_obs_position') and self._prev_obs_position is not None:
+                    velocity = (obs_position - self._prev_obs_position) / dt if dt > 1e-6 else np.zeros(2)
+                    # Apply correction: position += velocity * latency
+                    obs_position = obs_position + velocity * latency
+                
+                if hasattr(self, '_prev_obs_heading') and self._prev_obs_heading is not None:
+                    angular_velocity = (obs_heading - self._prev_obs_heading) / dt if dt > 1e-6 else 0.0
+                    obs_heading = obs_heading + angular_velocity * latency
+            
+            self._prev_obs_position = obs_position.copy()
+            self._prev_obs_heading = obs_heading
+
+        # Update controller
+        if self._controller_backend == "bat_navigation":
+            # Bat controller requires [x, y, theta] observation
+            obs = np.array([obs_position[0], obs_position[1], obs_heading])
+            self._place_controller.step(obs, dt)
+        else:
+            # Legacy place cell controller uses [x, y] position
+            position = np.array([self._last_pose[0], self._last_pose[1]])
+            self._place_controller.step(position, dt)
 
         # Build robot state
         robot_state = RobotState(

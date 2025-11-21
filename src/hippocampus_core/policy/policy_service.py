@@ -95,6 +95,8 @@ class SpikingPolicyService(SNNController):
         # Validate configuration
         if self._use_snn and self._use_rstdp:
             raise ValueError("Cannot use both PyTorch SNN and R-STDP model simultaneously")
+        
+        self._is_frozen = False
 
     def reset(self) -> None:
         """Reset policy state."""
@@ -113,6 +115,27 @@ class SpikingPolicyService(SNNController):
             self._rstdp_model.reset()
         if self._reward_function:
             self._reward_function.reset()
+        self._is_frozen = False
+
+    def freeze(self) -> None:
+        """Freeze policy state (e.g., during safety hold mode).
+        
+        This resets membrane potentials and internal state to prevent
+        stale actions when unfreezing.
+        """
+        self._is_frozen = True
+        # Reset membrane states to prevent stale actions
+        if self._snn_model and self._device is not None and self._membrane is not None:
+            self._membrane = self._snn_model.init_state(1, self._device)
+        if self._temporal_context:
+            self._temporal_context.reset()
+        if self._rstdp_model:
+            # R-STDP models maintain state - reset to prevent stale eligibility
+            self._rstdp_model.reset()
+
+    def unfreeze(self) -> None:
+        """Unfreeze policy state after safety hold."""
+        self._is_frozen = False
 
     def step(self, obs: np.ndarray, dt: float) -> np.ndarray:
         """Advance policy by one step.

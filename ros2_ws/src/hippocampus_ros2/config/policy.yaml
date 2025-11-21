@@ -3,6 +3,10 @@
 
 hippocampus_ros2:
   ros__parameters:
+    # Controller backend for topology learning. Options:
+    # - "place_cells" (legacy place-cell only controller)
+    # - "bat_navigation" (HD/grid attractors with conjunctive place cells)
+    controller_backend: "place_cells"
     # Topic to subscribe for robot pose/odometry updates.
     pose_topic: "/odom"
 

@@ -115,6 +115,9 @@ class PlaceCellController(SNNController):
         self._cell_rate_sums = np.zeros(self.config.num_place_cells, dtype=float)
         self._mean_rate_sum = 0.0
         self._spike_counts = np.zeros(self.config.num_place_cells, dtype=float)
+        self._last_rates: Optional[np.ndarray] = np.zeros(
+            self.config.num_place_cells, dtype=float
+        )
 
     def reset(self) -> None:
         self._time = 0.0
@@ -122,6 +125,8 @@ class PlaceCellController(SNNController):
         self._cell_rate_sums.fill(0.0)
         self._mean_rate_sum = 0.0
         self._spike_counts.fill(0.0)
+        if self._last_rates is not None:
+            self._last_rates.fill(0.0)
         self.coactivity.reset()
         self._graph_dirty = True
 
@@ -133,6 +138,10 @@ class PlaceCellController(SNNController):
             raise ValueError("Observation must include at least (x, y) position")
 
         rates = self._compute_rates(observation, dt)
+        if self._last_rates is None:
+            self._last_rates = np.array(rates, copy=True)
+        else:
+            self._last_rates = np.array(rates, copy=True)
         self._cell_rate_sums += rates
         self._mean_rate_sum += float(rates.mean())
 
@@ -172,6 +181,12 @@ class PlaceCellController(SNNController):
     @property
     def spike_counts(self) -> np.ndarray:
         return self._spike_counts.copy()
+
+    @property
+    def last_rates(self) -> Optional[np.ndarray]:
+        if self._last_rates is None:
+            return None
+        return self._last_rates.copy()
 
     @property
     def average_rate_per_cell(self) -> np.ndarray:

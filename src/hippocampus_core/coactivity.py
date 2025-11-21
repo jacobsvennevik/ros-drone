@@ -32,6 +32,9 @@ class CoactivityTracker:
         # Track when each pair first exceeded threshold (for integration window)
         # Key: (i, j) tuple where i <= j, Value: time when threshold was first exceeded
         self._threshold_exceeded_time: dict[tuple[int, int], float] = {}
+        # Track when pairs dropped below threshold (for temporal hysteresis)
+        # Key: (i, j) tuple where i <= j, Value: time when threshold was last dropped below
+        self._threshold_dropped_below_time: dict[tuple[int, int], float] = {}
 
     def register_spikes(
         self, t: float, spikes: np.ndarray, threshold: float | None = None
@@ -83,17 +86,26 @@ class CoactivityTracker:
                     self._coactivity[pair[1], pair[0]] += 1.0
                 
                 # Track when pair first exceeds threshold (for integration window)
+                # Also track when pair drops below threshold (for temporal hysteresis)
                 if threshold is not None:
                     new_count = self._coactivity[pair[0], pair[1]]
                     if old_count < threshold <= new_count:
                         # This increment caused the pair to cross the threshold
                         if pair not in self._threshold_exceeded_time:
                             self._threshold_exceeded_time[pair] = t
+                        # Remove from dropped-below tracking if it's back above threshold
+                        self._threshold_dropped_below_time.pop(pair, None)
+                    elif old_count >= threshold > new_count:
+                        # This increment caused the pair to drop below threshold
+                        self._threshold_dropped_below_time[pair] = t
 
     def check_threshold_exceeded(
-        self, threshold: float, current_time: float
+        self, threshold: float, current_time: float, hysteresis_window: float = 0.0
     ) -> dict[tuple[int, int], float]:
         """Check which pairs exceed threshold and return when they first did so.
+        
+        With temporal hysteresis, a pair that dropped below threshold must stay
+        below for at least `hysteresis_window` seconds before being removed.
 
         Parameters
         ----------
@@ -102,28 +114,45 @@ class CoactivityTracker:
         current_time:
             Current simulation time in seconds (used as fallback if pair wasn't
             tracked during registration).
+        hysteresis_window:
+            Optional hysteresis window in seconds. If a pair drops below threshold,
+            it must remain below for at least this duration before being removed
+            from the active set. Default 0.0 (no hysteresis).
 
         Returns
         -------
         dict[tuple[int, int], float]
             Dictionary mapping (i, j) pairs to the time when they first exceeded
-            the threshold. Only includes pairs that currently exceed the threshold.
-            If a pair wasn't tracked during registration (threshold not passed),
-            uses current_time as fallback.
+            the threshold. Only includes pairs that currently exceed the threshold
+            (or are within hysteresis window). If a pair wasn't tracked during
+            registration (threshold not passed), uses current_time as fallback.
         """
         result: dict[tuple[int, int], float] = {}
         for i in range(self.num_cells):
             for j in range(i + 1, self.num_cells):
-                if self._coactivity[i, j] >= threshold:
-                    pair = (i, j)
+                pair = (i, j)
+                current_count = self._coactivity[i, j]
+                
+                # Check if pair currently exceeds threshold
+                if current_count >= threshold:
+                    # Pair exceeds threshold - include if tracked
                     if pair in self._threshold_exceeded_time:
-                        # Use the time when it was first tracked during registration
                         result[pair] = self._threshold_exceeded_time[pair]
                     else:
                         # Fallback: pair exceeds threshold but wasn't tracked
-                        # (shouldn't happen if threshold was passed during registration)
                         self._threshold_exceeded_time[pair] = current_time
                         result[pair] = current_time
+                elif hysteresis_window > 0.0 and pair in self._threshold_exceeded_time:
+                    # Pair is below threshold, but check if within hysteresis window
+                    if pair in self._threshold_dropped_below_time:
+                        drop_time = self._threshold_dropped_below_time[pair]
+                        time_below = current_time - drop_time
+                        if time_below < hysteresis_window:
+                            # Still within hysteresis window - keep in active set
+                            result[pair] = self._threshold_exceeded_time[pair]
+                        else:
+                            # Hysteresis expired - remove from tracking
+                            self._threshold_exceeded_time.pop(pair, None)
         return result
 
     def get_coactivity_matrix(self) -> np.ndarray:
@@ -138,3 +167,4 @@ class CoactivityTracker:
         for history in self._histories:
             history.clear()
         self._threshold_exceeded_time.clear()
+        self._threshold_dropped_below_time.clear()

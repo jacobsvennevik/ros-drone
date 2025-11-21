@@ -203,19 +203,22 @@ class ActionArbitrationSafety:
             decision.confidence *= 0.7
             decision.reason = "graph_stale_warning"
         elif action == "hold":
-            # Zero velocity
+            # Zero velocity and freeze policy state
             decision.action_proposal.v = 0.0
             decision.action_proposal.omega = 0.0
             decision.confidence = 0.0
             decision.reason = "graph_stale"
+            # Note: Policy service should call freeze() when staleness detected
+            # This is handled at the service level, not in the arbitrator
         elif action == "estop":
-            # Emergency stop
+            # Emergency stop and freeze policy state
             decision.action_proposal.v = 0.0
             decision.action_proposal.omega = 0.0
             if decision.action_proposal.vz is not None:
                 decision.action_proposal.vz = 0.0
             decision.confidence = 0.0
             decision.reason = "graph_critical_stale"
+            # Note: Policy service should call freeze() when critical staleness detected
 
         return decision
 

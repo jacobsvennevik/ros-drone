@@ -267,6 +267,8 @@ def run_learning_experiment(
     place_cell_positions: Optional[np.ndarray] = None,
     trajectory_mode: str = "random",
     trajectory_params: Optional[dict] = None,
+    compute_betti: bool = True,
+    betti_sample_interval: int = 1,
 ) -> dict:
     """Run a single learning experiment and collect statistics.
 
@@ -344,6 +346,8 @@ def run_learning_experiment(
     }
 
     print(f"  Running with ϖ={integration_window}s...", end="", flush=True)
+    
+    betti_sample_count = 0
 
     for step in range(num_steps):
         if trajectory_mode == "orbit_then_random" and orbit_state and controller.current_time < orbit_state["duration"]:
@@ -368,32 +372,57 @@ def run_learning_experiment(
             results["components"].append(num_components)
 
             # Compute Betti numbers (may fail if ripser/gudhi not available)
-            try:
-                betti = graph.compute_betti_numbers(max_dim=2)
-                b0 = betti.get(0, 0)
-                b1 = betti.get(1, 0)
-                b2 = betti.get(2, 0)
-                
-                # Consistency check: b0 should match number of components
-                # If they disagree, prefer components (more reliable)
-                if num_edges == 0:
-                    # If no edges, all nodes are isolated - b0 should equal number of nodes
-                    # But Betti number computation on empty graph might give 1
-                    # Use components instead for consistency
-                    b0 = num_components
-                elif b0 != num_components:
-                    # Log warning but use Betti number (may be computing from clique complex)
-                    # This is acceptable as Betti numbers come from clique complex
-                    pass
-                
-                results["betti_0"].append(b0)
-                results["betti_1"].append(b1)
-                results["betti_2"].append(b2)
-            except ImportError:
-                # Fallback if persistent homology not available
+            # Skip or reduce frequency if requested (Betti computation is expensive)
+            should_compute_betti = (
+                compute_betti 
+                and (betti_sample_count % betti_sample_interval == 0 or step == num_steps - 1)
+            )
+            
+            if should_compute_betti:
+                try:
+                    betti = graph.compute_betti_numbers(max_dim=2)
+                    b0 = betti.get(0, 0)
+                    b1 = betti.get(1, 0)
+                    b2 = betti.get(2, 0)
+                    
+                    # Consistency check: b0 should match number of components
+                    # If they disagree, prefer components (more reliable)
+                    if num_edges == 0:
+                        # If no edges, all nodes are isolated - b0 should equal number of nodes
+                        # But Betti number computation on empty graph might give 1
+                        # Use components instead for consistency
+                        b0 = num_components
+                    elif b0 != num_components:
+                        # Log warning but use Betti number (may be computing from clique complex)
+                        # This is acceptable as Betti numbers come from clique complex
+                        pass
+                    
+                    results["betti_0"].append(b0)
+                    results["betti_1"].append(b1)
+                    results["betti_2"].append(b2)
+                except ImportError:
+                    # Fallback if persistent homology not available
+                    results["betti_0"].append(num_components)
+                    results["betti_1"].append(-1)  # Mark as unavailable
+                    results["betti_2"].append(-1)
+                except Exception as e:
+                    # If Betti computation fails (e.g., too slow), fall back to components
+                    print(f"\n    Warning: Betti computation failed at t={current_time:.1f}s: {e}", end="", flush=True)
+                    results["betti_0"].append(num_components)
+                    results["betti_1"].append(-1)
+                    results["betti_2"].append(-1)
+            else:
+                # Don't compute Betti, use components as proxy for b0
                 results["betti_0"].append(num_components)
-                results["betti_1"].append(-1)  # Mark as unavailable
+                results["betti_1"].append(-1)
                 results["betti_2"].append(-1)
+            
+            betti_sample_count += 1
+
+        # Show progress every 10% of simulation
+        if (step + 1) % (num_steps // 10) == 0:
+            progress = 100 * (step + 1) / num_steps
+            print(f" {progress:.0f}%", end="", flush=True)
 
     print(" done")
     
@@ -802,6 +831,20 @@ def main() -> None:
         default=0.6,
         help="Linear speed along orbit (arena units/s) (default: 0.6)",
     )
+    parser.add_argument(
+        "--skip-betti",
+        action="store_true",
+        help="Skip Betti number computation (faster, but no topology verification)",
+    )
+    parser.add_argument(
+        "--betti-sample-interval",
+        type=int,
+        default=1,
+        help=(
+            "Only compute Betti numbers every N-th sample (default: 1 = every sample). "
+            "Higher values speed up computation significantly."
+        ),
+    )
 
     args = parser.parse_args()
 
@@ -1037,6 +1080,8 @@ def main() -> None:
                 place_cell_positions=place_cell_positions,
                 trajectory_mode=args.trajectory_mode,
                 trajectory_params=trajectory_params,
+                compute_betti=not args.skip_betti,
+                betti_sample_interval=args.betti_sample_interval,
             )
             sweep_results[integration_window] = results
         return sweep_results

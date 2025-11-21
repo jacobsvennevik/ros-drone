@@ -19,6 +19,14 @@ from hippocampus_core.controllers.place_cell_controller import (
     PlaceCellControllerConfig,
 )
 try:
+    from hippocampus_core.controllers.bat_navigation_controller import (
+        BatNavigationController,
+        BatNavigationControllerConfig,
+    )
+except ImportError:
+    BatNavigationController = None
+    BatNavigationControllerConfig = None
+try:
     from hippocampus_core.controllers.snntorch_controller import SnnTorchController
 except ImportError:
     SnnTorchController = None
@@ -121,6 +129,20 @@ class BrainNode(Node):
             else:
                 self._backend_in_use = "snntorch"
 
+        if self._controller is None and self._requested_backend == "bat_navigation":
+            self._controller = self._try_create_bat_controller(
+                arena_width=arena_width,
+                arena_height=arena_height,
+                rng_seed=int(rng_seed),
+            )
+            if self._controller is None:
+                self.get_logger().warning(
+                    "Falling back to place_cells backend after bat navigation controller initialisation failed."
+                )
+                self._backend_in_use = "place_cells"
+            else:
+                self._backend_in_use = "bat_navigation"
+
         if self._controller is None:
             controller_rng = np.random.default_rng(int(rng_seed))
             self._environment = Environment(width=arena_width, height=arena_height)
@@ -147,6 +169,9 @@ class BrainNode(Node):
         self._last_pose: Optional[Tuple[float, float]] = None
         self._last_heading: Optional[float] = None
         self._last_time: Optional[float] = None
+        self._last_msg_timestamp = None  # For latency compensation
+        self._prev_obs_position: Optional[np.ndarray] = None  # For latency compensation
+        self._prev_obs_heading: Optional[float] = None  # For latency compensation
         self._step_count = 0
         self._warned_short_action = False
         self._pose_history: Deque[Tuple[float, float]] = deque(maxlen=self._viz_trail_length)
@@ -270,6 +295,48 @@ class BrainNode(Node):
         )
         return controller
 
+    def _try_create_bat_controller(
+        self,
+        *,
+        arena_width: float,
+        arena_height: float,
+        rng_seed: int,
+    ):
+        """Create a BatNavigationController instance."""
+        if BatNavigationController is None:
+            self.get_logger().error(
+                "Bat navigation backend requested but BatNavigationController is not available."
+            )
+            return None
+
+        try:
+            controller_rng = np.random.default_rng(rng_seed)
+            self._environment = Environment(width=arena_width, height=arena_height)
+            controller_config = BatNavigationControllerConfig(
+                num_place_cells=80,
+                hd_num_neurons=72,
+                grid_size=(16, 16),
+                calibration_interval=250,
+                integration_window=None,  # Disable for real-time ROS operation
+            )
+            controller = BatNavigationController(
+                environment=self._environment,
+                config=controller_config,
+                rng=controller_rng,
+            )
+            self.get_logger().info(
+                "Loaded bat navigation controller (HD neurons=%d, grid size=%s, place cells=%d).",
+                controller_config.hd_num_neurons,
+                controller_config.grid_size,
+                controller_config.num_place_cells,
+            )
+            return controller
+        except Exception as exc:
+            self.get_logger().error(
+                "Failed to initialise bat navigation controller: %s", exc
+            )
+            return None
+
     def _pose_callback(self, msg: Odometry) -> None:
         position = msg.pose.pose.position
         self._last_pose = (float(position.x), float(position.y))
@@ -280,6 +347,8 @@ class BrainNode(Node):
             orientation.z,
             orientation.w,
         )
+        # Store message timestamp for latency compensation
+        self._last_msg_timestamp = msg.header.stamp
 
     def _control_timer_callback(self) -> None:
         if self._last_pose is None or self._last_heading is None:
@@ -292,15 +361,52 @@ class BrainNode(Node):
             dt = max(now - self._last_time, 1e-6)
         self._last_time = now
 
-        obs = np.asarray(
-            [
-                self._last_pose[0],
-                self._last_pose[1],
-                math.cos(self._last_heading),
-                math.sin(self._last_heading),
-            ],
-            dtype=np.float32,
-        )
+        # Optional timestamp latency compensation
+        # Apply correction if message is stale (latency > 20 ms)
+        obs_position = np.array([self._last_pose[0], self._last_pose[1]])
+        obs_heading = self._last_heading
+        
+        if hasattr(self, '_last_msg_timestamp') and self._last_msg_timestamp:
+            msg_time = self._last_msg_timestamp.sec + self._last_msg_timestamp.nanosec / 1e9
+            latency = now - msg_time
+            
+            # Apply latency compensation if latency > 20 ms
+            if latency > 0.02:  # 20 ms threshold
+                # Estimate velocity from previous state
+                if hasattr(self, '_prev_obs_position') and self._prev_obs_position is not None:
+                    velocity = (obs_position - self._prev_obs_position) / dt if dt > 1e-6 else np.zeros(2)
+                    # Apply correction: position += velocity * latency
+                    obs_position = obs_position + velocity * latency
+                
+                if hasattr(self, '_prev_obs_heading') and self._prev_obs_heading is not None:
+                    angular_velocity = (obs_heading - self._prev_obs_heading) / dt if dt > 1e-6 else 0.0
+                    obs_heading = obs_heading + angular_velocity * latency
+            
+            self._prev_obs_position = obs_position.copy()
+            self._prev_obs_heading = obs_heading
+
+        # Construct observation based on controller backend
+        if self._backend_in_use == "bat_navigation":
+            # Bat controller requires [x, y, theta] observation
+            obs = np.asarray(
+                [
+                    obs_position[0],
+                    obs_position[1],
+                    obs_heading,
+                ],
+                dtype=np.float32,
+            )
+        else:
+            # Legacy controllers (snntorch, place_cells) use [x, y, cos(theta), sin(theta)]
+            obs = np.asarray(
+                [
+                    self._last_pose[0],
+                    self._last_pose[1],
+                    math.cos(self._last_heading),
+                    math.sin(self._last_heading),
+                ],
+                dtype=np.float32,
+            )
         action = self._controller.step(obs, dt)
         if action.size < 2:
             if not self._warned_short_action:
@@ -344,7 +450,7 @@ class BrainNode(Node):
         if (
             not self._viz_enabled
             or self._marker_publisher is None
-            or self._backend_in_use != "place_cells"
+            or self._backend_in_use not in ("place_cells", "bat_navigation")
         ):
             return
 

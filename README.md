@@ -42,6 +42,22 @@ python main.py
 - *Place-cell centres:* sampled Gaussian receptive fields laid over the arena.
 - *Topological graph:* nodes are place-cell centres; edges appear when coactivity exceeds the configured threshold and the cells lie within the allowed spatial distance.
 
+## Controller Selection
+
+**Which controller should I use?**
+
+- **PlaceCellController** (default): Place cells only, simplest option, uses `[x, y]` observations
+- **BatNavigationController**: HD/grid attractors + conjunctive place cells, biologically realistic, requires `[x, y, θ]` observations  
+- **SnnTorchController**: Pre-trained SNN models for learned navigation policies
+
+📖 **See `docs/CONTROLLER_COMPARISON.md` for detailed comparison, use cases, and migration guide.**
+
+📐 **See `docs/ARCHITECTURE.md` for architectural diagrams showing the HD → grid → conjunctive place pipeline.**
+
+📋 **See `docs/LEGACY_CODE.md` for clarification on what's "legacy" vs "current" - nothing is deprecated, both are valid choices.**
+
+📊 **See `docs/PROJECT_STATUS.md` for a comprehensive analysis of what's implemented, current status, and project maturity.**
+
 ## Topological Mapping Features
 
 ### Integration Window (ϖ)
@@ -132,6 +148,8 @@ See `examples/integration_window_demo.py` and `examples/betti_numbers_demo.py` f
 - Visualization: `examples/topology_learning_visualization.py` (Betti number tracking over time)
 - Validation: `experiments/validate_hoffman_2016.py` (comprehensive validation experiment)
 - Obstacle environments: `examples/obstacle_environment_demo.py` (demonstrates holes with obstacles)
+- Diagnostics vs. verification: `docs/BETTI_USAGE_GUIDE.md` explains how Betti checks complement the new HD/grid notebooks (`notebooks/rubin_hd_validation.ipynb`, `notebooks/yartsev_grid_without_theta.ipynb`).
+- Parameter sweeps: `experiments/sweep_rubin_hd_validation.py` and `experiments/sweep_yartsev_grid_validation.py` for systematic parameter exploration (see `docs/examples/parameter_sweeps.md`).
 
 ## Obstacle Environments
 

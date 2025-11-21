@@ -2,6 +2,14 @@
 
 This directory contains examples and descriptions of different topological mapping scenarios.
 
+## Parameter Sweeps
+
+For systematic parameter exploration of validation notebooks, see:
+- **Sweep scripts**: `experiments/sweep_rubin_hd_validation.py`, `experiments/sweep_yartsev_grid_validation.py`
+- **Documentation**: [Parameter Sweeps Guide](parameter_sweeps.md)
+
+These scripts run validation simulations across multiple parameter sets and generate summary plots in `results/sweeps/`.
+
 ## Available Examples
 
 ### 1. Integration Window Comparison

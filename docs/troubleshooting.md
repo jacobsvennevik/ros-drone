@@ -9,6 +9,7 @@ Common issues and solutions for topological mapping experiments.
 - [Inconsistent Statistics](#inconsistent-statistics)
 - [Visualization Problems](#visualization-problems)
 - [Performance Issues](#performance-issues)
+- [Bat Navigation Controller Issues](#bat-navigation-controller-issues)
 
 ---
 
@@ -324,4 +325,207 @@ python3 examples/obstacle_environment_demo.py
 ```
 
 If all tests pass, your setup is working correctly!
+
+---
+
+## Bat Navigation Controller Issues
+
+### Problem: "BatNavigationController requires observations containing (x, y, θ)"
+
+**Symptom**: `ValueError` when calling `controller.step(obs, dt)`.
+
+**Cause**: Bat controller requires heading data (`θ`) in observations. Observation format must be `[x, y, θ]`, not just `[x, y]`.
+
+**Solution**:
+- Use `Agent` with `track_heading=True`: `Agent(env, track_heading=True)`
+- Extract heading from pose data: `obs = [x, y, theta]`
+- If using ROS, ensure `/odom` messages include orientation/quaternion
+
+**Example**:
+```python
+# Correct
+agent = Agent(env, track_heading=True)
+obs = agent.step(dt, include_theta=True)  # Returns [x, y, θ]
+
+# Wrong
+agent = Agent(env)  # track_heading=False
+obs = agent.step(dt)  # Returns [x, y] only
+controller.step(obs, dt)  # ❌ ValueError
+```
+
+---
+
+### Problem: Heading drift or unstable HD estimates
+
+**Symptom**: HD estimates from `controller.hd_attractor.estimate_heading()` drift over time or become inconsistent.
+
+**Possible causes**:
+1. **Calibration interval too long**: HD drift accumulates between calibrations
+2. **No periodic calibration**: Missing heading cues
+3. **Angular velocity noise too high**: Noise in `omega` measurement
+
+**Solutions**:
+1. Reduce `calibration_interval`: `BatNavigationControllerConfig(calibration_interval=100)`
+2. Ensure periodic heading cues are available (from GPS, landmarks, etc.)
+3. Reduce noise in angular velocity measurements
+
+**Example**:
+```python
+config = BatNavigationControllerConfig(
+    calibration_interval=100,  # Calibrate more frequently
+    hd_tau=0.05,  # Lower tau = faster response, but may be noisier
+)
+```
+
+**Expected behavior**:
+- HD estimates should remain stable with periodic calibration
+- Calibration corrects drift every `calibration_interval` steps
+- HD error should decrease after calibration
+
+---
+
+### Problem: Grid cell drift (grid_attractor.drift_metric() increasing)
+
+**Symptom**: Grid drift metric keeps increasing, indicating path integration errors.
+
+**Possible causes**:
+1. **Velocity noise too high**: Noisy velocity measurements
+2. **Calibration interval too long**: Grid phase corrections too infrequent
+3. **Missing calibration**: No periodic position corrections
+
+**Solutions**:
+1. Reduce velocity noise in measurements
+2. Reduce `calibration_interval`: `BatNavigationControllerConfig(calibration_interval=100)`
+3. Ensure periodic position corrections (from GPS, landmarks, etc.)
+4. Increase `grid_tau` for more stable but slower grid dynamics
+
+**Example**:
+```python
+config = BatNavigationControllerConfig(
+    calibration_interval=100,  # More frequent calibration
+    grid_tau=0.1,  # Higher tau = more stable, slower response
+)
+```
+
+**Expected behavior**:
+- Grid drift should stabilize with periodic calibration
+- Drift metric should decrease after calibration events
+- Grid activity should remain stable without continuous theta oscillations
+
+---
+
+### Problem: Missing theta data in ROS integration
+
+**Symptom**: ROS node fails to initialize or errors with "missing heading data".
+
+**Cause**: `/odom` messages don't include orientation, or orientation extraction fails.
+
+**Solution**:
+1. Check that `/odom` messages include `pose.pose.orientation`
+2. Verify quaternion to heading conversion in ROS node
+3. If using 2D, ensure z-orientation is available
+
+**ROS message format**:
+```python
+# Odom message should have:
+msg.pose.pose.orientation  # Quaternion
+# or for 2D:
+msg.pose.pose.orientation.z  # yaw in quaternion form
+```
+
+**Example**:
+```bash
+# Check odom messages
+ros2 topic echo /odom | grep orientation
+```
+
+---
+
+### Problem: Low HD tuning (Rayleigh vector < 0.3)
+
+**Symptom**: HD tuning analysis shows weak directional selectivity (low Rayleigh vector length).
+
+**Possible causes**:
+1. **Not enough data**: Too few samples inside/outside place field
+2. **Place field too large**: `sigma` too high, mixing in/out samples
+3. **HD neurons too few**: `hd_num_neurons` too low
+4. **Calibration too frequent**: Breaking up tuning patterns
+
+**Solutions**:
+1. Increase simulation duration
+2. Reduce `sigma`: `BatNavigationControllerConfig(sigma=0.1)`
+3. Increase HD neurons: `BatNavigationControllerConfig(hd_num_neurons=72)`
+4. Adjust calibration interval: `BatNavigationControllerConfig(calibration_interval=250)`
+
+**Expected values**:
+- Inside place field: Rayleigh vector > 0.5 (strong tuning)
+- Outside place field: Rayleigh vector > 0.3 (moderate tuning)
+
+---
+
+### Problem: Theta power too high (expected to be low)
+
+**Symptom**: Theta-band power analysis shows significant theta oscillations (> 0.1).
+
+**Cause**: This shouldn't happen with bat controller - it doesn't use continuous theta oscillations.
+
+**Solution**:
+- Check that you're using `BatNavigationController`, not a different controller
+- Verify theta power computation is correct
+- If using velocity history, ensure it's from `grid_attractor.estimate_position()`, not HD activity
+
+**Expected behavior**:
+- Theta power should be < 0.1 (negligible)
+- Grid activity should remain stable without theta
+
+---
+
+### Problem: Controller not found or import error
+
+**Symptom**: `ImportError: cannot import name 'BatNavigationController'`.
+
+**Cause**: Bat controller may not be available or path issues.
+
+**Solution**:
+```python
+# Check import
+from hippocampus_core.controllers.bat_navigation_controller import (
+    BatNavigationController,
+    BatNavigationControllerConfig,
+)
+
+# If import fails, check:
+# 1. Project is installed: pip install -e .
+# 2. src/hippocampus_core is in path
+# 3. All dependencies are installed
+```
+
+---
+
+### Problem: Conjunctive place cells not firing
+
+**Symptom**: Place cell rates are all zero or very low.
+
+**Possible causes**:
+1. **Grid/HD activity too low**: Attractors not initialized or stuck
+2. **Conjunctive weights too small**: `conj_weight_scale` too low
+3. **No exploration**: Agent not moving, so no activity
+
+**Solutions**:
+1. Check that agent is moving: `agent.step(dt)` updates position
+2. Verify grid/HD activity: `controller.grid_attractor.activity()`, `controller.hd_attractor.activity()`
+3. Increase `conj_weight_scale`: `BatNavigationControllerConfig(conj_weight_scale=0.5)`
+4. Ensure observations include valid heading: `[x, y, theta]`
+
+**Example**:
+```python
+# Check activity levels
+grid_activity = controller.grid_attractor.activity()
+hd_activity = controller.hd_attractor.activity()
+rates = controller.last_rates
+
+print(f"Grid activity norm: {np.linalg.norm(grid_activity)}")
+print(f"HD activity norm: {np.linalg.norm(hd_activity)}")
+print(f"Mean place cell rate: {np.mean(rates)}")
+```
 
